@@ -4,7 +4,6 @@ import {Posts} from './Posts/Posts'
 function Home() {
     return (
         <div>
-            <div>Home</div>
             <Posts />
         </div>
     )
