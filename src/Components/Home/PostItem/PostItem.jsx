@@ -3,11 +3,28 @@ import styled from 'styled-components';
 import UserInfo from './UserInfo'
 import Image from './Image'
 import Comments from './Comments'
+import AddComment from './AddComment'
 
 const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) => {
   const [like,setLike] = useState(false);
   const [allComments,setAllComments] = useState(comments);
-  const [viewMore,setViewMore] = useState(false)
+  const [viewMore,setViewMore] = useState(false);
+  const [query,setQuery] = useState("");
+  const inputRef = useRef();
+
+  const handleAddComment = (e) => {
+    e.preventDefault();
+    if(query === ""){
+      return;
+    }
+    const payload = {
+      displayName: "username", 
+      comment: query, 
+      commentTime: Date.now()
+    }
+    setAllComments([payload,...allComments]);
+    setQuery("");
+  }
 
     return (
       <Container>
@@ -18,7 +35,7 @@ const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) =
             <Like onClick={() => setLike(!like)} like={like}>
               {like ? <i className="fas fa-heart fa-lg"></i> : <i className="far fa-heart fa-lg"></i>}
             </Like>
-            <CommentIcon >
+            <CommentIcon onClick={() => {inputRef.current.focus()}} >
               <i className="far fa-comment fa-lg"></i>
             </CommentIcon>
             <Likes>
@@ -31,6 +48,8 @@ const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) =
             <Comments allComments={allComments} viewMore={viewMore} setViewMore={ setViewMore} />
           </Engagement>
           
+          <AddComment handleAddComment = {handleAddComment} inputRef={inputRef} query={query} setQuery={setQuery} />
+
       </Container>
     );
 }

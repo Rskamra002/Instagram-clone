@@ -2,15 +2,24 @@ import React from 'react'
 import styled from 'styled-components'
 
 export default function Comments({allComments,viewMore,setViewMore}) {
+  console.log(allComments)
   return (
     <>
-      {allComments.length > 3 ? <ViewMoreComments >
+      {allComments.length > 2 ? <ViewMoreComments >
             <button onClick={() => {setViewMore(!viewMore)}}>{viewMore ? "Hide comments": "View more comments"}</button>
             </ViewMoreComments> : null}
             <AllComments viewMore={viewMore}> 
               {allComments?.map(item => {
                 return(
-                  <div><span>{item.displayName}</span>{item.comment}</div>
+                  <div>
+                    <span>
+                      <span>{item.displayName}</span>
+                      {item.comment}
+                    </span>
+                    <span>
+                      {item.commentTime}
+                    </span>
+                  </div>
                 )
               })}
             </AllComments>
@@ -26,14 +35,17 @@ const ViewMoreComments = styled.div`
 `
 const AllComments = styled.div`
   max-height:58px;
-  overflow: ${props => props.viewMore ? "scroll" :"hidden"} ;
+  overflow-y: ${props => props.viewMore ? "scroll" :"hidden"} ;
   div{
     font-size:15px;
     margin:6px 0px;
-    span{
+    display:flex;
+    justify-content:space-between;
+    & > span > span{
       font-weight:bold;
       display:inline-block;
       margin-right:4px;
     }
+
   }
 `
