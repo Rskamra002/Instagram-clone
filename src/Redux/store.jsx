@@ -1,6 +1,8 @@
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
+import { profileReducer } from "./UserProfile/profileReducer";
 
 const rootReducer = combineReducers({
+    profile: profileReducer
 });
 
 const customMiddleware = (store) => (next) => (action) => {
