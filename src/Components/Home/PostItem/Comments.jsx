@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import {timeConverter} from '../../../Utils/timeConverter'
 
 export default function Comments({allComments,viewMore,setViewMore}) {
   console.log(allComments)
@@ -17,7 +18,7 @@ export default function Comments({allComments,viewMore,setViewMore}) {
                       {item.comment}
                     </span>
                     <span>
-                      {item.commentTime}
+                      {timeConverter( item.commentTime)}
                     </span>
                   </div>
                 )
