@@ -1,0 +1,11 @@
+.main{
+    width: 50%;
+}
+.mainimg{
+    display: flex;
+    border: 1px solid black;
+}
+.images{
+    margin-left: -126.5%;
+    margin-top: 41.5%;
+}
