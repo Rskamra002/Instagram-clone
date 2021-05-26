@@ -1,8 +1,10 @@
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import { userReducer } from "./Suggestions/Reducer";
+import { profileReducer } from "./UserProfile/profileReducer";
 
 const rootReducer = combineReducers({
-    user : userReducer
+    user : userReducer,
+    profile: profileReducer
 });
 
 const customMiddleware = (store) => (next) => (action) => {

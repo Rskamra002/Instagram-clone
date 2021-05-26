@@ -1,12 +1,13 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import Login from '../Components/Login/Login'
+import Home from '../Components/Home/Home'
 import Registration from '../Components/Registration/Registration'
 function Routes() {
     return (
         <Switch>
             <Route path='/' exact >
-                <Login />
+                <Home/>
             </Route>
             <Route path='/accounts/emailsignup'>
                 <Registration />

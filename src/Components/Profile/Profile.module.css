@@ -1,0 +1,36 @@
+body {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: #fafafa;
+}
+
+.userProfile {
+  display: flex;
+  gap: 10%;
+}
+
+.userProfile div:nth-child(2) > div {
+  flex-grow: 1;
+  margin-top: 15px;
+  display: flex;
+  width: 400px;
+  gap: 5%;
+}
+
+.userProfile div:nth-child(2) > div:nth-child(2) {
+  justify-content: space-between;
+}
+
+.userProfile > div:nth-child(1) img {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+}
+
+.userProfile > div:nth-child(2) > div img {
+  width: 40px;
+  height: 45px;
+  margin-top: -5px;
+}
