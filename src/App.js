@@ -1,10 +1,12 @@
 import React from "react";
+import { Navbar } from "./Components/Navbar/Navbar";
 import Routes from "./Routes/Routes";
 
 function App() {
   return (
     <>
-      <Routes />
+      {/* <Routes /> */}
+      <Navbar/>
     </>
   );
 }
