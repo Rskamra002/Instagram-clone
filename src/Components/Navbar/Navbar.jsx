@@ -8,7 +8,6 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from 'react-redux';
 import { getUsers } from '../../Redux/Suggestions/Action';
 import styles from "./Navbar.module.css"
-import { Link } from 'react-router-dom';
 
 function Navbar() {
     const scrollRef = useRef()
@@ -19,7 +18,6 @@ function Navbar() {
     const [searchUserPopUp, setSearchUserPopup] = useState(false)
     
     const suggestions = useSelector(state => state.user.user)
-    console.log(suggestions)
     const dispatch = useDispatch()
     
     useEffect(() => {
@@ -32,13 +30,9 @@ function Navbar() {
     }
 
     useEffect(() => {
-        if(query === ""){
-            setShow([])
-        }else {
-            let output = suggestions?.filter((item) => item.username.toLowerCase().indexOf(query) !== -1 ? true:false).map((item) => [item.id, item.profile_pic, item.username, item.fullname])
-            setSuggestedUsers(output)
-        }
-    },[query, suggestions])
+        let output = suggestions?.filter((item) => item.username.toLowerCase().indexOf(query) !== -1 ? true:false).map((item) => [item.id, item.profile_pic, item.username, item.fullname])
+        setSuggestedUsers(output)
+    },[suggestions])
 
 
 
