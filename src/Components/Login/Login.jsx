@@ -1,6 +1,7 @@
 import React from 'react'
 import Slider from './Slider/Slider'
 import LoginInp from './LoginInput/LoginInp'
+import styled from "styled-components"
 
 function Login() {
     // justify-content: center;
@@ -9,17 +10,37 @@ function Login() {
     // padding-bottom: 32px;
     // width: 100%;
     return (
-        <div style={{background:"rgb(250,250,250)",width:"100%",maxWidth:"935px",display:'flex',margin:"auto",padding:"2rem"}}>
-
-            <div style={{width:"50%"}}>
+        <Wrapper>
+            <SlidingWraper>
                 <Slider/>
-            </div>
-            <div  style={{width:"40%"}}>
+            </SlidingWraper>
+            <LoginWraper>
                 <LoginInp/>
-                
-            </div>
-        </div>
+            </LoginWraper>
+        </Wrapper>
     )
 }
 
 export default Login
+
+const Wrapper = styled.div`
+    background:rgb(250,250,250);
+    width:100%;
+    max-width:935px;
+    display:flex;
+    margin:auto;
+    padding:2rem
+`
+const SlidingWraper = styled.div`
+    width: 50%;
+    @media (max-width: 900px) {
+        display: none;
+    }
+`
+const LoginWraper = styled.div`
+    width: 40%;
+    @media (max-width: 900px) {
+        margin: auto;
+        width:400px;
+    }
+`
