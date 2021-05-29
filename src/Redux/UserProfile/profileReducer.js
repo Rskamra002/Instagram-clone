@@ -2,12 +2,16 @@ import {
   USER_DATA_FAILURE,
   USER_DATA_REQUEST,
   USER_DATA_SUCCESS,
+  USER_POSTS_FAILURE,
+  USER_POSTS_REQUEST,
+  USER_POSTS_SUCCESS,
 } from "./actionType";
 
 const initState = {
   isLoading: false,
   isError: false,
   data: "",
+  posts: [],
 };
 
 export const profileReducer = (state = initState, { type, payload }) => {
@@ -18,6 +22,7 @@ export const profileReducer = (state = initState, { type, payload }) => {
         isLoading: true,
       };
     }
+
     case USER_DATA_SUCCESS: {
       return {
         ...state,
@@ -25,6 +30,7 @@ export const profileReducer = (state = initState, { type, payload }) => {
         data: payload,
       };
     }
+
     case USER_DATA_FAILURE: {
       return {
         ...state,
@@ -32,6 +38,29 @@ export const profileReducer = (state = initState, { type, payload }) => {
         isError: true,
       };
     }
+
+    case USER_POSTS_REQUEST: {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case USER_POSTS_SUCCESS: {
+      return {
+        ...state,
+        isLoading: false,
+        posts: payload,
+      };
+    }
+
+    case USER_POSTS_FAILURE: {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      };
+    }
+
     default:
       return state;
   }
