@@ -17,7 +17,7 @@
     background-color: #fafafa;
     margin-bottom: 5px;
 }
-.logbtn{
+ .logbtn{
     background-color: #0095F6;
     border: none;
     outline: none;
@@ -29,7 +29,7 @@
 }
 .logbtn:hover{
     cursor: pointer;
-}
+} 
 .or_div{
     margin-top: 10px;
     color: rgb(129, 129, 129);
