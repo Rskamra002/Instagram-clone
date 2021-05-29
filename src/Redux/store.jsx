@@ -1,7 +1,9 @@
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
+import { userReducer } from "./Suggestions/Reducer";
 import { profileReducer } from "./UserProfile/profileReducer";
 
 const rootReducer = combineReducers({
+    user : userReducer,
     profile: profileReducer
 });
 
