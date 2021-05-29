@@ -1,9 +1,13 @@
 import React from "react";
+import ProfileContextProvider from "../../Context/ProfileContextProvider";
 import ProfileDetails from "./ProfileDetails";
-function Profile() {
+
+const Profile = () => {
   return (
     <>
-      <ProfileDetails />
+      <ProfileContextProvider>
+        <ProfileDetails />
+      </ProfileContextProvider>
     </>
   );
 }

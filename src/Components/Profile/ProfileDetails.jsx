@@ -1,19 +1,18 @@
-import React, { useEffect } from 'react'
+import React, { useContext } from 'react'
 import styles from './Profile.module.css'
-import { Container, makeStyles, Typography, Button, Divider, LinearProgress } from '@material-ui/core';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUserData } from '../../Redux/UserProfile/action';
+import { Container, makeStyles, Typography, Divider, LinearProgress } from '@material-ui/core';
 import ProfilePosts from './ProfilePosts';
+import { ProfileContext } from '../../Context/ProfileContextProvider';
 
-
+// styling material ui elementsS
 const useStyles = makeStyles((theme) => ({
     main: {
         width: '70vw',
         padding: theme.spacing(3)
     },
     editBtn: {
-        height: '10%',
-        padding: theme.spacing(0.5, 1),
+        padding: 5,
+        height: 28,
     },
     divider: {
         margin: theme.spacing(5, 0),
@@ -24,42 +23,42 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-function ProfileDetails() {
-    const classes = useStyles();
-    const responseArr = useSelector(state => state.profile.data)
-    const [data] = responseArr;
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(getUserData(1))     // Passing a random ID for now to get the response
-    }, [])
+const ProfileDetails = () => {
+    const { profileData } = useContext(ProfileContext);
 
-    return !data ? < LinearProgress className={classes.loader} /> : (
+    const classes = useStyles();
+    const { fullname, username, followers, following, profile_pic } = profileData
+
+    return !profileData ? < LinearProgress className={classes.loader} /> : (
         <div>
             <Container className={classes.main}>
                 <div className={styles.userProfile}>
                     <div>
-                        <img src={data.profilePic} alt={`${data.fullName}'s Profile Picture`} />
+                        <img src={profile_pic} alt={`${fullname}'s Profile Picture`} />
                     </div>
+
                     <div>
 
                         <div>
-                            <Typography variant='h5'>{data.userName}</Typography>
-                            <Button className={classes.editBtn} variant='outlined'>Edit Profile</Button>
+                            <Typography variant='h5'>{username}</Typography>
+                            <button className={styles.editBtn}>Edit Profile</button>
                             <img src="https://i.ibb.co/Bj3GYST/settings.png"></img>
                         </div>
 
                         <div>
                             <Typography><span style={{ fontWeight: 'bold' }}>1</span> post</Typography>
-                            <Typography><span style={{ fontWeight: 'bold' }}>{data.following.length}</span> followers</Typography>
-                            <Typography><span style={{ fontWeight: 'bold' }}>{data.followers.length}</span> following</Typography>
+                            <Typography><span style={{ fontWeight: 'bold' }}>{followers.length}</span> followers</Typography>
+                            <Typography><span style={{ fontWeight: 'bold' }}>{following.length}</span> following</Typography>
                         </div>
 
                         <div>
                             <Typography>This is the user's Bio</Typography>
                         </div>
+
                     </div>
                 </div>
                 <Divider className={classes.divider} />
+
                 <ProfilePosts />
             </Container>
         </div>
