@@ -8,18 +8,19 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from 'react-redux';
 import { getUsers } from '../../Redux/Suggestions/Action';
 import styles from "./Navbar.module.css"
-import { Link } from 'react-router-dom';
+import { Notifications } from './Notifications';
+import { ProfileDetails } from './ProfileDetails';
 
 function Navbar() {
     const scrollRef = useRef()
     const [query, setQuery] = useState("")
     const [active, setActive] = useState(0)
-    const [show, setShow] = useState([])
     const [suggestedUsers, setSuggestedUsers] = useState([])
     const [searchUserPopUp, setSearchUserPopup] = useState(false)
+    const [showNotifications, setShowNotifications] = useState(false)
+    const [profiler, setProfiler] = useState(false) 
     
     const suggestions = useSelector(state => state.user.user)
-    console.log(suggestions)
     const dispatch = useDispatch()
     
     useEffect(() => {
@@ -32,13 +33,9 @@ function Navbar() {
     }
 
     useEffect(() => {
-        if(query === ""){
-            setShow([])
-        }else {
-            let output = suggestions?.filter((item) => item.username.toLowerCase().indexOf(query) !== -1 ? true:false).map((item) => [item.id, item.profile_pic, item.username, item.fullname])
-            setSuggestedUsers(output)
-        }
-    },[query, suggestions])
+        let output = suggestions?.filter((item) => item.username.toLowerCase().indexOf(query) !== -1 ? true:false).map((item) => [item.id, item.profile_pic, item.username, item.fullname])
+        setSuggestedUsers(output)
+    },[suggestions, query])
 
 
 
@@ -69,7 +66,21 @@ function Navbar() {
                 return;
             }
         }
-
+    }
+    const getNotification = () => {
+        setShowNotifications(!showNotifications)
+        setProfiler(false)
+        setSearchUserPopup(false)
+    }
+    const getUserSettings = () => {
+        setProfiler(!profiler)
+        setShowNotifications(false)
+        setSearchUserPopup(false)
+    }
+    const userSuggest = () => {
+        setSearchUserPopup(true)
+        setShowNotifications(false)
+        setProfiler(false)
     }
 
     return (
@@ -83,7 +94,7 @@ function Navbar() {
                     <input
                     placeholder="Search"
                     value={query}
-                    onFocus={() => setSearchUserPopup(true)}
+                    onFocus={userSuggest}
                     onChange={(e) => setQuery(e.target.value)}
                     />
                     { searchUserPopUp &&
@@ -93,8 +104,8 @@ function Navbar() {
                     <HomeIcon/>
                     <SendIcon/>
                     <ExploreIcon/>
-                    <FavoriteBorderIcon/>
-                    <AccountCircleIcon/>
+                    <FavoriteBorderIcon onClick={getNotification}/>
+                    <AccountCircleIcon onClick={getUserSettings}/>
                 </IconsWrapper>
             </Container>
         </Wrapper>
@@ -141,6 +152,8 @@ function Navbar() {
             </div>
         </div>
         }
+        <Notifications showNotifications={showNotifications}/>
+        <ProfileDetails profiler={profiler}/>
         </>
     )
 }
@@ -170,7 +183,7 @@ const SearchBar = styled.div`
     margin-left: 10%;
     width: 24%;
     border-radius: 3px;
-    text-align: center;
+    cursor: pointer;
     input {
         text-align: center;
         border: none;
@@ -178,6 +191,10 @@ const SearchBar = styled.div`
         margin:auto;
         outline: none;
         background: transparent;
+        :focus {
+            text-align: left;
+            padding-left: 5px;
+        }
     }
     
 `
