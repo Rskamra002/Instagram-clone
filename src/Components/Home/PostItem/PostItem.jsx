@@ -4,13 +4,26 @@ import UserInfo from './UserInfo'
 import Image from './Image'
 import Comments from './Comments'
 import AddComment from './AddComment'
+import axios from 'axios';
+import { useEffect } from 'react';
 
 const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) => {
+  const [postOwnerUserName,setPostOwnerUserName] = useState("")
+  const [postOwnerPic,setPostOwnerPic] = useState("")
+
   const [like,setLike] = useState(false);
   const [allComments,setAllComments] = useState(comments);
   const [viewMore,setViewMore] = useState(false);
   const [query,setQuery] = useState("");
   const inputRef = useRef();
+
+
+  const fetchPostOwner = () => {
+    axios.get(`https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers/${userId}`).then((res) => {
+      setPostOwnerUserName(res.data.username)
+      setPostOwnerPic(res.data.profile_pic)
+    })
+  }
 
   const handleAddComment = (e) => {
     e.preventDefault();
@@ -26,9 +39,13 @@ const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) =
     setQuery("");
   }
 
+  useEffect(() => {
+    fetchPostOwner();
+  },[])
+
     return (
       <Container>
-          <UserInfo />
+          <UserInfo postOwnerUserName={postOwnerUserName} postOwnerPic={postOwnerPic}  />
           <Image imgSrc={imgSrc} like={like} setLike={setLike}/>
 
           <Engagement>
