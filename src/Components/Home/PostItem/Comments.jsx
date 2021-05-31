@@ -18,7 +18,7 @@ export default function Comments({allComments,viewMore,setViewMore}) {
                       {item.comment}
                     </span>
                     <span>
-                      {timeConverter( item.commentTime)}
+                      {timeConverter(item.commentTime)}
                     </span>
                   </div>
                 )
