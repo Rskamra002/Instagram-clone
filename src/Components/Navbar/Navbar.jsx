@@ -10,6 +10,7 @@ import { getUsers } from '../../Redux/Suggestions/Action';
 import styles from "./Navbar.module.css"
 import { Notifications } from './Notifications';
 import { ProfileDetails } from './ProfileDetails';
+import { Link } from 'react-router-dom';
 
 function Navbar() {
     const scrollRef = useRef()
@@ -103,7 +104,8 @@ function Navbar() {
                 <IconsWrapper>
                     <HomeIcon/>
                     <SendIcon/>
-                    <ExploreIcon/>
+                    <Link to="explore">
+                    <ExploreIcon/></Link>
                     <FavoriteBorderIcon onClick={getNotification}/>
                     <AccountCircleIcon onClick={getUserSettings}/>
                 </IconsWrapper>
