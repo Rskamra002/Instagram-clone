@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import UserInfo from './UserInfo'
 import Image from './Image'
 import Comments from './Comments'
+import Likes from './Likes'
 import AddComment from './AddComment'
 import axios from 'axios';
 import { useEffect } from 'react';
@@ -55,11 +56,11 @@ const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) =
             <CommentIcon onClick={() => {inputRef.current.focus()}} >
               <i className="far fa-comment fa-lg"></i>
             </CommentIcon>
-            <Likes>
-              <h5>{likes.length === 0 ? "No" : likes.length}{} Likes</h5>
-            </Likes>
+
+            <Likes likes={likes} />
+            
             <Caption>
-              <div><span>nrj</span>{caption}</div>
+              <div><span>{postOwnerUserName}</span>{caption}</div>
             </Caption>
 
             <Comments allComments={allComments} viewMore={viewMore} setViewMore={ setViewMore} />
@@ -96,9 +97,6 @@ const CommentIcon = styled.button`
   margin:6px 8px;
 `
 
-const Likes = styled.div`
-  margin:6px 0px;
-`
 const Caption = styled.div`
    div{
     font-size:15px;
