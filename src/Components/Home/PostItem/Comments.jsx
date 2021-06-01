@@ -10,15 +10,15 @@ export default function Comments({allComments,viewMore,setViewMore}) {
             <button onClick={() => {setViewMore(!viewMore)}}>{viewMore ? "Hide comments": "View more comments"}</button>
             </ViewMoreComments> : null}
             <AllComments viewMore={viewMore}> 
-              {allComments?.map(item => {
+              {allComments?.map((item,index) => {
                 return(
-                  <div>
+                  <div id={index}>
                     <span>
                       <span>{item.displayName}</span>
                       {item.comment}
                     </span>
                     <span>
-                      {timeConverter( item.commentTime)}
+                      {timeConverter(item.commentTime)}
                     </span>
                   </div>
                 )

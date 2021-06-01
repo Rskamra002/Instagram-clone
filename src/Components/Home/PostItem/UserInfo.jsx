@@ -1,22 +1,33 @@
 import React from 'react'
 import styled from 'styled-components'
+import {Link} from 'react-router-dom'
 
-export default function UserInfo() {
+export default function UserInfo({postOwnerUserName,postOwnerPic}) {
   return (
       <User>
-          <div>
-            <img src="https://images.unsplash.com/photo-1621694837408-f751406fda86?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt=""/>
-          </div>
-          <h4>username</h4>
+        <div>
+          <Link to={`/${postOwnerUserName}`}>
+            <div>
+              <img src={postOwnerPic} alt="profile"/>
+            </div>
+            <h4>{postOwnerUserName}</h4>
+          </Link>
+        </div>
       </User>
   )
 }
 
 const User = styled.div`
+  & > div{
+    display:inline-block;
+  }
+  a{
   display:flex;
   align-items:center;
-  padding:4px 0px;
+  padding:8px 0px;
   padding-left:10px;
+  text-decoration:none;
+  color:black;
   div{
     width:16px;
     border-radius:50%;
@@ -31,4 +42,6 @@ const User = styled.div`
   h4{
       cursor: pointer;
     }
+}
+
 `

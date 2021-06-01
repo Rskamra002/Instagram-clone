@@ -3,14 +3,28 @@ import styled from 'styled-components';
 import UserInfo from './UserInfo'
 import Image from './Image'
 import Comments from './Comments'
+import Likes from './Likes'
 import AddComment from './AddComment'
+import axios from 'axios';
+import { useEffect } from 'react';
 
 const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) => {
+  const [postOwnerUserName,setPostOwnerUserName] = useState("")
+  const [postOwnerPic,setPostOwnerPic] = useState("")
+
   const [like,setLike] = useState(false);
   const [allComments,setAllComments] = useState(comments);
   const [viewMore,setViewMore] = useState(false);
   const [query,setQuery] = useState("");
   const inputRef = useRef();
+
+
+  const fetchPostOwner = () => {
+    axios.get(`https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers/${userId}`).then((res) => {
+      setPostOwnerUserName(res.data.username)
+      setPostOwnerPic(res.data.profile_pic)
+    })
+  }
 
   const handleAddComment = (e) => {
     e.preventDefault();
@@ -26,9 +40,13 @@ const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) =
     setQuery("");
   }
 
+  useEffect(() => {
+    fetchPostOwner();
+  },[])
+
     return (
       <Container>
-          <UserInfo />
+          <UserInfo postOwnerUserName={postOwnerUserName} postOwnerPic={postOwnerPic}  />
           <Image imgSrc={imgSrc} like={like} setLike={setLike}/>
 
           <Engagement>
@@ -38,11 +56,11 @@ const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) =
             <CommentIcon onClick={() => {inputRef.current.focus()}} >
               <i className="far fa-comment fa-lg"></i>
             </CommentIcon>
-            <Likes>
-              <h5>{likes.length === 0 ? "No" : likes.length}{} Likes</h5>
-            </Likes>
+
+            <Likes likes={likes} />
+            
             <Caption>
-              <div><span>nrj</span>{caption}</div>
+              <div><span>{postOwnerUserName}</span>{caption}</div>
             </Caption>
 
             <Comments allComments={allComments} viewMore={viewMore} setViewMore={ setViewMore} />
@@ -79,9 +97,6 @@ const CommentIcon = styled.button`
   margin:6px 8px;
 `
 
-const Likes = styled.div`
-  margin:6px 0px;
-`
 const Caption = styled.div`
    div{
     font-size:15px;

@@ -1,6 +1,6 @@
-export function timeConverter(time) {
+export function timeConverter(unixTime) {
   // time = id;
-
+  let time = Date.now() - unixTime;
   let output = '';
 
   let year, month, day, hour, min, sec;

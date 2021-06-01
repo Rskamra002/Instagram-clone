@@ -5,6 +5,7 @@ import { Navbar } from '../Components/Navbar/Navbar'
 import Registration from '../Components/Registration/Registration'
 import Login from "../Components/Login/Login"
 import {PrivateRoute} from "./PrivateRoute"
+import {Explore} from "../Components/Explore/Explore"
 
 function Routes() {
     return (
@@ -13,6 +14,7 @@ function Routes() {
         <Switch>
             <PrivateRoute path='/' exact >
                 <Home/>
+
             </PrivateRoute>
             <PrivateRoute path='/accounts/emailsignup'>
                 <Registration />
@@ -20,6 +22,9 @@ function Routes() {
             <Route path='/login'>
                 <Login />
             </Route>
+            <PrivateRoute exact path="/explore">
+                <Explore/>
+            </PrivateRoute>
         </Switch>
         </>
     )
