@@ -32,6 +32,7 @@ function Routes() {
                     <Profile />
                 </PrivateRoute>
             </Switch>
+        </>
     )
 }
 
