@@ -1,13 +1,15 @@
-import React, { useContext, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './Profile.module.css'
 import { Container, makeStyles, Typography, Divider, LinearProgress } from '@material-ui/core';
 import ProfilePosts from './ProfilePosts';
-import { ProfileContext } from '../../Context/ProfileContextProvider';
 import { posts, igtv, saved, tagged } from './SvgIcons';
 import styled from 'styled-components'
 import IgTvUploads from './ProfileFeatures/IgTvUploads';
 import SavedPosts from './ProfileFeatures/SavedPosts';
 import TaggedPosts from './ProfileFeatures/TaggedPosts';
+import { useParams } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserData } from '../../Redux/UserProfile/action'
 
 // styling material ui elementsS
 const useStyles = makeStyles((theme) => ({
@@ -35,11 +37,17 @@ const useStyles = makeStyles((theme) => ({
 
 
 const ProfileDetails = () => {
+    const dispatch = useDispatch();
+    const user = useParams();
     const [activePage, setActivePage] = useState('posts')
-    const { profileData } = useContext(ProfileContext);
-
     const classes = useStyles();
-    const { fullname, username, followers, following, profile_pic } = profileData
+    const profileData = useSelector(state => state.profile.data)
+    const { username, profile_pic, fullname, followers, following } = profileData;
+    useEffect(() => {
+        dispatch(getUserData(user))
+    }, [])
+
+    console.log('found', profileData)
 
     return !profileData ? < LinearProgress className={classes.loader} /> : (
         <div>

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useEffect } from "react";
 import {
     Container,
     makeStyles,
@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import styles from './Profile.module.css'
 import CloseIcon from '@material-ui/icons/Close';
-import { ProfileContext } from "../../Context/ProfileContextProvider";
+import { useSelector } from "react-redux";
 
 // styling material ui elements
 
@@ -46,8 +46,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DetailedPostInfo = (data) => {
-
-    const { profileData } = useContext(ProfileContext)
+    const profileData = useSelector(state => state.profile.data)
     const { username, profile_pic, fullname } = profileData;
 
     const { imgSrc, handlePostDisplay } = data;
