@@ -1,8 +1,3 @@
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import HomeIcon from '@material-ui/icons/Home';
-import SendIcon from '@material-ui/icons/Send';
-import ExploreIcon from '@material-ui/icons/Explore';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from "styled-components";
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,7 +5,7 @@ import { getUsers } from '../../Redux/Suggestions/Action';
 import styles from "./Navbar.module.css"
 import { Notifications } from './Notifications';
 import { ProfileDetails } from './ProfileDetails';
-import { Link } from 'react-router-dom';
+import { NavbarIcons } from './NavbarIcons';
 
 function Navbar() {
     const scrollRef = useRef()
@@ -90,7 +85,6 @@ function Navbar() {
             <Container>
                 <img src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png" alt="logo"/>
                 <SearchBar onKeyUp={handleActiveSuggestions}>
-                    {/* <Search/> */}
                     <img src="https://icon-library.com/images/white-search-icon-png/white-search-icon-png-18.jpg" width="18px" height="18px" alt=""/>
                     <input
                     placeholder="Search"
@@ -101,14 +95,7 @@ function Navbar() {
                     { searchUserPopUp &&
                     <div onClick={handleClear}>X</div>}
                 </SearchBar>
-                <IconsWrapper>
-                    <HomeIcon/>
-                    <SendIcon/>
-                    <Link to="explore">
-                    <ExploreIcon/></Link>
-                    <FavoriteBorderIcon onClick={getNotification}/>
-                    <AccountCircleIcon onClick={getUserSettings}/>
-                </IconsWrapper>
+                <NavbarIcons getNotification={getNotification} getUserSettings={getUserSettings}/>
             </Container>
         </Wrapper>
         {searchUserPopUp &&
@@ -199,13 +186,6 @@ const SearchBar = styled.div`
         }
     }
     
-`
-const IconsWrapper = styled.div`
-    display: flex;
-    gap: 18px;
-    & * {
-        cursor: pointer;
-    }
 `
 const SuggestionBox = styled.div`
     display: ${({len}) => (len !== 0 ? "flex" : "none")};
