@@ -52,19 +52,17 @@ const userPostsFailure = (err) => {
   };
 };
 
-
-export const getUserData = (id) => (dispatch) => {
+export const getUserData = (user) => (dispatch) => {
   dispatch(userDataRequest());
   const config = {
-    url: `/instaUsers/${id}`,
+    url: `/instaUsers?username=${user.username}`,
     method: "get",
   };
   axios(config)
     .then((res) => {
-      dispatch(userDataSuccess(res.data));
+      dispatch(userDataSuccess(res.data[0]));
     })
     .catch((err) => {
-      console.log(err);
       dispatch(userDataFailure(err));
     });
 };
