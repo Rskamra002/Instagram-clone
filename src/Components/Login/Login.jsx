@@ -10,6 +10,7 @@ function Login() {
     // padding-bottom: 32px;
     // width: 100%;
     return (
+    <Main>
         <Wrapper>
             <SlidingWraper>
                 <Slider/>
@@ -18,11 +19,14 @@ function Login() {
                 <LoginInp/>
             </LoginWraper>
         </Wrapper>
+    </Main>
     )
 }
 
 export default Login
-
+const Main = styled.div`
+    background:rgb(250,250,250)
+`
 const Wrapper = styled.div`
     background:rgb(250,250,250);
     width:100%;
