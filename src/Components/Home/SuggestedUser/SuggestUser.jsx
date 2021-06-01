@@ -15,7 +15,7 @@ const SuggestUser = () => {
         setProfile(b)
         let updated = suggestions?.filter((item) => !following?.includes(item.id) && item.id !== profile?.id)
         setNewPerson(updated)
-    },[])
+    },[newPerson])
     return (
         <SuggestionsWrapper>
             <UserProfile>
