@@ -1,8 +1,13 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import styles from './Profile.module.css'
 import { Container, makeStyles, Typography, Divider, LinearProgress } from '@material-ui/core';
 import ProfilePosts from './ProfilePosts';
 import { ProfileContext } from '../../Context/ProfileContextProvider';
+import { posts, igtv, saved, tagged } from './SvgIcons';
+import styled from 'styled-components'
+import IgTvUploads from './ProfileFeatures/IgTvUploads';
+import SavedPosts from './ProfileFeatures/SavedPosts';
+import TaggedPosts from './ProfileFeatures/TaggedPosts';
 
 // styling material ui elementsS
 const useStyles = makeStyles((theme) => ({
@@ -15,15 +20,22 @@ const useStyles = makeStyles((theme) => ({
         height: 28,
     },
     divider: {
-        margin: theme.spacing(5, 0),
+        marginTop: theme.spacing(5),
     },
     loader: {
         marginTop: theme.spacing(0.5),
+    },
+    option: {
+        justifyContent: 'center',
+        display: 'flex',
+        gap: 50,
+        margin: theme.spacing(2, 0),
     }
 }))
 
 
 const ProfileDetails = () => {
+    const [activePage, setActivePage] = useState('posts')
     const { profileData } = useContext(ProfileContext);
 
     const classes = useStyles();
@@ -58,11 +70,75 @@ const ProfileDetails = () => {
                     </div>
                 </div>
                 <Divider className={classes.divider} />
+                <Container className={classes.option}>
 
-                <ProfilePosts />
+                    <Box>
+                        <svg width="12" height="12" viewBox='0 0 48 48'>
+                            <path d={posts} />
+                        </svg>
+                        <button onClick={() => setActivePage('posts')} >POSTS</button>
+                    </Box>
+
+                    <Box>
+                        <svg width="12" height="12" viewBox='0 0 48 48'>
+                            <path d={igtv} />
+                        </svg>
+                        <button onClick={() => setActivePage('igtv')}>IGTV</button>
+                    </Box>
+
+                    <Box>
+                        <svg width="12" height="12" viewBox='0 0 48 48'>
+                            <path d={saved} />
+                        </svg>
+                        <button onClick={() => setActivePage('saved')}>SAVED</button>
+                    </Box>
+
+                    <Box>
+                        <svg width="12" height="12" viewBox='0 0 48 48'>
+                            <path d={tagged} />
+                        </svg>
+                        <button onClick={() => setActivePage('tagged')}>TAGGED</button>
+                    </Box>
+
+                </Container>
+                {
+                    activePage === 'posts' ? <ProfilePosts /> : activePage === 'igtv' ? <IgTvUploads /> :
+                        activePage === 'saved' ? <SavedPosts /> : <TaggedPosts />
+                }
             </Container>
-        </div>
+        </div >
     )
 }
+
+// styled components 
+const Box = styled.div`
+  svg {
+    fill: #8e8e8e;
+  }
+
+  button {
+    border-radius: 3px;
+    padding: 0.5rem 0;
+    background: transparent;
+    margin: 0.5rem 0.4rem;
+    font-weight: 400;
+    color: #8e8e8e;
+    font-size: 0.8rem;
+    border: none;
+    cursor: pointer;
+  }
+
+  :active {
+    svg {
+      fill: black;
+    }
+    button {
+      color: black;
+    }
+    border-top: 1px solid black;
+  }
+    margin-top: -17px;
+`;
+
 
 export default ProfileDetails
