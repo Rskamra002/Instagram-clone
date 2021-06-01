@@ -11,6 +11,7 @@ import Profile from '../Components/Profile/Profile'
 function Routes() {
     return (
         <>
+
             <Switch>
                 <PrivateRoute path='/' exact >
                     <Navbar />
@@ -19,7 +20,7 @@ function Routes() {
                 <PrivateRoute path='/accounts/emailsignup'>
                     <Registration />
                 </PrivateRoute>
-                <Route path='/login'>
+                <Route eaxct path='/login'>
                     <Login />
                 </Route>
                 <PrivateRoute exact path="/explore">
@@ -31,7 +32,6 @@ function Routes() {
                     <Profile />
                 </PrivateRoute>
             </Switch>
-        </>
     )
 }
 

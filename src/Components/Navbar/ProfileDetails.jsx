@@ -38,6 +38,12 @@ const ProfileDetails = ({profiler, username}) => {
 export {ProfileDetails}
 
 const ProfilerWrap = styled.div`
+    margin-top: 60px;
+    z-index:105;
+    a{
+        text-decoration: none;
+        color: black;
+    }
     display : ${({profiler}) => profiler ? "block" : "none"};
     div{
         height:20%;

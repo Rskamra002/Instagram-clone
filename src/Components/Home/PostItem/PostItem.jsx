@@ -74,10 +74,9 @@ const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) =
 
 export {PostItem}
 const Container = styled.div`
-  width:30%;
-  min-width:400px;
+  width:100%;
   min-height:700px;
-  margin:30px auto;
+  margin:30px 0;
   border:1px solid #333;
 `
 const Engagement = styled.div`
