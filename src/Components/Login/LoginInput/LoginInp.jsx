@@ -1,26 +1,36 @@
 import React, { useState } from 'react'
 import styled from "styled-components"
 import {Paper} from "@material-ui/core"
-import {Typography,withStyles,InputAdornment,TextField,makeStyles} from '@material-ui/core';
+import {Typography,withStyles,InputAdornment,TextField} from '@material-ui/core';
 import inpStyle from "./logininp.module.css"
 import FacebookIcon from '@material-ui/icons/Facebook';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../../../Redux/Authentication/action';
+import { Redirect} from "react-router"
+
 function LoginInp() {
     const init = {
         email:"",
         password :""
     }
+    const dispatch = useDispatch()
+    const {isAuth} = useSelector(state=>state.login)
     const [showPassword,setShowPassword] = useState(false)
     const [values,setValues] = useState(init)
-
     const handleChange=(e)=>{
         const {name,value} = e.target
         setValues({...values,[name]:value})
     }
-
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     };
-    console.log(values.password ==="" && values.email === "")
+    const handleLogin=()=>{
+        dispatch(loginUser(values))
+    }
+    if(isAuth){
+      return <Redirect to={'/'} push/>
+    }
+
     return (
         <div className={inpStyle.main}>
             <Paper className={inpStyle.inppaper}>
@@ -54,7 +64,7 @@ function LoginInp() {
                         }}
                         />
                 </div>
-                <LoginBtn disabled={values.password && values.email?false:true}>Log In</LoginBtn>
+                <LoginBtn onClick={handleLogin} disabled={values.password && values.email?false:true}>Log In</LoginBtn>
                 <div className={inpStyle.or_div}>
                         <div></div>
                         <p>OR</p>

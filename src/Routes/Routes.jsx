@@ -3,21 +3,28 @@ import { Switch, Route } from 'react-router-dom'
 import Home from '../Components/Home/Home'
 import { Navbar } from '../Components/Navbar/Navbar'
 import Registration from '../Components/Registration/Registration'
+import Login from "../Components/Login/Login"
+import {PrivateRoute} from "./PrivateRoute"
 import {Explore} from "../Components/Explore/Explore"
+
 function Routes() {
     return (
         <>
         <Navbar/>
         <Switch>
-            <Route path='/' exact >
+            <PrivateRoute path='/' exact >
                 <Home/>
-            </Route>
-            <Route path='/accounts/emailsignup' exact>
+
+            </PrivateRoute>
+            <PrivateRoute path='/accounts/emailsignup'>
                 <Registration />
+            </PrivateRoute>
+            <Route path='/login'>
+                <Login />
             </Route>
-            <Route exact path="/explore">
+            <PrivateRoute exact path="/explore">
                 <Explore/>
-            </Route>
+            </PrivateRoute>
         </Switch>
         </>
     )
