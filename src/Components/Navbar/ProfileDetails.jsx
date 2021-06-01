@@ -2,9 +2,16 @@ import React from 'react';
 import styles from "./Navbar.module.css";
 import styled from "styled-components";
 import { AccountCircle, Settings, TurnedInNot } from '@material-ui/icons';
+import { useDispatch } from 'react-redux';
+import { logout_suc } from '../../Redux/Authentication/action';
 
 
 const ProfileDetails = ({profiler}) => {
+    const dispatch = useDispatch()
+    const handleLogout = ()=>{
+        dispatch(logout_suc())
+    }
+
     return (
         <ProfilerWrap profiler={profiler} className={styles.arrow_box_profiler}>
             <div>
@@ -22,7 +29,7 @@ const ProfileDetails = ({profiler}) => {
             <div>
                 <p>Switch Accounts</p>
             </div>
-            <LogoutTab>Logout</LogoutTab>
+            <LogoutTab onClick={handleLogout}>Logout</LogoutTab>
         </ProfilerWrap>
     )
 }
