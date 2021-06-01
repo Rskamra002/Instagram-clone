@@ -10,11 +10,10 @@ import {Explore} from "../Components/Explore/Explore"
 function Routes() {
     return (
         <>
-        <Navbar/>
         <Switch>
             <PrivateRoute path='/' exact >
+                <Navbar/>
                 <Home/>
-
             </PrivateRoute>
             <PrivateRoute path='/accounts/emailsignup'>
                 <Registration />
@@ -23,8 +22,12 @@ function Routes() {
                 <Login />
             </Route>
             <PrivateRoute exact path="/explore">
+                <Navbar/>
                 <Explore/>
             </PrivateRoute>
+            <Route exact path="/:username">
+                <Navbar/>
+            </Route>
         </Switch>
         </>
     )

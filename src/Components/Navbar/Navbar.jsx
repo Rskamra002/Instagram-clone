@@ -15,7 +15,9 @@ function Navbar() {
     const [searchUserPopUp, setSearchUserPopup] = useState(false)
     const [showNotifications, setShowNotifications] = useState(false)
     const [profiler, setProfiler] = useState(false) 
-    
+    const [profilePic, setProfilePic] = useState("")
+    const [username, setUsername] = useState("")
+
     const suggestions = useSelector(state => state.user.user)
     const dispatch = useDispatch()
     
@@ -31,8 +33,11 @@ function Navbar() {
     useEffect(() => {
         let output = suggestions?.filter((item) => item.username.toLowerCase().indexOf(query) !== -1 ? true:false).map((item) => [item.id, item.profile_pic, item.username, item.fullname])
         setSuggestedUsers(output)
-    },[suggestions, query])
 
+        let b = JSON.parse(localStorage.getItem("users"))
+        setProfilePic(b.profile_pic)
+        setUsername(b.username)
+    },[suggestions, query])
 
 
     const handleActiveSuggestions = (e)=> {
@@ -95,7 +100,9 @@ function Navbar() {
                     { searchUserPopUp &&
                     <div onClick={handleClear}>X</div>}
                 </SearchBar>
-                <NavbarIcons getNotification={getNotification} getUserSettings={getUserSettings}/>
+                <NavbarIcons getNotification={getNotification} getUserSettings={getUserSettings}
+                profilePic={profilePic}
+                />
             </Container>
         </Wrapper>
         {searchUserPopUp &&
@@ -142,7 +149,7 @@ function Navbar() {
         </div>
         }
         <Notifications showNotifications={showNotifications}/>
-        <ProfileDetails profiler={profiler}/>
+        <ProfileDetails profiler={profiler} username={username}/>
         </>
     )
 }
