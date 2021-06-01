@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import {timeConverter} from '../../../Utils/timeConverter'
 
 export default function Comments({allComments,viewMore,setViewMore}) {
-  console.log(allComments)
   return (
     <>
       {allComments.length > 2 ? <ViewMoreComments >
