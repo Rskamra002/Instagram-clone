@@ -2,15 +2,15 @@ import React from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 
-export default function UserInfo({postOwnerUserName,postOwnerPic}) {
+export default function UserInfo({username,imgUrl}) {
   return (
       <User>
         <div>
-          <Link to={`/${postOwnerUserName}`}>
+          <Link to={`/${username}`}>
             <div>
-              <img src={postOwnerPic} alt="profile"/>
+              <img src={imgUrl} alt="profile"/>
             </div>
-            <h4>{postOwnerUserName}</h4>
+            <h4>{username}</h4>
           </Link>
         </div>
       </User>

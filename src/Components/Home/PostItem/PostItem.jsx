@@ -46,7 +46,7 @@ const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) =
 
     return (
       <Container>
-          <UserInfo postOwnerUserName={postOwnerUserName} postOwnerPic={postOwnerPic}  />
+          <UserInfo username={postOwnerUserName} imgUrl={postOwnerPic}  />
           <Image imgSrc={imgSrc} like={like} setLike={setLike}/>
 
           <Engagement>

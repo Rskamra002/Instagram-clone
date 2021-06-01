@@ -31,10 +31,6 @@ export default function LikesData({likes}) {
   const [modalStyle] = useState(getModalStyle);
   const [likedUsers,setLikedUsers] = useState([])
 
-  const fetchLikedUsers = () => {
-    
-  }
-
   useEffect(() => {
     likes.forEach((userId) => {
       axios.get(`https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers/${userId}`).then((res) => {
@@ -48,7 +44,7 @@ export default function LikesData({likes}) {
     <div style={modalStyle} className={classes.paper}>
       <h3 id="simple-modal-title">{likes.length} likes</h3>
       {likedUsers?.map(({username,profilePic}) => {
-        return <UserInfo postOwnerUserName={username} postOwnerPic={profilePic} />
+        return <UserInfo username={username} imgUrl={profilePic} />
       })}
     </div>
   );
