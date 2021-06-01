@@ -158,6 +158,10 @@ export {Navbar}
 
 const Wrapper = styled.div`
     height:54px;
+    position: fixed;
+    width: 100%;
+    top:0;
+    z-index: 100;
     background: white;
     border-bottom: 1px solid rgb(219,219,219);
 `
@@ -168,6 +172,7 @@ const Container = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+
 `
 const SearchBar = styled.div`
     background: #FAFAFA;

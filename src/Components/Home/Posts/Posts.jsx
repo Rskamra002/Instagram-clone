@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {PostItem} from '../PostItem/PostItem'
+import styled from "styled-components"
 
 function Posts() {
   const [allPosts, setAllPosts] = useState([]);
@@ -13,14 +14,18 @@ function Posts() {
       });
   }, []);
   return (
-    <div>
+    <Wrapper>
       {allPosts?.map((item) => (
         <>
           <PostItem key={item.id} {...item} />
         </>
       ))}
-    </div>
+    </Wrapper>
   );
 }
 
 export {Posts};
+
+const Wrapper = styled.div`
+  width:65%;
+`
