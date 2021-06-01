@@ -8,14 +8,14 @@ import { IndividualUserSuggestion } from './IndividualUserSuggestion'
 const SuggestUser = () => {
     const [profile, setProfile] = useState({})
     const [newPerson, setNewPerson] = useState([])
-    const following = profile?.following
     const suggestions = useSelector(state => state.user.user)
     useEffect(() => {
         let b = loadData("users")
         setProfile(b)
-        let updated = suggestions?.filter((item) => !following?.includes(item.id) && item.id !== profile?.id)
+        const following = profile?.following
+        let updated = suggestions?.filter((item) => item.id != profile?.id && !following?.includes(item.id) )
         setNewPerson(updated)
-    },[])
+    },[profile])
     return (
         <SuggestionsWrapper>
             <UserProfile>

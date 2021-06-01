@@ -6,7 +6,7 @@ const IndividualUserSuggestion = ({profile_pic, username}) => {
     return (
         <UserSuggested>
             <InnerBox>
-                <img src={profile_pic} alt="pp" />
+                <img src={profile_pic} alt="pp"/>
                 <div>
                     <Link to={`/${username}`}><h4>{username}</h4></Link>
                     <p>New to instagram</p>
