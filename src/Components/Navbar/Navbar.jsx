@@ -214,6 +214,8 @@ const UsersProfile = styled.div`
     img {
         border-radius: 25px;
         margin: 2px;
+        width: 40px;
+        height: 40px;
     }
 
 `
