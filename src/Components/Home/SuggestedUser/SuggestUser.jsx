@@ -62,6 +62,8 @@ const UserProfile = styled.div`
     img {
         background: white;
         border-radius: 50%;
+        width: 50px;
+        height: 50px;
     }
     div {
         padding-top: 12px;

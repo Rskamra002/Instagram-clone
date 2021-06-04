@@ -6,6 +6,7 @@ import styles from "./Navbar.module.css"
 import { Notifications } from './Notifications';
 import { ProfileDetails } from './ProfileDetails';
 import { NavbarIcons } from './NavbarIcons';
+import { Link } from 'react-router-dom';
 
 function Navbar() {
     const scrollRef = useRef()
@@ -83,7 +84,11 @@ function Navbar() {
         setShowNotifications(false)
         setProfiler(false)
     }
-
+    const openProfile = () => {
+        setSearchUserPopup(false)
+        setShowNotifications(false)
+        setProfiler(false)
+    }
     return (
         <>
         <Wrapper>
@@ -117,13 +122,15 @@ function Navbar() {
                         </Tabs>
                         {
                             suggestions?.map((item) => (
-                                <UsersProfile key={item.id}>
+                                <Link to={`/${item.username}`}>
+                                <UsersProfile onClick={openProfile} key={item.id}>
                                     <img src={item.profile_pic} alt="profile"/>
                                     <div>
                                         <p>{item.username}</p>
                                         <p>{item.fullname}</p>
                                     </div>
                                 </UsersProfile>
+                                </Link>
                             ))
                         }
                     </SuggestionBox>
@@ -132,15 +139,15 @@ function Navbar() {
                     <SuggestionBox ref={scrollRef} len={suggestedUsers?.length}>
                         { query &&
                             suggestedUsers?.map((item) => (
-                                // <Link to={`/${item[2]}`}>
-                                    <UsersProfile key={item[0]}>
+                                <Link to={`/${item[2]}`}>
+                                    <UsersProfile onClick={openProfile} key={item[0]}>
                                         <img src={item[1]} alt="profile"/>
                                         <div>
                                             <p>{item[2]}</p>
                                             <p>{item[3]}</p>
                                         </div>
                                     </UsersProfile>
-                                // </Link>
+                                </Link>
                             ))
                         }
                     </SuggestionBox>
@@ -202,6 +209,10 @@ const SearchBar = styled.div`
 const SuggestionBox = styled.div`
     display: ${({len}) => (len !== 0 ? "flex" : "none")};
     flex-direction: column;
+    a{
+        text-decoration: none;
+        color: black;
+    }
 `
 const UsersProfile = styled.div`
     display: flex;
@@ -214,6 +225,8 @@ const UsersProfile = styled.div`
     img {
         border-radius: 25px;
         margin: 2px;
+        width: 40px;
+        height: 40px;
     }
 
 `
