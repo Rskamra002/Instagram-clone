@@ -1,5 +1,5 @@
 import React from "react";
-import ProfileDetails from "./ProfileDetails";
+import ProfileDetails from "./UserProfile/ProfileDetails";
 import styled from 'styled-components'
 const Profile = () => {
   return (
@@ -10,7 +10,8 @@ const Profile = () => {
 }
 
 const Container = styled.div`
-  margin-top:50px;
+  padding-top:50px;
+  background:#fafafa;
 `;
 
 export default Profile;
