@@ -45,7 +45,7 @@ const ProfileDetails = () => {
     const { username, profile_pic, fullname, followers, following } = profileData;
     useEffect(() => {
         dispatch(getUserData(user))
-    }, [])
+    }, [dispatch, user])
 
     console.log('found', profileData)
 
@@ -54,7 +54,7 @@ const ProfileDetails = () => {
             <Container className={classes.main}>
                 <div className={styles.userProfile}>
                     <div>
-                        <img src={profile_pic} alt={`${fullname}'s Profile Picture`} />
+                        <img src={profile_pic} alt={`${fullname}'s Profile Pic`} />
                     </div>
 
                     <div>
@@ -62,7 +62,7 @@ const ProfileDetails = () => {
                         <div>
                             <Typography variant='h5'>{username}</Typography>
                             <button className={styles.editBtn}>Edit Profile</button>
-                            <img src="https://i.ibb.co/Bj3GYST/settings.png"></img>
+                            <img src="https://i.ibb.co/Bj3GYST/settings.png" alt=""></img>
                         </div>
 
                         <div>

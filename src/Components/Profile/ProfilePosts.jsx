@@ -11,7 +11,7 @@ function ProfilePosts() {
 
   useEffect(() => {
     dispatch(getUserPosts(2));
-  }, []);
+  }, [dispatch]);
 
 
   return (

@@ -14,7 +14,7 @@ const DisplayPost = (post) => {
     return (
         <>
             <Grid item xs={4} s={4} md={4} lg={4} xl={4} className={styles.postContainer} onClick={handlePostDisplay} >
-                <img src={post.imgSrc} className={styles.postImg} />
+                <img src={post.imgSrc} className={styles.postImg} alt=""/>
 
                 <Box className={styles.postInfoContainer}>
                     <Box>

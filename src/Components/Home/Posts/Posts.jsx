@@ -7,7 +7,7 @@ function Posts() {
   const [allPosts, setAllPosts] = useState([]);
   useEffect(() => {
     axios
-      .get('https://json-server-mocker-neeraj-data.herokuapp.com/instaPosts?&_limit=2')
+      .get('https://json-server-mocker-neeraj-data.herokuapp.com/instaPosts')
       .then((res) => {
         console.log(res.data);
         setAllPosts(res.data);
