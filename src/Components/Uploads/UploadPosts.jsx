@@ -1,3 +1,4 @@
+import { LinearProgress, makeStyles } from "@material-ui/core"
 import axios from "axios"
 import { useRef, useState } from "react"
 import { Redirect } from "react-router"
@@ -5,15 +6,25 @@ import {v4 as uuid} from "uuid"
 import { loadData } from "../../Utils/localStorage"
 import { Bios, ChooseFile, Container, OptionsSide, PostButtons, Preview, Wrapper } from "./uploadCss"
 
+const useStyles = makeStyles((theme) => ({
+    loader: {
+      marginTop: theme.spacing(0.5),
+    }
+  }));
+
 const UploadPosts = () => {
 
-    const [imgURL, setImgUrl] = useState(null)
+    const classes = useStyles();
+    const [imgUrl, setImgUrl] = useState("")
     const [preview, setPreview] = useState(null)
     const [caption, setCaption] = useState("")
     const [state, setState] = useState(false)
     const [err, setErr] = useState(false)
+    const [load, setLoad] = useState(false)
 
     const imgRef = useRef()
+    
+    
 
     const showPreview = (e) => {
         setImgUrl(e.target.files[0])
@@ -25,21 +36,23 @@ const UploadPosts = () => {
         setPreview(img)
         setErr(false)
     }
-
+    
     const postPicturToImgur = async () => {
+        setLoad(true)
+        const data = new FormData()
+        data.append('file', imgUrl)
+        data.append('upload_preset', 'Khushboo')
+        console.log(data)
         await axios({
             method:"post",
-            url: "https://api.imgur.com/3/image",
-            headers: {
-                'Authorization': 'Client-ID 75c7c822f1a27d0',
-                'Content-Type': 'application/json',
-            },
-            data:  imgURL
+            url: "https://api.cloudinary.com/v1_1/dbc71imie/image/upload",
+            data:  data
         })
-        .then((res) => postPictureToApi(res.data.data.link))
+        .then((res) => postPictureToApi(res.data.secure_url))
         .catch((err) => setErr(true))
-    }
 
+    }
+    
     
     const postPictureToApi = (data) => {
         const userid = loadData("users").id
@@ -56,13 +69,16 @@ const UploadPosts = () => {
         axios.post("https://json-server-mocker-neeraj-data.herokuapp.com/instaPosts", payload)
         .then((res) => setState(true))
         .catch((err) => console.log(err))
+        setLoad(false)
     }
     if(state){
         return <Redirect exact push to="/"/>
     }
 
     return (
+        <>
         <Wrapper>
+            {load && <LinearProgress className={classes.loader} />}
             <Container>
                 <ChooseFile
                 ref={imgRef}
@@ -75,7 +91,7 @@ const UploadPosts = () => {
                     <p>Must be a JPG or PNG file. The minimum recommended size is 492 x 762 pixels.</p>
                     <Preview>
                         {
-                            imgURL && <img src={preview} alt="preview" width="100%" height="100%"/>
+                            preview && <img src={preview} alt="preview" width="100%" height="100%"/>
                         }
                     </Preview>
                     {err && <p>Oops!. Failed in Loading the Image. Please try again.</p>}
@@ -92,6 +108,7 @@ const UploadPosts = () => {
                 </OptionsSide>
             </Container>
         </Wrapper>
+        </>
     )
 }
 

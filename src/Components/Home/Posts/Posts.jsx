@@ -16,9 +16,9 @@ function Posts() {
   useEffect(() => {
     setLoading(true)
     axios
-      .get(`https://json-server-mocker-neeraj-data.herokuapp.com/instaPosts?_page=${page}&&_limit=2`)
+      .get(`https://json-server-mocker-neeraj-data.herokuapp.com/instaPosts?_page=${page}&&_limit=5`)
       .then((res) => {
-        console.log(res.data);
+        console.log((res.data));
         setAllPosts([...allPosts, ...res.data])
         setLoading(false)
       });
@@ -33,7 +33,7 @@ function Posts() {
 
   return (
     <Wrapper>
-      {allPosts?.map((item) => (
+      {allPosts?.sort((a,b) => b-a).map((item) => (
         <>
           <PostItem key={item.id} {...item} />
         </>

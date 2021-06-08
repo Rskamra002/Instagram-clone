@@ -8,6 +8,7 @@ import { PrivateRoute } from "./PrivateRoute"
 import { Explore } from "../Components/Explore/Explore"
 import Profile from '../Components/Profile/Profile'
 import { UploadPosts } from '../Components/Uploads/UploadPosts'
+import { Inbox } from '../Components/Inbox/Inbox'
 
 function Routes() {
     return (
@@ -31,6 +32,10 @@ function Routes() {
                 <PrivateRoute path="/post/upload">
                     <Navbar />
                     <UploadPosts/>
+                </PrivateRoute>
+                <PrivateRoute exact path="/direct/inbox">
+                    <Navbar/>
+                    <Inbox/>
                 </PrivateRoute>
                 <PrivateRoute exact path="/:username">
                     <Navbar />

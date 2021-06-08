@@ -1,9 +1,7 @@
 .arrow_box {
-    width: 30%;
+    width: 50%;
     height: 350px;
-    /* overflow-y: scroll; */
-    /* background-color: whitesmoke; */
-    margin-top: 60px;
+    margin-top: 400px;
     z-index:105;
     background-color: white;
     color: black;
@@ -24,7 +22,6 @@
     border-top: none;
     border-right: 15px solid transparent;
     border-left: 15px solid transparent;
-    /* border-bottom: 15px solid whitesmoke; */
     border-bottom: 15px solid white;
 }
 .overs {
@@ -34,24 +31,23 @@
 }
 
 .arrow_box_notify {
-    width: 40%;
-    margin-left: 49%;
+    width: 50%;
+    left:75%;
+    z-index: 100;
+    transform:translateX(-50%);
     height: 350px;
-    /* overflow-y: scroll; */
-    /* background-color: whitesmoke; */
     background-color: white;
     color: black;
     position: absolute;
     border-radius: 5px;
-    margin-top: 5px;
-    padding-bottom: 4px;
+    margin-top: 400px;
     box-shadow: 0px 0px 4px gray;
 }
 
 .arrow_box_notify:after{
     content: " ";
     position: absolute;
-    right: 20%;
+    right: 9%;
     top: -15px;
     border-top: none;
     border-right: 15px solid transparent;
@@ -65,16 +61,18 @@
     padding-bottom: 20px;
 }
 .arrow_box_profiler {
-    width: 15%;
-    margin-left: 70%;
+    width: 20%;
+    margin-left: 91%;
     height: 200px;
     background-color: white;
+    margin-top: 260px;
     color: black;
     position: absolute;
     border-radius: 5px;
-    margin-top: 2px;
     padding-bottom: 4px;
     box-shadow: 0px 0px 4px gray;
+    z-index: 100;
+    transform:translateX(-50%);
 }
 
 .arrow_box_profiler:after{
@@ -85,6 +83,5 @@
     border-top: none;
     border-right: 15px solid transparent;
     border-left: 15px solid transparent;
-    /* border-bottom: 15px solid whitesmoke; */
     border-bottom: 15px solid white;
 }

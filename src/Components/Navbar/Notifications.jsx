@@ -14,9 +14,8 @@ const Notifications = ({showNotifications}) => {
 }
 
 const NotificationPannel = styled.div`
-    margin-top: 60px;
     z-index:105;
-    display : ${({showNotifications}) => showNotifications ? "block" : "none"}
+    display : ${({showNotifications}) => showNotifications ? "block" : "none"};
 `
 
 
