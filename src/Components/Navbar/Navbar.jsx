@@ -108,9 +108,7 @@ function Navbar() {
                 <NavbarIcons getNotification={getNotification} getUserSettings={getUserSettings}
                 profilePic={profilePic}
                 />
-            </Container>
-        </Wrapper>
-        {searchUserPopUp &&
+                {searchUserPopUp &&
             <div className={styles.arrow_box}>
             <div className={styles.overs}>
                 {
@@ -157,6 +155,9 @@ function Navbar() {
         }
         <Notifications showNotifications={showNotifications}/>
         <ProfileDetails profiler={profiler} username={username}/>
+            </Container>
+        </Wrapper>
+        
         </>
     )
 }
@@ -177,6 +178,7 @@ const Container = styled.div`
     height:100%;
     margin: auto;
     display: flex;
+    position: relative;
     justify-content: space-between;
     align-items: center;
 
