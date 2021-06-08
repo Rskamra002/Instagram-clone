@@ -9,7 +9,7 @@
   animation: ldsspinner 1.2s linear infinite;
 }
 .ldsspinner div:after {
-  content: " ";
+  content: ' ';
   display: block;
   position: absolute;
   top: 3px;
