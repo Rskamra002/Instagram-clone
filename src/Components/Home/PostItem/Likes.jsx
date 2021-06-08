@@ -1,29 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import Modal from '@material-ui/core/Modal';
-import LikesData from './LikesData'
+import LikesDetails from './LikesDetails'
 
 export default function Likes({likes}) {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const [showLikes,setShowLikes] = useState(false);
+
+  const handleShowLikes = () => {
+    setShowLikes(true);
+  }
+  const handleHideLikes = () => {
+    setShowLikes(false);
+  }
+
   return (
        <LikesBox>
-         <div>
-           
-        <Modal
-          open={open}
-          onClose={handleClose}
-         >
-          <LikesData likes={likes} />
-        </Modal>
-        </div>
-        <button type="button" onClick={handleOpen}>{likes.length === 0 ? "No" : 
-         likes.length} likes</button>
+       {showLikes ? <LikesDetails likes={likes} showLikes={showLikes} handleHideLikes={handleHideLikes} /> : null} 
+       {likes.length === 0 ? <button>Be the first to <span>like this</span></button> : <button type="button"  onClick={handleShowLikes}> {likes.length} likes
+         </button>}
         </LikesBox>
   )
 }

@@ -103,7 +103,8 @@ const Container = styled.div`
   width:100%;
   /* min-height:800px; */
   margin:30px 0;
-  box-shadow: 0px 0px 4px gray;
+  border:1px solid #DBDBDB;
+  /* box-shadow: 0px 0px 4px gray; */
 `
 const Header = styled.div`
   display:flex;
