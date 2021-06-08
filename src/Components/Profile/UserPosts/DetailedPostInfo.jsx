@@ -13,7 +13,7 @@ import {
 import styles from "./Posts.module.css";
 import CloseIcon from "@material-ui/icons/Close";
 import { useSelector } from "react-redux";
-
+import Comments from './Comments'
 // styling material ui elements
 
 const useStyles = makeStyles((theme) => ({
@@ -36,10 +36,17 @@ const useStyles = makeStyles((theme) => ({
   },
 
   info: {
+    position: 'relative',
     "& h6": {
       marginLeft: 15,
-      marginTop: 5,
+      marginTop: 3,
+      fontSize: '1rem',
     },
+
+    "& caption": {
+      marginTop: 3,
+
+    }
   },
 }));
 
@@ -47,7 +54,7 @@ const DetailedPostInfo = (data) => {
   const profileData = useSelector((state) => state.profile.data);
   const { username, profile_pic, fullname } = profileData;
 
-  const { imgSrc, handlePostDisplay } = data;
+  const { imgSrc, handlePostDisplay, likes } = data;
   const classes = useStyles();
 
   return (
@@ -83,6 +90,7 @@ const DetailedPostInfo = (data) => {
                 <Typography variant="h6">{username}</Typography>
               </Box>
               <Divider />
+              <Comments {...profileData} likes={likes} />
             </Grid>
           </Grid>
         </Paper>

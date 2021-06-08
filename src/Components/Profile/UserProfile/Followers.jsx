@@ -38,6 +38,7 @@ const useStyles = makeStyles(() => ({
 
 const Followers = ({ active, handlePopUp }) => {
   const [profileFollowers, setProfileFollowers] = useState([]);
+
   const classes = useStyles();
   const profileData = useSelector((state) => state.profile.data);
   const { followers } = profileData;
@@ -62,7 +63,7 @@ const Followers = ({ active, handlePopUp }) => {
       });
     }
   }, []);
-  
+
   return (
     <Container className={classes.container}>
       <Modal open={active}>

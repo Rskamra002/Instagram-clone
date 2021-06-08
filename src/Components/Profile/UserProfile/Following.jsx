@@ -43,7 +43,6 @@ const Following = ({ active, handlePopUp }) => {
   const profileData = useSelector((state) => state.profile.data);
   const { following } = profileData;
   useEffect(() => {
-      
     if (following) {
       following.forEach((userId) => {
         axios
