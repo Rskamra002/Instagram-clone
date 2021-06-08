@@ -49,7 +49,7 @@ const ProfileDetails = () => {
   const [followPopUp, setFollowPopUp] = useState("");
   const profileData = useSelector((state) => state.profile.data);
   const userPosts = useSelector((state) => state.profile.posts);
-  const { username, profile_pic, fullname, followers, following, id } =
+  const { username, profile_pic, fullname, followers, following, id, bio } =
     profileData;
   const loggedInUser = loadData("users");
   useEffect(() => {
@@ -69,55 +69,56 @@ const ProfileDetails = () => {
   ) : (
     <>
       <Container className={classes.main}>
-        <Box className={styles.userProfile}>
-          <Box>
-            <img src={profile_pic} alt={`${fullname}'s Profile Picture`} />
-          </Box>
-
-          <Box>
+        <Profile>
+          <Box className={styles.userProfile}>
             <Box>
-              <User>{username}</User>
-              {loggedInUser.username === user.username ? (
-                <Box>
-                  <EditBtn>Edit Profile</EditBtn>
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 48 48"
-                    fill="#262626"
-                    style={{ margin: "0px 10px" }}
-                  >
-                    <path d={settings} />
-                  </svg>
-                </Box>
-              ) : (
-                <>
-                  <FollowBtn>Follow</FollowBtn>
-                </>
-              )}
+              <img src={profile_pic} alt={`${fullname}'s Profile Picture`} />
             </Box>
 
-            <Wrapper>
-              <Typography>
-                <span style={{ fontWeight: "bold" }}>{userPosts.length}</span>{" "}
-                posts
-              </Typography>
-              <Typography onClick={() => setFollowPopUp("followers")}>
-                <span style={{ fontWeight: "bold" }}>{followers.length}</span>{" "}
-                followers
-              </Typography>
-              <Typography onClick={() => setFollowPopUp("followings")}>
-                <span style={{ fontWeight: "bold" }}>{following.length}</span>{" "}
-                following
-              </Typography>
-            </Wrapper>
-
             <Box>
-              <Typography>This is the user's Bio</Typography>
+              <Box>
+                <User>{username}</User>
+                {loggedInUser.username === user.username ? (
+                  <Box>
+                    <EditBtn>Edit Profile</EditBtn>
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 48 48"
+                      fill="#262626"
+                      style={{ margin: "0px 10px" }}
+                    >
+                      <path d={settings} />
+                    </svg>
+                  </Box>
+                ) : (
+                  <>
+                    <FollowBtn>Follow</FollowBtn>
+                  </>
+                )}
+              </Box>
+
+              <Wrapper>
+                <Typography>
+                  <span style={{ fontWeight: "bold" }}>{userPosts.length}</span>{" "}
+                  posts
+                </Typography>
+                <Typography onClick={() => setFollowPopUp("followers")}>
+                  <span style={{ fontWeight: "bold" }}>{followers.length}</span>{" "}
+                  followers
+                </Typography>
+                <Typography onClick={() => setFollowPopUp("followings")}>
+                  <span style={{ fontWeight: "bold" }}>{following.length}</span>{" "}
+                  following
+                </Typography>
+              </Wrapper>
+
+              <Box>
+                <Typography>{bio}</Typography>
+              </Box>
             </Box>
           </Box>
-        </Box>
-
+        </Profile>
         <Divider className={classes.divider} />
         <Categories handleActivePage={handleActivePage} />
 
@@ -183,6 +184,11 @@ const FollowBtn = styled.div`
   :hover {
     cursor: pointer;
   }
+`;
+
+const Profile = styled.div`
+  width: 100%;
+  margin-left: 6%;
 `;
 
 export default ProfileDetails;
