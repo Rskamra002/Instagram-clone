@@ -23,17 +23,18 @@ export default function Likes({likes}) {
         </Modal>
         </div>
         <button type="button" onClick={handleOpen}>{likes.length === 0 ? "No" : 
-         likes.length} Likes</button>
+         likes.length} likes</button>
         </LikesBox>
   )
 }
 
 const LikesBox = styled.div`
-  margin:6px 0px;
+  margin:4px 0px 12px;
   button{
     background-color:transparent;
+    font-size:15px;
     border:none;
-    font-weight:bold;
+    font-weight:560;
     cursor: pointer;
   }
 `

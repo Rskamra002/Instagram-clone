@@ -7,6 +7,7 @@ import Likes from './Likes'
 import AddComment from './AddComment'
 import axios from 'axios';
 import { useEffect } from 'react';
+import {unlikeIconPath,likeIconPath ,savedPostIconPath, sendMsgIconPath, commentIconPath} from './svgIcons'
 
 const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) => {
   const [postOwnerUserName,setPostOwnerUserName] = useState("")
@@ -46,16 +47,41 @@ const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) =
 
     return (
       <Container>
+        <Header>
           <UserInfo username={postOwnerUserName} imgUrl={postOwnerPic}  />
+
+          {/* More options icon  */}
+          <svg aria-label="More options" class="_8-yf5 " fill="#262626" height="16" viewBox="0 0 48 48" width="16"><circle clip-rule="evenodd" cx="8" cy="24" fill-rule="evenodd" r="4.5"></circle><circle clip-rule="evenodd" cx="24" cy="24" fill-rule="evenodd" r="4.5"></circle><circle clip-rule="evenodd" cx="40" cy="24" fill-rule="evenodd" r="4.5"></circle></svg>
+
+        </Header>
           <Image imgSrc={imgSrc} like={like} setLike={setLike}/>
 
           <Engagement>
-            <Like onClick={() => setLike(!like)} like={like}>
-              {like ? <i className="fas fa-heart fa-lg"></i> : <i className="far fa-heart fa-lg"></i>}
-            </Like>
-            <CommentIcon onClick={() => {inputRef.current.focus()}} >
-              <i className="far fa-comment fa-lg"></i>
-            </CommentIcon>
+            <Icons>
+              <div>
+                <LikeIcon onClick={() => setLike(!like)} like={like}>
+
+                  {like ? <svg aria-label="Unlike" class="_8-yf5 " fill="#ed4956" height="24" viewBox="0 0 48 48" width="24"><path d={unlikeIconPath}></path></svg> : <svg aria-label="Like" class="_8-yf5 " fill="#262626" height="24" viewBox="0 0 48 48" width="24"><path d={likeIconPath}></path></svg>}
+                </LikeIcon>
+                <CommentIcon onClick={() => {inputRef.current.focus()}} >
+
+
+                <svg aria-label="Comment" class="_8-yf5 " fill="#262626" height="24" viewBox="0 0 48 48" width="24"><path clip-rule="evenodd" d={commentIconPath} fill-rule="evenodd"></path></svg>
+                </CommentIcon>
+
+                <SendMsgIcon>
+                <svg aria-label="Share Post" class="_8-yf5 " fill="#262626" height="24" viewBox="0 0 48 48" width="24"><path d={sendMsgIconPath} /></svg>
+                </SendMsgIcon>
+              </div>
+              <div>
+                <SavedPostIcon>
+                  <svg aria-label="Save" class="_8-yf5 " fill="#262626" height="24" viewBox="0 0 48 48" width="24">
+                    <path d={savedPostIconPath} />
+                  </svg>
+
+                </SavedPostIcon>
+              </div>
+            </Icons>
 
             <Likes likes={likes} />
             
@@ -75,25 +101,52 @@ const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) =
 export {PostItem}
 const Container = styled.div`
   width:100%;
-  min-height:700px;
+  /* min-height:800px; */
   margin:30px 0;
-  border:1px solid #333;
+  box-shadow: 0px 0px 4px gray;
 `
+const Header = styled.div`
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  svg{
+    margin-right:10px;
+  }
+`
+
 const Engagement = styled.div`
-  padding:6px;
+  padding:6px 18px;
 `
-const Like = styled.button`
+
+const Icons = styled.div`
+  display:flex;
+  justify-content:space-between;
+`
+const LikeIcon = styled.button`
   color: ${props => props.like === true ? "red ": "black"};
   border:none;
   background-color:transparent;
-  margin:6px 6px 6px 0px;
+  margin:6px 10px 2px;
+  margin-left:0px;
   cursor: pointer;
 `
 const CommentIcon = styled.button`
   cursor: pointer;
   border:none;
   background-color:transparent;
-  margin:6px 8px;
+  margin:6px 10px 2px ;
+`
+const SendMsgIcon = styled.button`
+  margin:6px 10px 2px;
+  cursor: pointer;
+  border:none;
+  background-color:transparent;
+`
+const SavedPostIcon = styled.button`
+  margin:6px 0px;
+  cursor: pointer;
+  border:none;
+  background-color:transparent;
 `
 
 const Caption = styled.div`
