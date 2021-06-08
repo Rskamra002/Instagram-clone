@@ -18,18 +18,20 @@ export default function UserInfo({username,imgUrl}) {
 }
 
 const User = styled.div`
+  padding:6px 4px;
   & > div{
     display:inline-block;
   }
   a{
   display:flex;
   align-items:center;
-  padding:8px 0px;
   padding-left:10px;
   text-decoration:none;
   color:black;
+  font-size:15px;
   div{
-    width:16px;
+    width:36px;
+    height:36px;
     border-radius:50%;
     margin-right:12px;
     overflow:hidden;

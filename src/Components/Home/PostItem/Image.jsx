@@ -13,7 +13,8 @@ export default function Image({imgSrc,like,setLike}) {
 
 const Img = styled.div`
   width:100%;
-  height:560px;
+  height:620px;
+  padding:1px;
   cursor: pointer;
   img{
     width:100%;
