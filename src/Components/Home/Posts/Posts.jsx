@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import {PostItem} from '../PostItem/PostItem'
 import styled from "styled-components"
 import { Spinner } from '../../Loader/Spinner';
+import { Stories } from '../../Stories/Stories';
 
 function Posts() {
   const [allPosts, setAllPosts] = useState([]);
@@ -33,6 +34,7 @@ function Posts() {
 
   return (
     <Wrapper>
+      <Stories/>
       {allPosts?.sort((a,b) => b-a).map((item) => (
         <>
           <PostItem key={item.id} {...item} />

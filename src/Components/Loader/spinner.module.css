@@ -2,10 +2,10 @@
   color: official;
   width: 10%;
   margin: auto;
-  height: 80px;
+  height: 20px;
 }
 .ldsspinner div {
-  transform-origin: 40px 40px;
+  transform-origin: 20px 20px;
   animation: ldsspinner 1.2s linear infinite;
 }
 .ldsspinner div:after {
@@ -13,11 +13,11 @@
   display: block;
   position: absolute;
   top: 3px;
-  left: 37px;
-  width: 4px;
-  height: 15px;
+  left: 20px;
+  width: 3px;
+  height: 10px;
   border-radius: 20%;
-  background: lightgray;
+  background: grey;
 }
 .ldsspinner div:nth-child(1) {
   transform: rotate(0deg);
