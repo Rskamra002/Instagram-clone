@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Box } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ModeCommentOutlinedIcon from "@material-ui/icons/ModeCommentOutlined";
@@ -11,6 +11,9 @@ const DisplayPost = (post) => {
     setPopUp(!popUp);
   };
 
+
+  
+
   return (
     <>
       <Grid
@@ -22,9 +25,12 @@ const DisplayPost = (post) => {
         xl={4}
         className={styles.postContainer}
         onClick={handlePostDisplay}
-      >
-        <img src={post.imgSrc} className={styles.postImg} />
-
+      >{
+        post && 
+        post.imgSrc.substring(post.imgSrc.length - 4) !== '.mp4' ? (
+        <img src={post.imgSrc} className={styles.postImg} />) :
+        (<video src={post.imgSrc} width='100%' height='100%'></video>)
+      }
         <Box className={styles.postInfoContainer}>
           <Box>
             <FavoriteIcon />

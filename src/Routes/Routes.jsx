@@ -9,6 +9,7 @@ import { Explore } from "../Components/Explore/Explore"
 import Profile from '../Components/Profile/Profile'
 import { UploadPosts } from '../Components/Uploads/UploadPosts'
 import { Inbox } from '../Components/Inbox/Inbox'
+import { WatchStories } from '../Components/Stories/WatchStories'
 
 function Routes() {
     return (
@@ -40,6 +41,9 @@ function Routes() {
                 <PrivateRoute exact path="/:username">
                     <Navbar />
                     <Profile />
+                </PrivateRoute>
+                <PrivateRoute exact path='/stories/:username'>
+                    <WatchStories/>
                 </PrivateRoute>
             </Switch>
         </>
