@@ -35,3 +35,7 @@
   height: 45px;
   margin-top: -5px;
 }
+
+.opac {
+  opacity: 20%;
+}
