@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from "styled-components"
-import {Paper} from "@material-ui/core"
-import {Typography,withStyles,InputAdornment,TextField} from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import {Paper,Typography,withStyles,InputAdornment,TextField} from '@material-ui/core';
 import inpStyle from "./logininp.module.css"
 import FacebookIcon from '@material-ui/icons/Facebook';
 import { useDispatch, useSelector } from 'react-redux';
@@ -78,7 +78,7 @@ function LoginInp() {
             </Paper>
             <br />
             <Paper className={inpStyle.signuppaper}>
-                <Typography >Don't have an account?<span className={inpStyle.signup_spam}>Sign up</span></Typography>
+                <Typography >Don't have an account? <Link className={inpStyle.signup_link} to={"/signup"}>Sign up</Link></Typography>
             </Paper>
             <div className={inpStyle.getapp_div} >
                 <p>Get the app</p>
@@ -100,7 +100,7 @@ const LoginBtn = styled.button`
     padding: .4rem;
     color: white;
     font-weight: 600;
-    border-radius: .4rem;
+    border-radius: .2rem;
     margin-top: 10px;
     :hover{
         cursor: pointer;
