@@ -22,8 +22,11 @@ function Routes() {
                 <PrivateRoute path='/accounts/emailsignup'>
                     <Registration />
                 </PrivateRoute>
-                <Route eaxct path='/login'>
+                <Route exact path='/login'>
                     <Login />
+                </Route>
+                <Route exact path='/signup'>
+                    <Registration/>
                 </Route>
                 <PrivateRoute exact path="/explore">
                     <Navbar />
