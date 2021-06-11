@@ -1,5 +1,6 @@
 import { LinearProgress, makeStyles } from "@material-ui/core"
 import axios from "axios"
+import { useEffect } from "react"
 import { useRef, useState } from "react"
 import { Redirect } from "react-router"
 import {v4 as uuid} from "uuid"
@@ -21,10 +22,15 @@ const UploadPosts = () => {
     const [state, setState] = useState(false)
     const [err, setErr] = useState(false)
     const [load, setLoad] = useState(false)
+    const [typeofMedia, setTypeofMedia] = useState("")
 
     const imgRef = useRef()
-    
-    
+    useEffect(() => {
+        const endpoint = imgUrl?.name
+        let ext = endpoint?.trim().split("").splice(endpoint.length-4).join("")
+        let type = `${ext == '.mp4' ? 'video': 'image'}`
+        setTypeofMedia(type)
+    },[imgUrl])
 
     const showPreview = (e) => {
         setImgUrl(e.target.files[0])
@@ -42,10 +48,11 @@ const UploadPosts = () => {
         const data = new FormData()
         data.append('file', imgUrl)
         data.append('upload_preset', 'Khushboo')
-        console.log(data)
+        
+
         await axios({
             method:"post",
-            url: "https://api.cloudinary.com/v1_1/dbc71imie/image/upload",
+            url: `https://api.cloudinary.com/v1_1/dbc71imie/${typeofMedia}/upload`,
             data:  data
         })
         .then((res) => postPictureToApi(res.data.secure_url))
@@ -91,7 +98,10 @@ const UploadPosts = () => {
                     <p>Must be a JPG or PNG file. The minimum recommended size is 492 x 762 pixels.</p>
                     <Preview>
                         {
-                            preview && <img src={preview} alt="preview" width="100%" height="100%"/>
+                            preview && typeofMedia == 'image' ?
+                            
+                            (<img src={preview} alt="preview" width="100%" height="100%"/>) : 
+                            (<video src={preview} width="100%" height="100%"></video>)
                         }
                     </Preview>
                     {err && <p>Oops!. Failed in Loading the Image. Please try again.</p>}
