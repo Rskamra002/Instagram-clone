@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from 'axios';
 import styles from "./UserProfile.module.css";
 import {
   Container,
@@ -21,7 +22,8 @@ import Followers from "./Followers";
 import Following from "./Following";
 import Categories from "./Categories";
 import { loadData } from "../../../Utils/localStorage";
-// styling material ui elementsS
+import { UpdateFollows } from './UpdateFollows'
+// styling material ui elements
 const useStyles = makeStyles((theme) => ({
   main: {
     width: "70vw",
@@ -45,16 +47,21 @@ const ProfileDetails = () => {
   const dispatch = useDispatch();
   const user = useParams();
   const classes = useStyles();
+  const [isFollowing, setIsFollowing] = useState(false);
   const [activePage, setActivePage] = useState("posts");
+  const [loggedIn, setLoggedIn] = useState();
   const [followPopUp, setFollowPopUp] = useState("");
   const profileData = useSelector((state) => state.profile.data);
   const userPosts = useSelector((state) => state.profile.posts);
   const { username, profile_pic, fullname, followers, following, id, bio } =
     profileData;
   const loggedInUser = loadData("users");
+
   useEffect(() => {
     dispatch(getUserData(user));
-  }, [user]);
+    return () => ({})
+  }, [user, followers]);
+
 
   const handlePopUp = () => {
     setFollowPopUp(null);
@@ -63,6 +70,12 @@ const ProfileDetails = () => {
   const handleActivePage = (page) => {
     setActivePage(page);
   };
+
+  const handleFollow = () => {
+    UpdateFollows(loggedInUser.id, id)
+  }
+
+
 
   return !profileData ? (
     <LinearProgress className={classes.loader} />
@@ -93,7 +106,7 @@ const ProfileDetails = () => {
                   </Box>
                 ) : (
                   <>
-                    <FollowBtn>Follow</FollowBtn>
+                    <FollowBtn onClick={handleFollow}>Follow</FollowBtn>
                   </>
                 )}
               </Box>

@@ -11,6 +11,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import axios from "axios";
+import ConfirmRemovePopup from "./ConfirmRemovePopup";
 // styling material ui elements
 
 const useStyles = makeStyles(() => ({
@@ -38,10 +39,19 @@ const useStyles = makeStyles(() => ({
 
 const Followers = ({ active, handlePopUp }) => {
   const [profileFollowers, setProfileFollowers] = useState([]);
-
+  const [removeFollower, setRemoveFollower] = useState();
   const classes = useStyles();
   const profileData = useSelector((state) => state.profile.data);
   const { followers } = profileData;
+
+  const closePopup = () => {
+    setRemoveFollower('')
+  }
+
+  const handleRemove = (follower, e) => {
+    setRemoveFollower(follower)
+    e.target.disabled = true;
+  }
 
   useEffect(() => {
     if (followers) {
@@ -57,6 +67,7 @@ const Followers = ({ active, handlePopUp }) => {
                 username: res.data.username,
                 fullname: res.data.fullname,
                 profilePic: res.data.profile_pic,
+                userId: res.data.id,
               },
             ]);
           });
@@ -85,13 +96,16 @@ const Followers = ({ active, handlePopUp }) => {
                     <div>{follower.username}</div>
                     <div>{follower.fullname}</div>
                   </MainDiv>
-                  <Button>Remove</Button>
+                  <Button onClick={(e) => handleRemove(follower, e)}>Remove</Button>
                 </Wrapper>
               );
             })}
           </Follow>
         </Paper>
       </Modal>
+      {
+        removeFollower && <ConfirmRemovePopup {...removeFollower} closePopup={closePopup} />
+      }
     </Container>
   );
 };
