@@ -1,0 +1,30 @@
+.main{
+    border:1px solid #DBDBDB;
+    width:35%;
+}
+.loginuser{
+    display:flex;
+    justify-content:space-between;
+    padding:1rem;
+    border-bottom:1px solid #DBDBDB;
+}
+.loginUserName{
+    display:flex;
+    gap:5px;
+    font-size: 20px;
+    font-weight: 400;
+} 
+
+.userMain{
+    height:75vh;
+    overflow:scroll;
+    overflow-x: hidden;
+    margin-top:.2rem;
+} 
+
+.userProfileImg{
+     margin: 2px;
+     width: 60px;
+     height: 60px;
+    border-radius: 50%;
+} 
