@@ -19,7 +19,9 @@ const usersSchema = new mongoose.Schema(
     profilePic: { type: String },
     followers: [mongoose.Schema.Types.ObjectId],
     following: [mongoose.Schema.Types.ObjectId],
-    savedPosts: [mongoose.Schema.Types.ObjectId],
+    savedPosts: [
+      { type: mongoose.Schema.Types.ObjectId, ref: 'post', required: true },
+    ],
     tokens: [
       {
         token: reqString,
