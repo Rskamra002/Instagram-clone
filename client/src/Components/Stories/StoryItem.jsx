@@ -1,12 +1,16 @@
 import React from 'react'
 import styled from "styled-components"
+import { Link } from 'react-router-dom'
 
 const StoryItem = ({image, name}) => {
+
     return (
-        <Circle>
+        <Link to={`/stories/${name}`}>
+        <Circle >
             <img src={image} width="66px" height="66px"/>
             <p>{name}</p>
         </Circle>
+        </Link>
     )
 }
 
@@ -30,6 +34,7 @@ const Circle = styled.div`
         border: 2px solid white;
     }   
     p{
+        color: black;
         font-size: 12px;
         overflow: hidden;
     } 

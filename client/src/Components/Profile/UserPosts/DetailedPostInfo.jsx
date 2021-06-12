@@ -70,7 +70,14 @@ const DetailedPostInfo = (data) => {
 
           <Grid container className={styles.postInfo}>
             <Grid item xs={7} s={7} md={7} lg={7} xl={7}>
-              <img src={imgSrc} alt={`${fullname}'s Post`} />
+              {
+                imgSrc && imgSrc.substring(imgSrc.length - 4) !== '.mp4' ? (
+              <img src={imgSrc} alt={`${fullname}'s Post`} />) : (
+                <video alt="" controls width='100%' height='100%'>
+                   <source src={imgSrc} type="video/mp4"/>
+                </video>
+              )
+              }
             </Grid>
 
             <Grid
