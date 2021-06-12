@@ -41,6 +41,10 @@ function Routes() {
                     <Navbar/>
                     <Inbox/>
                 </PrivateRoute>
+                <PrivateRoute exact path="/direct/inbox/:username">
+                    <Navbar/>
+                    <Inbox/>
+                </PrivateRoute>
                 <PrivateRoute exact path="/:username">
                     <Navbar />
                     <Profile />
