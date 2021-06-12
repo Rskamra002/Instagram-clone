@@ -13,8 +13,10 @@ const PostsData = require('./model/postSchema');
 
 const app = express();
 
-// Middleware
+// Middlewares
 app.use(express.json());
+
+app.use(require('./router/auth'));
 
 async function start() {
   // Mongoose connection
