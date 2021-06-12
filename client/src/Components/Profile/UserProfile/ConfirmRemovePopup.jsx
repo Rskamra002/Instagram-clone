@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 const ConfirmRemovePopup = (data) => {
     const profileData = useSelector((state) => state.profile.data);
     const loggedInUser = profileData.id;
-    const { username, profilePic, closePopup, userId } = data;
+    const { username, profilePic, closePopup, userId, reRender } = data;
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const confirmRemove = (removeFrom, toRemove) => {
@@ -83,6 +83,7 @@ const ConfirmRemovePopup = (data) => {
                     .then((res) => {
                         setIsLoading(false)
                         closePopup();
+                        reRender();
                     });
             })
             .catch((msg) => setIsError(setIsError))

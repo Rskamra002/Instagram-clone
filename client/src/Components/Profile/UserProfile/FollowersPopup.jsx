@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import axios from "axios";
 import ConfirmRemovePopup from "./ConfirmRemovePopup";
+import { Link, Redirect, useHistory } from "react-router-dom";
 // styling material ui elements
 
 const useStyles = makeStyles(() => ({
@@ -35,9 +36,15 @@ const useStyles = makeStyles(() => ({
       cursor: "pointer",
     },
   },
+  avatar: {
+    "&:hover": {
+      cursor: 'pointer',
+    }
+  }
 }));
 
-const Followers = ({ active, handlePopUp }) => {
+const FollowersPopup = ({ reRender, handlePopUp }) => {
+  const history = useHistory();
   const [profileFollowers, setProfileFollowers] = useState([]);
   const [removeFollower, setRemoveFollower] = useState();
   const classes = useStyles();
@@ -45,12 +52,17 @@ const Followers = ({ active, handlePopUp }) => {
   const { followers } = profileData;
 
   const closePopup = () => {
-    setRemoveFollower('')
-  }
+    setRemoveFollower("");
+  };
 
   const handleRemove = (follower, e) => {
-    setRemoveFollower(follower)
+    setRemoveFollower(follower);
     e.target.disabled = true;
+  };
+
+  const redirectUser = (follower) => {
+    handlePopUp();
+    history.push(`/${follower.username}`)
   }
 
   useEffect(() => {
@@ -77,7 +89,7 @@ const Followers = ({ active, handlePopUp }) => {
 
   return (
     <Container className={classes.container}>
-      <Modal open={active}>
+      <Modal open={true}>
         <Paper className={classes.paper}>
           <Wrapper>
             <Title>Followers</Title>
@@ -91,21 +103,29 @@ const Followers = ({ active, handlePopUp }) => {
                   <Avatar
                     src={follower.profilePic}
                     alt={`${follower.fullname}'s Profile Picture`}
+                    className={classes.avatar}
+                    onClick={() => redirectUser(follower)}
                   ></Avatar>
-                  <MainDiv>
+                  <MainDiv onClick={() => redirectUser(follower)}>
                     <div>{follower.username}</div>
                     <div>{follower.fullname}</div>
                   </MainDiv>
-                  <Button onClick={(e) => handleRemove(follower, e)}>Remove</Button>
+                  <Button onClick={(e) => handleRemove(follower, e)}>
+                    Remove
+                  </Button>
                 </Wrapper>
               );
             })}
           </Follow>
         </Paper>
       </Modal>
-      {
-        removeFollower && <ConfirmRemovePopup {...removeFollower} closePopup={closePopup} />
-      }
+      {removeFollower && (
+        <ConfirmRemovePopup
+          {...removeFollower}
+          closePopup={closePopup}
+          reRender={reRender}
+        />
+      )}
     </Container>
   );
 };
@@ -136,13 +156,17 @@ export const Button = styled.button`
 `;
 
 export const MainDiv = styled.div`
-  flex-grow: 1;
-  margin-left: 14px;
-  div:nth-child(1) {
-    font-weight: 500;
+      flex-grow: 1;
+      margin-left: 14px;
+      :hover {
+        cursor:pointer;
+      }
+      div:nth-child(1) {
+        font-weight: 500;
+        color:black;
   }
-  div:nth-child(2) {
-    color: grey;
+      div:nth-child(2) {
+        color: grey;
   }
 `;
 
@@ -151,4 +175,4 @@ export const Follow = styled.div`
   height: 400px;
 `;
 
-export default Followers;
+export default FollowersPopup;

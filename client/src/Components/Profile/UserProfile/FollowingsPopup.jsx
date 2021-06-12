@@ -11,7 +11,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-import { Title, Wrapper, Button, MainDiv, Follow } from "./Followers";
+import { Title, Wrapper, Button, MainDiv, Follow } from "./FollowersPopup";
 // styling material ui elements
 
 const useStyles = makeStyles(() => ({
@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Following = ({ active, handlePopUp }) => {
+const FollowersPopups = ({ handlePopUp }) => {
   const [profileFollowing, setProfileFollowing] = useState([]);
   const classes = useStyles();
   const profileData = useSelector((state) => state.profile.data);
@@ -65,7 +65,7 @@ const Following = ({ active, handlePopUp }) => {
 
   return (
     <Container className={classes.container}>
-      <Modal open={active}>
+      <Modal open={true}>
         <Paper className={classes.paper}>
           <Wrapper>
             <Title>Following</Title>
@@ -95,4 +95,4 @@ const Following = ({ active, handlePopUp }) => {
   );
 };
 
-export default Following;
+export default FollowersPopups;
