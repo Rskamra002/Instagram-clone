@@ -17,7 +17,8 @@ const app = express();
 app.use(express.json());
 
 app.use(require('./router/auth'));
-app.use(require('./router/user'));
+app.use(require('./router/users'));
+app.use(require('./router/posts'));
 
 async function start() {
   // Mongoose connection
