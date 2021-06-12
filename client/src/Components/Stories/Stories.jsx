@@ -1,11 +1,12 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from "styled-components"
 import { loadData } from '../../Utils/localStorage'
 import { StoryItem } from './StoryItem'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import { getStory } from '../../Redux/Stories/action'
 
 
 const Stories = () => {
@@ -16,16 +17,31 @@ const Stories = () => {
         slidesToShow: 6.5,
         slidesToScroll: 3
       };
+    const [storyUsers, setStoryUsers] = useState([])
 
     const user = useSelector((state) => state.user.user)
+    console.log(user)
+    const story = useSelector((state) => state.story.story)
     const self = loadData('users')
+    const dispatch = useDispatch()
+      
+    useEffect(() => {
+        dispatch(getStory())
+    },[dispatch])
+    useEffect(() => {
+        story?.map((item) => {
+            let data = user?.filter((it) => it.id === item.userid)
+            setStoryUsers((prev) => [...prev, ...data])
+        })
+    },[story, user])
+    console.log(storyUsers)
 
     return (
         <Wrapper>
             <Slider {...settings}>
             <StoryItem image={self.profile_pic} name={self.username}/>
             {
-                user?.filter((item) => item.id != self.id).map((el) => <StoryItem image={el.profile_pic} name={el.username}/>)
+                storyUsers?.filter((item) => item.id != self.id).map((el) => <StoryItem image={el.profile_pic} name={el.username}/>) 
             }
             </Slider>
         </Wrapper>
