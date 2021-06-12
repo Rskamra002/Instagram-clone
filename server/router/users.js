@@ -39,17 +39,16 @@ router.get('/users/:username', async (req, res) => {
 // patch request to follow someone
 router.patch('/users/follow/:id', async (req, res) => {
   try {
+    // id(user) is going to follow userId(user)
     const id = req.params.id;
-    const body = req.body;
-    const [key] = Object.keys(body);
-    const [value] = Object.values(body);
+    const { userId } = req.body;
 
     // finding users in our DB
     const isUserIdExist = await UsersData.findById(id).lean().exec();
-    const isFollowUserIdExist = await UsersData.findById(value).lean().exec();
+    const isFollowUserIdExist = await UsersData.findById(userId).lean().exec();
 
     // if user id's does not exist in our DB or syntax is not correct then it will send error
-    if (key !== 'follow') {
+    if (!userId) {
       return res.status(400).json({ error: 'Sorry! Invalid syntax' });
     } else if (!isUserIdExist) {
       return res.status(400).json({ error: 'Sorry! This user does not exist' });
@@ -62,7 +61,7 @@ router.patch('/users/follow/:id', async (req, res) => {
     // adding in following array (user who is going to follow someone)
     const user = await UsersData.findOneAndUpdate(
       { _id: id },
-      { $addToSet: { following: value } },
+      { $addToSet: { following: userId } },
       {
         new: true,
       }
@@ -70,7 +69,7 @@ router.patch('/users/follow/:id', async (req, res) => {
 
     // adding in follower array (user who is followed by someone)
     await UsersData.findOneAndUpdate(
-      { _id: value },
+      { _id: userId },
       { $addToSet: { followers: id } }
     );
     res.status(200).json({ data: user });
@@ -83,17 +82,18 @@ router.patch('/users/follow/:id', async (req, res) => {
 // patch request for removing following and followers
 router.patch('/users/unfollow/:id', async (req, res) => {
   try {
+    // id(user) is going to unfollow userId(user)
     const id = req.params.id;
-    const body = req.body;
-    const [key] = Object.keys(body);
-    const [value] = Object.values(body);
+    const { userId } = req.body;
 
     // finding users in our DB
     const isUserIdExist = await UsersData.findById(id).lean().exec();
-    const isUnfollowUserIdExist = await UsersData.findById(value).lean().exec();
+    const isUnfollowUserIdExist = await UsersData.findById(userId)
+      .lean()
+      .exec();
 
     // if user id's does not exist in our DB or syntax is not correct then it will send error
-    if (key !== 'unfollow') {
+    if (!userId) {
       return res.status(400).json({ error: 'Sorry! Invalid syntax' });
     } else if (!isUserIdExist) {
       return res.status(400).json({ error: 'Sorry! This user does not exist' });
@@ -105,14 +105,14 @@ router.patch('/users/unfollow/:id', async (req, res) => {
 
     const user = await UsersData.findOneAndUpdate(
       { _id: id },
-      { $pull: { following: value } },
+      { $pull: { following: userId } },
       {
         new: true,
       }
     );
 
     await UsersData.findOneAndUpdate(
-      { _id: value },
+      { _id: userId },
       { $pull: { followers: id } }
     );
 
@@ -128,15 +128,14 @@ router.patch('/users/savepost/:id', async (req, res) => {
   try {
     const id = req.params.id;
     const body = req.body;
-    const [key] = Object.keys(body);
-    const [value] = Object.values(body);
+    const { postId } = req.body;
 
     // finding user and post in our DB
     const isUserIdExist = await UsersData.findById(id).lean().exec();
-    const isPostIdExist = await PostsData.findById(value).lean().exec();
+    const isPostIdExist = await PostsData.findById(postId).lean().exec();
 
     // if user id or post id does not exist in our DB or syntax is not correct then it will send error
-    if (key !== 'savepost') {
+    if (!postId) {
       return res.status(400).json({ error: 'Sorry! Invalid syntax' });
     } else if (!isUserIdExist) {
       return res.status(400).json({ error: 'Sorry! This user does not exist' });
@@ -146,7 +145,7 @@ router.patch('/users/savepost/:id', async (req, res) => {
 
     const user = await UsersData.findOneAndUpdate(
       { _id: id },
-      { $addToSet: { savedPosts: value } },
+      { $addToSet: { savedPosts: postId } },
       {
         new: true,
       }
@@ -162,16 +161,14 @@ router.patch('/users/savepost/:id', async (req, res) => {
 router.patch('/users/removesavedpost/:id', async (req, res) => {
   try {
     const id = req.params.id;
-    const body = req.body;
-    const [key] = Object.keys(body);
-    const [value] = Object.values(body);
+    const { postId } = req.body;
 
     // finding user and post in our DB
     const isUserIdExist = await UsersData.findById(id).lean().exec();
-    const isPostIdExist = await PostsData.findById(value).lean().exec();
+    const isPostIdExist = await PostsData.findById(postId).lean().exec();
 
     // if user id or post id does not exist in our DB or syntax is not correct then it will send error
-    if (key !== 'removesavedpost') {
+    if (!postId) {
       return res.status(400).json({ error: 'Sorry! Invalid syntax' });
     } else if (!isUserIdExist) {
       return res.status(400).json({ error: 'Sorry! This user does not exist' });
@@ -181,7 +178,7 @@ router.patch('/users/removesavedpost/:id', async (req, res) => {
 
     const user = await UsersData.findOneAndUpdate(
       { _id: id },
-      { $pull: { savedPosts: value } },
+      { $pull: { savedPosts: postId } },
       {
         new: true,
       }

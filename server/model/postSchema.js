@@ -24,10 +24,17 @@ const postsSchema = mongoose.Schema(
           required: true,
         },
         comment: reqString,
+        likes: [mongoose.Schema.Types.ObjectId],
       },
     ],
     tagUser: [mongoose.Schema.Types.ObjectId],
-    tags: [mongoose.Schema.Types.ObjectId],
+    tags: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'tags',
+        required: true,
+      },
+    ],
   },
   {
     timestamps: true,

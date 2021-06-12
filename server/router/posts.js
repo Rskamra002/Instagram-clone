@@ -67,18 +67,16 @@ router.patch('/posts/likepost/:id', async (req, res) => {
   try {
     // id => postid
     const id = req.params.id;
-    const body = req.body;
-    const [key] = Object.keys(body);
-    // value => userid
-    const [value] = Object.values(body);
+
+    const { userId } = req.body;
 
     // finding user in our DB
-    const isUserExist = await UsersData.findById(value).lean().exec();
+    const isUserExist = await UsersData.findById(userId).lean().exec();
     // finding post in our DB
     const isPostExist = await PostsData.findById(id).lean().exec();
 
     // if user and post id's does not exist in our DB or syntax is not correct then it will send error
-    if (key !== 'likeBy') {
+    if (!userId) {
       return res.status(400).json({ error: 'Sorry! Invalid syntax' });
     } else if (!isUserExist) {
       return res.status(400).json({ error: 'Sorry! This user does not exist' });
@@ -89,7 +87,7 @@ router.patch('/posts/likepost/:id', async (req, res) => {
     // adding userId in likes array (user who is going to like that post)
     const post = await PostsData.findOneAndUpdate(
       { _id: id },
-      { $addToSet: { likes: value } },
+      { $addToSet: { likes: userId } },
       {
         new: true,
       }
@@ -106,18 +104,16 @@ router.patch('/posts/unlikepost/:id', async (req, res) => {
   try {
     // id => postid
     const id = req.params.id;
-    const body = req.body;
-    const [key] = Object.keys(body);
-    // value => userid
-    const [value] = Object.values(body);
+
+    const { userId } = req.body;
 
     // finding user in our DB
-    const isUserExist = await UsersData.findById(value).lean().exec();
+    const isUserExist = await UsersData.findById(userId).lean().exec();
     // finding post in our DB
     const isPostExist = await PostsData.findById(id).lean().exec();
 
     // if user and post id's does not exist in our DB or syntax is not correct then it will send error
-    if (key !== 'unlikeBy') {
+    if (!userId) {
       return res.status(400).json({ error: 'Sorry! Invalid syntax' });
     } else if (!isUserExist) {
       return res.status(400).json({ error: 'Sorry! This user does not exist' });
@@ -128,7 +124,7 @@ router.patch('/posts/unlikepost/:id', async (req, res) => {
     // removing userId from likes array (user who is going to unlike that post)
     const post = await PostsData.findOneAndUpdate(
       { _id: id },
-      { $pull: { likes: value } },
+      { $pull: { likes: userId } },
       {
         new: true,
       }
@@ -141,3 +137,81 @@ router.patch('/posts/unlikepost/:id', async (req, res) => {
 });
 
 module.exports = router;
+
+// patch request to add comment
+router.patch('/posts/addcomment/:id', async (req, res) => {
+  try {
+    // id => postid
+    const id = req.params.id;
+
+    const body = req.body;
+    const { userId, comment } = body;
+
+    // finding user in our DB
+    const isUserExist = await UsersData.findById(userId).lean().exec();
+    // finding post in our DB
+    const isPostExist = await PostsData.findById(id).lean().exec();
+
+    // if user and post id's does not exist in our DB or syntax is not correct then it will send error
+    if (!userId || !comment) {
+      return res.status(400).json({ error: 'Sorry! Invalid syntax' });
+    } else if (!isUserExist) {
+      return res.status(400).json({ error: 'Sorry! This user does not exist' });
+    } else if (!isPostExist) {
+      return res.status(400).json({ error: 'Sorry! This post does not exist' });
+    }
+
+    // adding userId in likes array (user who is going to like that post)
+    const post = await PostsData.findOneAndUpdate(
+      { _id: id },
+      { $addToSet: { comments: body } },
+      {
+        new: true,
+      }
+    );
+    res.status(200).json({ message: 'Comment added successfully', data: post });
+  } catch (err) {
+    res.status(400).json({ error: 'Sorry! something went wrong' });
+    console.log(err);
+  }
+});
+
+// have to work on it (not completed)
+// patch request to like comment ()
+router.patch('/posts/likecomment/:id', async (req, res) => {
+  try {
+    // id => postid
+    const id = req.params.id;
+
+    const { userId, commentId } = req.body;
+
+    // finding user in our DB
+    const isUserExist = await UsersData.findById(userId).lean().exec();
+    // finding post in our DB
+    const isPostExist = await PostsData.findById(id).lean().exec();
+
+    // if user and post id's does not exist in our DB or syntax is not correct then it will send error
+    if (!userId || !commentId) {
+      return res.status(400).json({ error: 'Sorry! Invalid syntax' });
+    } else if (!isUserExist) {
+      return res.status(400).json({ error: 'Sorry! This user does not exist' });
+    } else if (!isPostExist) {
+      return res.status(400).json({ error: 'Sorry! This post does not exist' });
+    }
+
+    // have to work on it
+
+    // adding userId in likes array (user who is going to like that comment)
+    // const post = await PostsData.findOneAndUpdate(
+    //   { _id: id },
+    //   { $addToSet: { comments: { _id: commentId, likes: userId } } },
+    //   {
+    //     new: true,
+    //   }
+    // );
+    res.status(200).json({ message: 'Comment like successfully' });
+  } catch (err) {
+    res.status(400).json({ error: 'Sorry! something went wrong' });
+    console.log(err);
+  }
+});
