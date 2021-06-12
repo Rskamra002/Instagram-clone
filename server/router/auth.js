@@ -89,7 +89,9 @@ router.post('/login', async (req, res) => {
           'Sorry, your password was incorrect. Please double-check your password.',
       });
     } else {
-      res.json({ message: 'User login successsfully' });
+      user.password = null;
+      user.tokens = null;
+      res.json({ message: 'User login successsfully', data: user });
     }
   }
 });
