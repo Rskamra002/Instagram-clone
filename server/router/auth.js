@@ -2,6 +2,7 @@ const express = require('express');
 const UsersData = require('../model/userSchema');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 router.get('/', (req, res) => {
   res.status(200).send({ data: 'hello' });
@@ -73,6 +74,14 @@ router.post('/login', async (req, res) => {
     });
   } else {
     const isPassMatch = await bcrypt.compare(password, user.password);
+
+    const token = await user.generateAuthToken();
+
+    // res.cookie(name,value, {options(e.g. expires)})
+    res.cookie('instajwtoken', token, {
+      expires: new Date(Date.now() + 25892000000),
+      httpOnly: true,
+    });
 
     if (!isPassMatch) {
       res.status(400).json({
