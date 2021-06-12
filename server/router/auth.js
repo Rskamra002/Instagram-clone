@@ -1,6 +1,7 @@
 const express = require('express');
 const UsersData = require('../model/userSchema');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
 
 router.get('/', (req, res) => {
   res.status(200).send({ data: 'hello' });
@@ -32,7 +33,8 @@ router.post('/register', async (req, res) => {
         .json({ error: 'Sorry! This Email is already exist' });
     }
 
-    const newUser = await UsersData.create(req.body);
+    const newUser = new UsersData(req.body);
+    await newUser.save();
 
     if (newUser) {
       res.status(201).json({ message: 'User registered successfully' });
@@ -63,20 +65,23 @@ router.post('/login', async (req, res) => {
       .json({ error: 'Please fill all the fields properly' });
   }
 
-  const userLoginBy = await UsersData.findOne({ [loginBy[0]]: [loginBy[1]] })
-    .lean()
-    .exec();
-
-  console.log(email, username, phoneNumber);
-  console.log('userLogin', loginBy[0], loginBy[1]);
-
-  if (userLoginBy) {
-    res.json({ message: 'User login successsfully' });
-  } else {
-    res.json({
+  const user = await UsersData.findOne({ [loginBy[0]]: [loginBy[1]] });
+  if (!user) {
+    res.status(400).json({
       error:
         "The username you entered doesn't belong to an account. Please check your username and try again.",
     });
+  } else {
+    const isPassMatch = await bcrypt.compare(password, user.password);
+
+    if (!isPassMatch) {
+      res.status(400).json({
+        error:
+          'Sorry, your password was incorrect. Please double-check your password.',
+      });
+    } else {
+      res.json({ message: 'User login successsfully' });
+    }
   }
 });
 
