@@ -1,12 +1,14 @@
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import { loginReducer } from "./Authentication/authReducer";
+import { storyReducer } from "./Stories/reducer";
 import { userReducer } from "./Suggestions/Reducer";
 import { profileReducer } from "./UserProfile/profileReducer";
 
 const rootReducer = combineReducers({
     user : userReducer,
     profile: profileReducer,
-    login:loginReducer
+    login:loginReducer,
+    story: storyReducer
 });
 
 const customMiddleware = (store) => (next) => (action) => {
