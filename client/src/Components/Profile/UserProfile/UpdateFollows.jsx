@@ -1,9 +1,9 @@
 import axios from "axios";
-export const UpdateFollows = (loggedIn, toFollow) => {
+export const UpdateFollows = (loggedIn, toFollow, reRender) => {
   let updateFollowings = new Promise((resolve, reject) => {
     let followings = axios
       .get(
-        `https://json-server-mocker-robin.herokuapp.com/instaUsers/${loggedIn}`
+        `https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers/${loggedIn}`
       )
       .then((res) => res.data.following);
     if (followings) {
@@ -16,7 +16,7 @@ export const UpdateFollows = (loggedIn, toFollow) => {
   let updateFollowers = new Promise((resolve, reject) => {
     let followers = axios
       .get(
-        `https://json-server-mocker-robin.herokuapp.com/instaUsers/${toFollow}`
+        `https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers/${toFollow}`
       )
       .then((res) => res.data.followers);
     if (followers) {
@@ -36,12 +36,12 @@ export const UpdateFollows = (loggedIn, toFollow) => {
       }
       axios
         .patch(
-          `https://json-server-mocker-robin.herokuapp.com/instaUsers/${loggedIn}`,
+          `https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers/${loggedIn}`,
           {
             following: updatedFollowings,
           }
         )
-        .then((res) => console.log(res));
+        .then((res) => res);
     })
     .catch((msg) => msg);
 
@@ -55,12 +55,14 @@ export const UpdateFollows = (loggedIn, toFollow) => {
       }
       axios
         .patch(
-          `https://json-server-mocker-robin.herokuapp.com/instaUsers/${toFollow}`,
+          `https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers/${toFollow}`,
           {
             followers: updatedFollowers,
           }
         )
-        .then((res) => console.log(res));
+        .then((res) => {
+          reRender()
+        });
     })
     .catch((msg) => msg);
 };
