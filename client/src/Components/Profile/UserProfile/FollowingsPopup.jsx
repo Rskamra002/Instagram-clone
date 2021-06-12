@@ -9,9 +9,9 @@ import {
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { useSelector } from "react-redux";
-import styled from "styled-components";
 import axios from "axios";
-import ConfirmRemovePopup from "./ConfirmRemovePopup";
+
+import { Title, Wrapper, Button, MainDiv, Follow } from "./FollowersPopup";
 // styling material ui elements
 
 const useStyles = makeStyles(() => ({
@@ -37,37 +37,25 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Followers = ({ active, handlePopUp }) => {
-  const [profileFollowers, setProfileFollowers] = useState([]);
-  const [removeFollower, setRemoveFollower] = useState();
+const FollowersPopups = ({ handlePopUp }) => {
+  const [profileFollowing, setProfileFollowing] = useState([]);
   const classes = useStyles();
   const profileData = useSelector((state) => state.profile.data);
-  const { followers } = profileData;
-
-  const closePopup = () => {
-    setRemoveFollower('')
-  }
-
-  const handleRemove = (follower, e) => {
-    setRemoveFollower(follower)
-    e.target.disabled = true;
-  }
-
+  const { following } = profileData;
   useEffect(() => {
-    if (followers) {
-      followers.forEach((userId) => {
+    if (following) {
+      following.forEach((userId) => {
         axios
           .get(
             `https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers/${userId}`
           )
           .then((res) => {
-            setProfileFollowers((prev) => [
+            setProfileFollowing((prev) => [
               ...prev,
               {
                 username: res.data.username,
                 fullname: res.data.fullname,
                 profilePic: res.data.profile_pic,
-                userId: res.data.id,
               },
             ]);
           });
@@ -77,15 +65,15 @@ const Followers = ({ active, handlePopUp }) => {
 
   return (
     <Container className={classes.container}>
-      <Modal open={active}>
+      <Modal open={true}>
         <Paper className={classes.paper}>
           <Wrapper>
-            <Title>Followers</Title>
+            <Title>Following</Title>
             <CloseIcon onClick={handlePopUp} />
           </Wrapper>
           <Divider />
           <Follow>
-            {profileFollowers?.map((follower) => {
+            {profileFollowing?.map((follower) => {
               return (
                 <Wrapper>
                   <Avatar
@@ -96,59 +84,15 @@ const Followers = ({ active, handlePopUp }) => {
                     <div>{follower.username}</div>
                     <div>{follower.fullname}</div>
                   </MainDiv>
-                  <Button onClick={(e) => handleRemove(follower, e)}>Remove</Button>
+                  <Button>Remove</Button>
                 </Wrapper>
               );
             })}
           </Follow>
         </Paper>
       </Modal>
-      {
-        removeFollower && <ConfirmRemovePopup {...removeFollower} closePopup={closePopup} />
-      }
     </Container>
   );
 };
 
-export const Title = styled.p`
-  text-align: center;
-  padding: 10px;
-  font-weight: 500;
-`;
-
-export const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0px 10px;
-  margin: 14px;
-`;
-
-export const Button = styled.button`
-  background: white;
-  font-weight: bold;
-  border: 1px solid rgb(231, 231, 231);
-  border-radius: 5px;
-  padding: 8px 18px;
-  :hover {
-    cursor: pointer;
-  }
-`;
-
-export const MainDiv = styled.div`
-  flex-grow: 1;
-  margin-left: 14px;
-  div:nth-child(1) {
-    font-weight: 500;
-  }
-  div:nth-child(2) {
-    color: grey;
-  }
-`;
-
-export const Follow = styled.div`
-  overflow-y: scroll;
-  height: 400px;
-`;
-
-export default Followers;
+export default FollowersPopups;

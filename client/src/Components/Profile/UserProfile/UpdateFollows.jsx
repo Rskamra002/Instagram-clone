@@ -1,5 +1,5 @@
 import axios from "axios";
-export const UpdateFollows = (loggedIn, toFollow) => {
+export const UpdateFollows = (loggedIn, toFollow, reRender) => {
   let updateFollowings = new Promise((resolve, reject) => {
     let followings = axios
       .get(
@@ -41,7 +41,7 @@ export const UpdateFollows = (loggedIn, toFollow) => {
             following: updatedFollowings,
           }
         )
-        .then((res) => console.log(res));
+        .then((res) => res);
     })
     .catch((msg) => msg);
 
@@ -60,7 +60,9 @@ export const UpdateFollows = (loggedIn, toFollow) => {
             followers: updatedFollowers,
           }
         )
-        .then((res) => console.log(res));
+        .then((res) => {
+          reRender()
+        });
     })
     .catch((msg) => msg);
 };
