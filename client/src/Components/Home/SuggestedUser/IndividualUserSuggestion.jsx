@@ -5,7 +5,7 @@ import { loadData } from '../../../Utils/localStorage'
 import { UpdateFollows } from '../../Profile/UserProfile/UpdateFollows'
 import UnFollowPopup from './UnFollowPopup'
 const IndividualUserSuggestion = (data) => {
-    const { profile_pic, username, id } = data;
+    const { profilePic, username, id } = data;
     const [isFollowing, setIsFollowing] = useState(false);
     const [popup, setPopup] = useState(false)
     const loggedInUser = loadData('users')
@@ -29,7 +29,7 @@ const IndividualUserSuggestion = (data) => {
     return (
         <UserSuggested>
             <InnerBox>
-                <img src={profile_pic} alt="pp" />
+                <img src={profilePic} alt="pp" />
                 <div>
                     <Link to={`/${username}`}><h4>{username}</h4></Link>
                     <p>New to instagram</p>
@@ -37,7 +37,7 @@ const IndividualUserSuggestion = (data) => {
             </InnerBox>
             {
                 !isFollowing ? <Follow onClick={() => handleFollow(id)}>{"Follow"}</Follow> :
-                    <Unfollow onClick={() => handleUnfollow(profile_pic, username, id)}>{"Following"}</Unfollow>
+                    <Unfollow onClick={() => handleUnfollow(profilePic, username, id)}>{"Following"}</Unfollow>
             }
             <UnFollowPopup {...data} popup={popup} closePopup={closePopup} updateFollowStatus={updateFollowStatus} />
         </UserSuggested>

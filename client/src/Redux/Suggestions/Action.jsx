@@ -23,6 +23,6 @@ export const getUserFail = (error) => {
 export const getUsers = () => (dispatch) => {
     dispatch(getUserReq())
     return axios.get("http://localhost:2511/users")
-    .then(res => dispatch(getUserSuc(res.data)))
+    .then(res => dispatch(getUserSuc(res.data.data)))
     .catch(err => dispatch(getUserFail(err)))
 }

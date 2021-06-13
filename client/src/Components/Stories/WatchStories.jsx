@@ -11,8 +11,19 @@ import { getStory } from '../../Redux/Stories/action';
 import styles from "./story.module.css"
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { useRef } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  root: {
+    "& .MuiLinearProgress-barColorPrimary": {
+        backgroundColor: "white",
+    },
+},
+
+});
 
 const WatchStories = () => {
+  const classes = useStyles();
   const {index} = useParams()
   const [num, setNum] = useState(Number(index))
   const [progress, setProgress] = React.useState(0);
@@ -69,7 +80,7 @@ const WatchStories = () => {
                 { i === num &&
                 <>
                 <TopDetails>
-                  <LinearProgress variant="determinate" value={progress}/>
+                  <LinearProgress className={classes.root} variant="determinate" value={progress}/>
                   <UserDescription>
                     <img src={item.ids}/>
                     <h6>{item.username}</h6>
