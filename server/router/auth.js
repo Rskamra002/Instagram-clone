@@ -24,14 +24,14 @@ router.post('/register', async (req, res) => {
     if (isUsernameExist) {
       return res
         .status(422)
-        .json({ error: 'Sorry! This username is already taken' });
+        .json({ error: 'Registration failed, username already exists' });
     }
 
     const isEmailExist = await UsersData.findOne({ email: email });
     if (isEmailExist) {
       return res
         .status(422)
-        .json({ error: 'Sorry! This Email is already exist' });
+        .json({ error: 'Registration failed, Email already exists' });
     }
 
     const newUser = new UsersData(req.body);

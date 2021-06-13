@@ -1,9 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const connect = require('./db/connect');
 const dotenv = require('dotenv');
-// this is a function in which i have to write path of .env file in key:value pair
+// this is a function in which i have to write the path of .env file in key:value pair
 dotenv.config({ path: './.env' });
+const connect = require('./db/connect');
 
 const PORT = process.env.PORT;
 
@@ -17,7 +17,8 @@ const app = express();
 app.use(express.json());
 
 app.use(require('./router/auth'));
-app.use(require('./router/user'));
+app.use(require('./router/users'));
+app.use(require('./router/posts'));
 
 async function start() {
   // Mongoose connection
