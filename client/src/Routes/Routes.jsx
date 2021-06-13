@@ -45,7 +45,7 @@ function Routes() {
                     <Navbar />
                     <Profile />
                 </PrivateRoute>
-                <PrivateRoute exact path='/stories/:username'>
+                <PrivateRoute exact path='/stories/:index'>
                     <WatchStories/>
                 </PrivateRoute>
             </Switch>

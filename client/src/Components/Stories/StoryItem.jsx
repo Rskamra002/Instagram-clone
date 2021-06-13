@@ -2,10 +2,10 @@ import React from 'react'
 import styled from "styled-components"
 import { Link } from 'react-router-dom'
 
-const StoryItem = ({image, name}) => {
+const StoryItem = ({image, name, index}) => {
 
     return (
-        <Link to={`/stories/${name}`}>
+        <Link to={`/stories/${index}`}>
         <Circle >
             <img src={image} width="66px" height="66px"/>
             <p>{name}</p>
