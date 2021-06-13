@@ -30,9 +30,11 @@ export const UpdateFollows = (loggedIn, toFollow, reRender) => {
     .then((currentFollowings) => {
       var updatedFollowings;
       if (currentFollowings.includes(toFollow)) {
-        updatedFollowings = currentFollowings.filter(item => item != toFollow)
+        updatedFollowings = currentFollowings.filter(
+          (item) => item != toFollow
+        );
       } else {
-        updatedFollowings = [...currentFollowings, toFollow]
+        updatedFollowings = [...currentFollowings, toFollow];
       }
       axios
         .patch(
@@ -49,9 +51,9 @@ export const UpdateFollows = (loggedIn, toFollow, reRender) => {
     .then((currentFollowers) => {
       var updatedFollowers;
       if (currentFollowers.includes(loggedIn)) {
-        updatedFollowers = currentFollowers.filter(item => item != loggedIn)
+        updatedFollowers = currentFollowers.filter((item) => item != loggedIn);
       } else {
-        updatedFollowers = [...currentFollowers, loggedIn]
+        updatedFollowers = [...currentFollowers, loggedIn];
       }
       axios
         .patch(
@@ -61,7 +63,9 @@ export const UpdateFollows = (loggedIn, toFollow, reRender) => {
           }
         )
         .then((res) => {
-          reRender()
+          if (reRender) {
+            reRender();
+          }
         });
     })
     .catch((msg) => msg);

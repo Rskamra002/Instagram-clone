@@ -1,23 +1,50 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from "styled-components"
+import { loadData } from '../../../Utils/localStorage'
+import { UpdateFollows } from '../../Profile/UserProfile/UpdateFollows'
+import UnFollowPopup from './UnFollowPopup'
+const IndividualUserSuggestion = (data) => {
+    const { profile_pic, username, id } = data;
+    const [isFollowing, setIsFollowing] = useState(false);
+    const [popup, setPopup] = useState(false)
+    const loggedInUser = loadData('users')
 
-const IndividualUserSuggestion = ({profile_pic, username}) => {
+    const handleFollow = (id) => {
+        UpdateFollows(loggedInUser.id, id)
+        setIsFollowing(!isFollowing);
+    }
+    const handleUnfollow = (id) => {
+        setPopup(true);
+    }
+
+    const closePopup = () => {
+        setPopup(false)
+    }
+
+    const updateFollowStatus = () => {
+        setIsFollowing(!isFollowing)
+    }
+    
     return (
         <UserSuggested>
             <InnerBox>
-                <img src={profile_pic} alt="pp"/>
+                <img src={profile_pic} alt="pp" />
                 <div>
                     <Link to={`/${username}`}><h4>{username}</h4></Link>
                     <p>New to instagram</p>
                 </div>
             </InnerBox>
-            <Follow>Follow</Follow>
+            {
+                !isFollowing ? <Follow onClick={() => handleFollow(id)}>{"Follow"}</Follow> :
+                    <Unfollow onClick={() => handleUnfollow(profile_pic, username, id)}>{"Following"}</Unfollow>
+            }
+            <UnFollowPopup {...data} popup={popup} closePopup={closePopup} updateFollowStatus={updateFollowStatus} />
         </UserSuggested>
     )
 }
 
-export {IndividualUserSuggestion}
+export { IndividualUserSuggestion }
 
 
 const UserSuggested = styled.div`
@@ -49,6 +76,14 @@ const InnerBox = styled.div`
 `
 const Follow = styled.div`
     color: #55B7F7;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 600;
+`
+const Unfollow = styled.div`
+    color: #000000;
     font-size: 14px;
     cursor: pointer;
     margin-top: 8px;

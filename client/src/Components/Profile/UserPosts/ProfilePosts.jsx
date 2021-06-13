@@ -7,7 +7,6 @@ import DisplayPost from "./DisplayPost";
 function ProfilePosts({ id }) {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.profile.posts);
-  console.log(posts)
   useEffect(() => {
     dispatch(getUserPosts(id));
   }, [id, dispatch]);
