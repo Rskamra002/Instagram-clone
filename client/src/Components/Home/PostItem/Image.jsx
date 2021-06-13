@@ -1,11 +1,20 @@
 import React from 'react'
 import styled from 'styled-components'
 
-export default function Image({imgSrc,like,setLike}) {
+export default function Image({imgSrc,like,handleLike}) {
+
+  const setLike = () => {
+    if(like){
+      return;
+    }
+    handleLike();
+  }
+
   return (
     <div>
-      <Img onDoubleClick={() => setLike(!like)}>
-          <img src={imgSrc} alt=""/>
+      <Img onDoubleClick={setLike}>
+          {imgSrc.includes('.jpg') || imgSrc.includes('.png') ? <img src={imgSrc} alt=""/> : null}
+          
         </Img>
     </div>
   )
