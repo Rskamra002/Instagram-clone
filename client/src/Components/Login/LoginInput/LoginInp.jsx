@@ -25,6 +25,7 @@ function LoginInp() {
         setShowPassword(!showPassword);
     };
     const handleLogin=()=>{
+        console.log("sasd")
         dispatch(loginUser(values))
     }
     if(isAuth){
@@ -55,6 +56,7 @@ function LoginInp() {
                             endAdornment: (
                                 <InputAdornment position="end">
                                 {values.password && <Typography
+                                    style={{marginTop:"12px",cursor: "pointer"}}
                                     onClick={handleClickShowPassword}
                                     >
                                     {showPassword? `hide` : `show`}
