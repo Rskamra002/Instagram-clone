@@ -85,7 +85,7 @@ Use `\_page` and optionally `\_limit` to paginate returned data.
 
 ### GET A PARTICULAR USER
 
-GET URL - `/users/:username`
+GET URL - `/users/:username` OR `/user/:id`
 
 RESPONSE
 Success (Status Code - `200`)
@@ -242,6 +242,24 @@ Success (Status Code - `200`)
 ```json
 {
   "data": "POST"
+}
+```
+
+---
+
+### GET ALL POSTS OF A USER get all posts of a user
+
+GET URL - `/posts/user/:id`
+<br />
+
+`id - userId`
+
+RESPONSE
+Success (Status Code - `200`)
+
+```json
+{
+  "data": "POSTS"
 }
 ```
 
