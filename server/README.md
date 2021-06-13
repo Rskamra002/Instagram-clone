@@ -247,7 +247,7 @@ Success (Status Code - `200`)
 
 ---
 
-### GET ALL POSTS OF A USER get all posts of a user
+### GET ALL POSTS OF A USER
 
 GET URL - `/posts/user/:id`
 <br />
