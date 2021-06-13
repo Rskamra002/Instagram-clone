@@ -130,7 +130,7 @@ Success (Status Code - `200`)
 PATCH URL - `/users/unfollow/:id`
 <br />
 
-`id(user) is going to follow userId(user)`
+`id(user) is going to unfollow userId(user)`
 
 PARAMS
 
