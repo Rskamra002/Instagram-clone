@@ -10,7 +10,6 @@ import axios from 'axios';
 function Users() {
     const [conversations,setConversation] = useState([])
     const loggedInUser = loadData("users");
-
     useEffect(async ()=>{
         await axios.get(`http://localhost:2511/conersation/${loggedInUser.id}`).then((res)=>console.log(res))
     },[])
