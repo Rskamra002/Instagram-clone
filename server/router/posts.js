@@ -31,6 +31,20 @@ router.get('/posts/:id', async (req, res) => {
   }
 });
 
+// get all posts of a user
+
+router.get('/posts/user/:id', async (req, res) => {
+  // id => userId
+  try {
+    const userId = req.params.id;
+    const posts = await PostsData.find({ userId: userId }).lean().exec();
+    res.status(200).json({ data: posts });
+  } catch (err) {
+    res.status(400).json({ error: 'Sorry! something went wrong' });
+    console.log(err);
+  }
+});
+
 // adding new post
 router.post('/posts/addpost', async (req, res) => {
   const { src, userId } = req.body;

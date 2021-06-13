@@ -8,12 +8,16 @@ import AddComment from './AddComment'
 import axios from 'axios';
 import { useEffect } from 'react';
 import {unlikeIconPath,likeIconPath ,savedPostIconPath, sendMsgIconPath, commentIconPath} from './svgIcons'
+import { useSelector } from 'react-redux';
 
-const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) => {
+const PostItem = ({_id,userId,src,caption,likes,comments,dateCreation}) => {
   const [postOwnerUserName,setPostOwnerUserName] = useState("")
   const [postOwnerPic,setPostOwnerPic] = useState("")
 
+  const user = useSelector(state => state.login.user);
+
   const [like,setLike] = useState(false);
+  const [allLikes,setAllLikes] = useState(likes);
   const [allComments,setAllComments] = useState(comments);
   const [viewMore,setViewMore] = useState(false);
   const [query,setQuery] = useState("");
@@ -21,9 +25,42 @@ const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) =
 
 
   const fetchPostOwner = () => {
-    axios.get(`https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers/${userId}`).then((res) => {
-      setPostOwnerUserName(res.data.username)
-      setPostOwnerPic(res.data.profile_pic)
+    axios.get(`http://localhost:2511/users/${userId}`).then((res) => {
+      setPostOwnerUserName(res.data.data.username)
+      setPostOwnerPic(res.data.data.profilePic)
+    })
+  }
+
+  const isPhotoLikedByUser = () => {
+    axios.get(`http://localhost:2511/posts/${_id}`).then(res => {
+      res.data.data.likes.includes(user._id) ? setLike(true) : setLike(false);
+    })
+  }
+
+  const handleLike = () => {
+    if(like){
+      // unlike
+      axios.patch(`http://localhost:2511/posts/unlikepost/${_id}`,{
+        "userId": user._id
+      }).then(res => {
+      setLike(false)
+      handleLikeCount()
+    })
+    } else{
+      // like
+      axios.patch(`http://localhost:2511/posts/likepost/${_id}`,{
+        "userId": user._id
+      }).then(res => {
+        setLike(true);
+        handleLikeCount()
+    })
+    }
+  }
+
+  const handleLikeCount = () =>{
+    // after like or dislike getting new data of post
+    axios.get(`http://localhost:2511/posts/${_id}`).then(res => {
+      setAllLikes(res.data.data.likes)
     })
   }
 
@@ -33,7 +70,7 @@ const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) =
       return;
     }
     const payload = {
-      displayName: "username", 
+      displayName: user.username, 
       comment: query, 
       commentTime: Date.now()
     }
@@ -41,8 +78,12 @@ const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) =
     setQuery("");
   }
 
+  
+  
+
   useEffect(() => {
     fetchPostOwner();
+    isPhotoLikedByUser();
   },[])
 
     return (
@@ -54,12 +95,12 @@ const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) =
           <svg aria-label="More options" class="_8-yf5 " fill="#262626" height="16" viewBox="0 0 48 48" width="16"><circle clip-rule="evenodd" cx="8" cy="24" fill-rule="evenodd" r="4.5"></circle><circle clip-rule="evenodd" cx="24" cy="24" fill-rule="evenodd" r="4.5"></circle><circle clip-rule="evenodd" cx="40" cy="24" fill-rule="evenodd" r="4.5"></circle></svg>
 
         </Header>
-          <Image imgSrc={imgSrc} like={like} setLike={setLike}/>
+          <Image imgSrc={src} like={like} handleLike={handleLike}/>
 
           <Engagement>
             <Icons>
               <div>
-                <LikeIcon onClick={() => setLike(!like)} like={like}>
+                <LikeIcon onClick={handleLike} like={like}>
 
                   {like ? <svg aria-label="Unlike" class="_8-yf5 " fill="#ed4956" height="24" viewBox="0 0 48 48" width="24"><path d={unlikeIconPath}></path></svg> : <svg aria-label="Like" class="_8-yf5 " fill="#262626" height="24" viewBox="0 0 48 48" width="24"><path d={likeIconPath}></path></svg>}
                 </LikeIcon>
@@ -83,7 +124,7 @@ const PostItem = ({photoId,userId,imgSrc,caption,likes,comments,dateCreation}) =
               </div>
             </Icons>
 
-            <Likes likes={likes} />
+            <Likes likes={allLikes} />
             
             <Caption>
               <div><span>{postOwnerUserName}</span>{caption}</div>
