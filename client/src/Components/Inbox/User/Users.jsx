@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { getUsers } from '../../../Redux/Suggestions/Action';
 import { loadData } from '../../../Utils/localStorage';
 import UsersStyle from './users.module.css'
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import axios from 'axios';
+import Conversation from './Conversation';
 
 function Users() {
+    const [conversations,setConversation] = useState([])
     const loggedInUser = loadData("users");
-    const {user} = useSelector(state=>state.user)
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        dispatch(getUsers())
-    }, [dispatch])
+    useEffect(async ()=>{
+        await axios.get(`http://localhost:8000/conversation/${loggedInUser._id}`).then((res)=>setConversation(res.data.data))
+    },[loggedInUser._id])
 
     return (
         <div className={UsersStyle.main} >
@@ -37,17 +33,7 @@ function Users() {
             </div>
             <div className={UsersStyle.userMain}>
                 {
-                    user?.filter(it=>it.id !== loggedInUser.id).map(item=>(
-                        <UsersLink to={`/direct/inbox/${item.username}`} key={item.id} className={UsersStyle.indItems} >
-                            <div>
-                                <img className={UsersStyle.userProfileImg} src={item.profile_pic} alt="" />
-                            </div>
-                            <div>
-                                <p>{item.username}</p>
-                                <p>{item.fullname}</p>
-                            </div>
-                        </UsersLink>
-                    ))
+                    conversations?.map(item=><Conversation loggedInUser={loggedInUser._id} connverUser={item}/>)
                 }
             </div>
         </div>
@@ -55,16 +41,3 @@ function Users() {
 }
 
 export default Users
-const UsersLink = styled(Link)`
-    text-decoration: none;
-    display:flex;
-    justify-content:flex-start;
-    align-items:center;
-    gap:10px;
-    color: black;
-    padding:.2rem .5rem;
-    &:focus, &:hover, &:visited, &:link {
-        text-decoration: none;
-    }
-    
-`;

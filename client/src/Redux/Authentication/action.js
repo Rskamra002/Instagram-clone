@@ -9,7 +9,7 @@ export const loginReq=()=>{
 export const loginSuc=(payload)=>{
     return{
         type:LOGIN_SUC,
-        payload
+        payload:payload
     }    
 }
 export const loginFail=()=>{
@@ -25,7 +25,7 @@ export const logout_suc=()=>{
 
 export const loginUser = ({email,password}) => (dispatch) => {
     dispatch(loginReq())
-    return axios.get("https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers")
-    .then(res => res.data.map(item=>((item.username === email || item.email === email) && item.password===password)?dispatch(loginSuc(item)):item))
+    return axios.post("http://localhost:2511/login",{username:email,password:password})
+    .then(res =>dispatch(loginSuc(res.data.data)))
     .catch(err => dispatch(loginFail(err)))
 }

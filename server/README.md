@@ -85,7 +85,7 @@ Use `\_page` and optionally `\_limit` to paginate returned data.
 
 ### GET A PARTICULAR USER
 
-GET URL - `/users/:username`
+GET URL - `/users/:username` OR `/user/:id`
 
 RESPONSE
 Success (Status Code - `200`)
@@ -130,7 +130,7 @@ Success (Status Code - `200`)
 PATCH URL - `/users/unfollow/:id`
 <br />
 
-`id(user) is going to follow userId(user)`
+`id(user) is going to unfollow userId(user)`
 
 PARAMS
 
@@ -247,18 +247,34 @@ Success (Status Code - `200`)
 
 ---
 
-### ADD NEW POST
+### GET ALL POSTS OF A USER
 
-POST URL - `posts/addpost/:id`
+GET URL - `/posts/user/:id`
 <br />
 
-`id - postId`
+`id - userId`
+
+RESPONSE
+Success (Status Code - `200`)
+
+```json
+{
+  "data": "POSTS"
+}
+```
+
+---
+
+### ADD NEW POST
+
+POST URL - `posts/addpost`
+<br />
 
 PARAMS
 
 ```json
 {
-  "imgSrc": "imgSrc",
+  "src": "src",
   "userId": "userId "
 }
 ```
