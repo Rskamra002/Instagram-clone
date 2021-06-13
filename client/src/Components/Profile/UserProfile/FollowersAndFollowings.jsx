@@ -14,7 +14,7 @@ import FollowingsPopup from "./FollowingsPopup";
 import { loadData } from "../../../Utils/localStorage";
 import axios from "axios";
 import { getUserData } from "../../../Redux/UserProfile/action";
-import { UpdateFollows } from "./UpdateFollows";
+import { UpdateFollows } from "./UpdateFollows.js";
 
 // styling material ui elements
 const useStyles = makeStyles((theme) => ({
