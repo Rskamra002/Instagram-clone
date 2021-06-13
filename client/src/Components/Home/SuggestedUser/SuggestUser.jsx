@@ -13,14 +13,15 @@ const SuggestUser = () => {
         let b = loadData("users")
         setProfile(b)
         const following = profile?.following
-        let updated = suggestions?.filter((item) => item.id !== profile?.id && !following?.includes(item.id))
+        let updated = suggestions?.filter((item) => item._id !== profile?._id && !following?.includes(item._id))
         setNewPerson(updated)
     }, [suggestions])
+
     
     return (
         <SuggestionsWrapper>
             <UserProfile>
-                <img src={profile.profile_pic} alt="profile" />
+                <img src={profile.profilePic} alt="profile" />
                 <div>
                     <h4>{profile.username}</h4>
                     <p>{profile.fullname}</p>
@@ -33,11 +34,11 @@ const SuggestUser = () => {
             </SuggestionHead>
             {newPerson &&
                 <>
-                    <IndividualUserSuggestion profile_pic={newPerson[0]?.profile_pic} username={newPerson[0]?.username} id={newPerson[0]?.id} />
-                    <IndividualUserSuggestion profile_pic={newPerson[1]?.profile_pic} username={newPerson[1]?.username} id={newPerson[1]?.id} />
-                    <IndividualUserSuggestion profile_pic={newPerson[2]?.profile_pic} username={newPerson[2]?.username} id={newPerson[2]?.id} />
-                    <IndividualUserSuggestion profile_pic={newPerson[3]?.profile_pic} username={newPerson[3]?.username} id={newPerson[3]?.id} />
-                    <IndividualUserSuggestion profile_pic={newPerson[4]?.profile_pic} username={newPerson[4]?.username} id={newPerson[4]?.id} />
+                    <IndividualUserSuggestion profilePic={newPerson[0]?.profilePic} username={newPerson[0]?.username} id={newPerson[0]?.id} />
+                    <IndividualUserSuggestion profilePic={newPerson[1]?.profilePic} username={newPerson[1]?.username} id={newPerson[1]?.id} />
+                    <IndividualUserSuggestion profilePic={newPerson[2]?.profilePic} username={newPerson[2]?.username} id={newPerson[2]?.id} />
+                    <IndividualUserSuggestion profilePic={newPerson[3]?.profilePic} username={newPerson[3]?.username} id={newPerson[3]?.id} />
+                    <IndividualUserSuggestion profilePic={newPerson[4]?.profilePic} username={newPerson[4]?.username} id={newPerson[4]?.id} />
                 </>
             }
             <Details />

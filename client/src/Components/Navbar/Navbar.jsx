@@ -32,11 +32,11 @@ function Navbar() {
     }
 
     useEffect(() => {
-        let output = suggestions?.filter((item) => item.username.toLowerCase().indexOf(query) !== -1 ? true:false).map((item) => [item.id, item.profile_pic, item.username, item.fullname])
+        let output = suggestions?.filter((item) => item.username.toLowerCase().indexOf(query) !== -1 ? true:false).map((item) => [item._id, item.profilePic, item.username, item.fullname])
         setSuggestedUsers(output)
 
         let b = JSON.parse(localStorage.getItem("users"))
-        setProfilePic(b.profile_pic)
+        setProfilePic(b.profilePic)
         setUsername(b.username)
     },[suggestions, query])
 
@@ -121,8 +121,8 @@ function Navbar() {
                         {
                             suggestions?.map((item) => (
                                 <Link to={`/${item.username}`}>
-                                <UsersProfile onClick={openProfile} key={item.id}>
-                                    <img src={item.profile_pic} alt="profile"/>
+                                <UsersProfile onClick={openProfile} key={item._id}>
+                                    <img src={item.profilePic} alt="profile"/>
                                     <div>
                                         <p>{item.username}</p>
                                         <p>{item.fullname}</p>

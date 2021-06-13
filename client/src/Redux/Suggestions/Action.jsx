@@ -22,7 +22,7 @@ export const getUserFail = (error) => {
 
 export const getUsers = () => (dispatch) => {
     dispatch(getUserReq())
-    return axios.get("https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers")
-    .then(res => dispatch(getUserSuc(res.data)))
+    return axios.get("http://localhost:2511/users")
+    .then(res => dispatch(getUserSuc(res.data.data)))
     .catch(err => dispatch(getUserFail(err)))
 }
