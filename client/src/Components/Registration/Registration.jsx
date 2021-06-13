@@ -84,6 +84,7 @@ function Registration() {
                             endAdornment: (
                                 <InputAdornment position="end">
                                 {<Typography
+                                    style={{marginTop:"12px",cursor: "pointer"}}
                                     onClick={handleClickShowPassword}
                                     >
                                     {showPassword? `hide` : `show`}

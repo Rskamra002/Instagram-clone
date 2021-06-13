@@ -5,15 +5,15 @@ import { loadData } from '../../../Utils/localStorage';
 import UsersStyle from './users.module.css'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 
 function Users() {
+    const [conversations,setConversation] = useState([])
     const loggedInUser = loadData("users");
-    const {user} = useSelector(state=>state.user)
-    const dispatch = useDispatch()
 
-    useEffect(() => {
-        dispatch(getUsers())
-    }, [dispatch])
+    useEffect(async ()=>{
+        await axios.get(`http://localhost:2511/conersation/${loggedInUser.id}`).then((res)=>console.log(res))
+    },[])
 
     return (
         <div className={UsersStyle.main} >
@@ -36,7 +36,7 @@ function Users() {
                 </svg>
             </div>
             <div className={UsersStyle.userMain}>
-                {
+                {/* {
                     user?.filter(it=>it.id !== loggedInUser.id).map(item=>(
                         <UsersLink to={`/direct/inbox/${item.username}`} key={item.id} className={UsersStyle.indItems} >
                             <div>
@@ -48,7 +48,7 @@ function Users() {
                             </div>
                         </UsersLink>
                     ))
-                }
+                } */}
             </div>
         </div>
     )
