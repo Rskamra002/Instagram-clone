@@ -127,7 +127,6 @@ router.patch('/users/unfollow/:id', async (req, res) => {
 router.patch('/users/savepost/:id', async (req, res) => {
   try {
     const id = req.params.id;
-    const body = req.body;
     const { postId } = req.body;
 
     // finding user and post in our DB
