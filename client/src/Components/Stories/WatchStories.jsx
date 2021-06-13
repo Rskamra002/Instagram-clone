@@ -63,7 +63,7 @@ const WatchStories = () => {
           <Slider {...settings} ref={sliderRef}>
             {
               story?.map((item, i) =>
-              <div className={i == num ? `${styles.activeSlide}`: `${styles.slide}`} style={{backgroundImage:`url(${item.img})`}}>
+              <div className={i === num ? `${styles.activeSlide}`: `${styles.slide}`} style={{backgroundImage:`url(${item.img})`}}>
                 
                 <img src={item.img} width="100%" height="100%"/>
                 { i === num &&
