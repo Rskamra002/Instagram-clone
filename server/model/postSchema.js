@@ -13,7 +13,7 @@ const postsSchema = mongoose.Schema(
       ref: 'user',
       required: true,
     },
-    imgSrc: reqString,
+    src: reqString,
     caption: { type: String, trim: true },
     likes: [mongoose.Schema.Types.ObjectId],
     comments: [
