@@ -30,15 +30,18 @@ const FollowersAndFollowings = () => {
     const dispatch = useDispatch();
     const user = useParams();
     const classes = useStyles();
-    const [isLoading, setIsLoading] = useState(false);
+    // const [isLoading, setIsLoading] = useState(false);
     const [followUpdate, setFollowUpdate] = useState(false);
     const [loggedIn, setLoggedIn] = useState();
+    const [isLoading, setIsLoading] = useState();
+
     const [followPopUp, setFollowPopUp] = useState("");
     const profileData = useSelector((state) => state.profile.data);
     const { username, profile_pic, fullname, followers, following, id, bio } =
         profileData;
     const userPosts = useSelector((state) => state.profile.posts);
     const loggedInUser = loadData("users");
+    // const isLoading = useSelector((state) => state.UpdateFollows.isLoading)
 
     useEffect(() => {
         axios
@@ -54,7 +57,7 @@ const FollowersAndFollowings = () => {
     };
 
     const handleFollow = () => {
-        UpdateFollows(loggedInUser.id, id, reRender);
+        UpdateFollows(loggedInUser.id, id, reRender)
     };
 
     const reRender = () => {

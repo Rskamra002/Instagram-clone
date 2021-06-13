@@ -54,7 +54,7 @@ const DetailedPostInfo = (data) => {
   const profileData = useSelector((state) => state.profile.data);
   const { username, profile_pic, fullname } = profileData;
 
-  const { imgSrc, handlePostDisplay, likes } = data;
+  const { imgSrc, handlePostDisplay, likes, id } = data;
   const classes = useStyles();
 
   return (
@@ -72,11 +72,11 @@ const DetailedPostInfo = (data) => {
             <Grid item xs={7} s={7} md={7} lg={7} xl={7}>
               {
                 imgSrc && imgSrc.substring(imgSrc.length - 4) !== '.mp4' ? (
-              <img src={imgSrc} alt={`${fullname}'s Post`} />) : (
-                <video alt="" controls width='100%' height='100%'>
-                   <source src={imgSrc} type="video/mp4"/>
-                </video>
-              )
+                  <img src={imgSrc} alt={`${fullname}'s Post`} />) : (
+                  <video alt="" controls width='100%' height='100%'>
+                    <source src={imgSrc} type="video/mp4" />
+                  </video>
+                )
               }
             </Grid>
 
@@ -97,7 +97,7 @@ const DetailedPostInfo = (data) => {
                 <Typography variant="h6">{username}</Typography>
               </Box>
               <Divider />
-              <Comments {...profileData} likes={likes} />
+              <Comments {...profileData} likes={likes} id={id} />
             </Grid>
           </Grid>
         </Paper>

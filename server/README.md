@@ -130,7 +130,7 @@ Success (Status Code - `200`)
 PATCH URL - `/users/unfollow/:id`
 <br />
 
-`id(user) is going to follow userId(user)`
+`id(user) is going to unfollow userId(user)`
 
 PARAMS
 
@@ -249,16 +249,14 @@ Success (Status Code - `200`)
 
 ### ADD NEW POST
 
-POST URL - `posts/addpost/:id`
+POST URL - `posts/addpost`
 <br />
-
-`id - postId`
 
 PARAMS
 
 ```json
 {
-  "imgSrc": "imgSrc",
+  "src": "src",
   "userId": "userId "
 }
 ```
