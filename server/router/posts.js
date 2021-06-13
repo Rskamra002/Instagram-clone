@@ -33,9 +33,9 @@ router.get('/posts/:id', async (req, res) => {
 
 // adding new post
 router.post('/posts/addpost', async (req, res) => {
-  const { imgSrc, userId } = req.body;
+  const { src, userId } = req.body;
 
-  if (!imgSrc || !userId) {
+  if (!src || !userId) {
     return res
       .status(422)
       .json({ error: 'Please submit all the fields properly' });
