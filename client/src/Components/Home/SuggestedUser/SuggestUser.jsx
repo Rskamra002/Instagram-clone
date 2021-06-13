@@ -13,39 +13,40 @@ const SuggestUser = () => {
         let b = loadData("users")
         setProfile(b)
         const following = profile?.following
-        let updated = suggestions?.filter((item) => item.id !== profile?.id && !following?.includes(item.id) )
+        let updated = suggestions?.filter((item) => item.id !== profile?.id && !following?.includes(item.id))
         setNewPerson(updated)
-    },[suggestions])
+    }, [suggestions])
+    
     return (
         <SuggestionsWrapper>
             <UserProfile>
-                <img src={profile.profile_pic} alt="profile"/>
+                <img src={profile.profile_pic} alt="profile" />
                 <div>
                     <h4>{profile.username}</h4>
                     <p>{profile.fullname}</p>
                 </div>
             </UserProfile>
-            <br/>
+            <br />
             <SuggestionHead>
                 <h4>Suggestions For You</h4>
                 <p>See All</p>
             </SuggestionHead>
-            { newPerson && 
+            {newPerson &&
                 <>
-                <IndividualUserSuggestion profile_pic={newPerson[0]?.profile_pic} username={newPerson[0]?.username}/>
-                <IndividualUserSuggestion profile_pic={newPerson[1]?.profile_pic} username={newPerson[1]?.username}/>
-                <IndividualUserSuggestion profile_pic={newPerson[2]?.profile_pic} username={newPerson[2]?.username}/>
-                <IndividualUserSuggestion profile_pic={newPerson[3]?.profile_pic} username={newPerson[3]?.username}/>
-                <IndividualUserSuggestion profile_pic={newPerson[4]?.profile_pic} username={newPerson[4]?.username}/>
+                    <IndividualUserSuggestion profile_pic={newPerson[0]?.profile_pic} username={newPerson[0]?.username} id={newPerson[0]?.id} />
+                    <IndividualUserSuggestion profile_pic={newPerson[1]?.profile_pic} username={newPerson[1]?.username} id={newPerson[1]?.id} />
+                    <IndividualUserSuggestion profile_pic={newPerson[2]?.profile_pic} username={newPerson[2]?.username} id={newPerson[2]?.id} />
+                    <IndividualUserSuggestion profile_pic={newPerson[3]?.profile_pic} username={newPerson[3]?.username} id={newPerson[3]?.id} />
+                    <IndividualUserSuggestion profile_pic={newPerson[4]?.profile_pic} username={newPerson[4]?.username} id={newPerson[4]?.id} />
                 </>
             }
-            <Details/>
+            <Details />
         </SuggestionsWrapper>
-        
+
     )
 }
 
-export {SuggestUser}
+export { SuggestUser }
 
 const SuggestionsWrapper = styled.div`
     width:24%;
