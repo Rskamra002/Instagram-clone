@@ -8,21 +8,21 @@ function Conversation({loggedInUser,connverUser}) {
     const [friendDetails,setfriendDetails] = useState(null)
     
     useEffect(async () => {
-        const friendId = connverUser.members.find(it=>it !== loggedInUser._id)
-        await axios.get("")
-    }, [])
+        const friendId = connverUser.members.find(it=>it !== loggedInUser)
+        await axios.get(`http://localhost:2511/users/${friendId}`).then(res=>setfriendDetails(res.data.data))
+    }, [connverUser,loggedInUser])
     
     return (
-        <div></div>
-        // <UsersLink to={`/direct/inbox/${item._id}`} key={item._id} className={UsersStyle.indItems} >
-        //     <div>
-        //         <img className={UsersStyle.userProfileImg} src={item.profilePic} alt="" />
-        //     </div>
-        //     <div>
-        //         <p>{item.username}</p>
-        //         <p>{item.fullname}</p>
-        //     </div>
-        // </UsersLink>
+        // <div></div>
+        <UsersLink to={`/direct/inbox/${connverUser?._id}/${friendDetails?._id}`} key={friendDetails?._id}>
+            <div>
+                <img className={UsersStyle.userProfileImg} src={friendDetails?.profilePic} alt="" />
+            </div>
+            <div>
+                <p>{friendDetails?.username}</p>
+                <p>{friendDetails?.fullname}</p>
+            </div>
+        </UsersLink>
     )
 }
 
