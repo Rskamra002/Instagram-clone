@@ -8,7 +8,7 @@ router.get('/users', async (req, res) => {
   const page = +req.query._page;
   const limit = +req.query._limit;
 
-  const offset = page - 1 + limit;
+  const offset = (page - 1) * limit;
 
   const users = await UsersData.find({}, { password: 0, tokens: 0 })
     .skip(offset)

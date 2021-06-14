@@ -37,7 +37,7 @@ function Posts() {
       <Stories/>
       {allPosts?.sort((a,b) => b-a).map((item) => (
         <>
-          <PostItem key={item.id} {...item} />
+          <PostItem key={item._id} {...item} />
         </>
       ))}
       {

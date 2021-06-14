@@ -14,13 +14,23 @@ const PostItem = ({_id,userId,src,caption,likes,comments,dateCreation}) => {
   const [postOwnerUserName,setPostOwnerUserName] = useState("")
   const [postOwnerPic,setPostOwnerPic] = useState("")
 
+  // logged in user info
   const user = useSelector(state => state.login.user);
 
+  // current post like status
   const [like,setLike] = useState(false);
+
+  // post likes array
   const [allLikes,setAllLikes] = useState(likes);
+
+  // post comments array
   const [allComments,setAllComments] = useState(comments);
   const [viewMore,setViewMore] = useState(false);
+
+  // comment 
   const [query,setQuery] = useState("");
+
+  // on clicking on comment icon comment input will be focused
   const inputRef = useRef();
 
 
@@ -69,15 +79,26 @@ const PostItem = ({_id,userId,src,caption,likes,comments,dateCreation}) => {
     if(query === ""){
       return;
     }
+
+  // logged in user
     const payload = {
-      displayName: user.username, 
+      userId: user._id, 
       comment: query, 
-      commentTime: Date.now()
     }
-    setAllComments([payload,...allComments]);
+
+    // _id => postId
+    axios.patch(`http://localhost:2511/posts/addcomment/${_id}`, payload).then(res => {
+      handleCommentCount()
+    })
     setQuery("");
   }
 
+  const handleCommentCount = () =>{
+    // after like or dislike getting new data of post
+    axios.get(`http://localhost:2511/posts/${_id}`).then(res => {
+      setAllComments(res.data.data.comments)
+    })
+  }
   
   
 
@@ -130,7 +151,12 @@ const PostItem = ({_id,userId,src,caption,likes,comments,dateCreation}) => {
               <div><span>{postOwnerUserName}</span>{caption}</div>
             </Caption>
 
-            <Comments allComments={allComments} viewMore={viewMore} setViewMore={ setViewMore} />
+            {allComments.length > 2 ? <ViewMoreComments >
+            <button onClick={() => {setViewMore(!viewMore)}}>{viewMore ? "Hide comments": "View more comments"}</button>
+            </ViewMoreComments> : null}
+            <AllComments viewMore={viewMore}> 
+              {allComments?.map((commentItem) => <Comments key={commentItem._id} comment={commentItem}/>)}
+            </AllComments>
           </Engagement>
           
           <AddComment handleAddComment = {handleAddComment} inputRef={inputRef} query={query} setQuery={setQuery} />
@@ -205,3 +231,28 @@ const Caption = styled.div`
   margin-bottom:10px;
 `
 
+
+
+const ViewMoreComments = styled.div`
+  button{
+    cursor: pointer;
+    border:none;
+    background-color:transparent;
+  }
+`
+const AllComments = styled.div`
+  max-height:58px;
+  overflow-y: ${props => props.viewMore ? "scroll" :"hidden"} ;
+  div{
+    font-size:15px;
+    margin:6px 0px;
+    display:flex;
+    justify-content:space-between;
+    & > span > span{
+      font-weight:bold;
+      display:inline-block;
+      margin-right:4px;
+    }
+
+  }
+`
