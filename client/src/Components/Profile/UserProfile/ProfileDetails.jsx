@@ -38,7 +38,14 @@ const ProfileDetails = () => {
   const classes = useStyles();
   const [activePage, setActivePage] = useState("posts");
   const profileData = useSelector((state) => state.profile.data);
-  const { username, profile_pic, fullname, followers, following, id, bio } = profileData;
+  const { profilePic, fullname } = profileData;
+  const [totalFollower, setTotalFollower] = useState(useSelector((state) => state.profile.data.followers?.length))
+
+
+  const increaseMe = () => {
+    setTotalFollower((prev) => prev + 1)
+    console.log('calling', totalFollower)
+  }
 
   useEffect(() => {
     dispatch(getUserData(user));
@@ -48,7 +55,6 @@ const ProfileDetails = () => {
     setActivePage(page);
   };
 
-
   return !profileData ? (
     <LinearProgress className={classes.loader} />
   ) : (
@@ -57,9 +63,9 @@ const ProfileDetails = () => {
         <Profile>
           <Box className={styles.userProfile}>
             <Box>
-              <img src={profile_pic} alt={`${fullname}'s Profile Picture`} />
+              <img src={profilePic} alt={`${fullname}'s Profile Picture`} />
             </Box>
-            <FollowersAndFollowings />
+            <FollowersAndFollowings {...profileData} increaseMe={increaseMe} totalFollower={totalFollower} />
           </Box>
         </Profile>
         <Divider className={classes.divider} />
@@ -80,8 +86,6 @@ const ProfileDetails = () => {
 };
 
 // styled components
-
-
 const Profile = styled.div`
   width: 100%;
   margin-left: 6%;

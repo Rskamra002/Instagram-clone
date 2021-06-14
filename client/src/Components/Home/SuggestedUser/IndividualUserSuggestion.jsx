@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from "styled-components"
 import { loadData } from '../../../Utils/localStorage'
-import { UpdateFollows } from '../../Profile/UserProfile/UpdateFollows'
 import UnFollowPopup from './UnFollowPopup'
 const IndividualUserSuggestion = (data) => {
     const { profilePic, username, id } = data;
@@ -11,7 +10,7 @@ const IndividualUserSuggestion = (data) => {
     const loggedInUser = loadData('users')
 
     const handleFollow = (id) => {
-        UpdateFollows(loggedInUser.id, id)
+        // UpdateFollows(loggedInUser.id, id)
         setIsFollowing(!isFollowing);
     }
     const handleUnfollow = (id) => {
@@ -25,7 +24,7 @@ const IndividualUserSuggestion = (data) => {
     const updateFollowStatus = () => {
         setIsFollowing(!isFollowing)
     }
-    
+
     return (
         <UserSuggested>
             <InnerBox>
