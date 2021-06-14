@@ -178,7 +178,7 @@ router.patch('/posts/addcomment/:id', async (req, res) => {
     // adding userId in likes array (user who is going to like that post)
     const post = await PostsData.findOneAndUpdate(
       { _id: id },
-      { $addToSet: { comments: body } },
+      { $addToSet: { comments: { ...body, commentTime: Date.now() } } },
       {
         new: true,
       }

@@ -24,6 +24,7 @@ const postsSchema = mongoose.Schema(
           required: true,
         },
         comment: reqString,
+        commentTime: reqString,
         likes: [mongoose.Schema.Types.ObjectId],
       },
     ],
