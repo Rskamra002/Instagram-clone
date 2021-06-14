@@ -8,7 +8,7 @@ router.get('/posts', async (req, res) => {
   const page = +req.query._page;
   const limit = +req.query._limit;
 
-  const offset = page - 1 + limit;
+  const offset = (page - 1) * limit;
 
   const posts = await PostsData.find({})
     .skip(offset)
