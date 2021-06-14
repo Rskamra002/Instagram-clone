@@ -9,6 +9,8 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import {unlikeIconPath,likeIconPath ,savedPostIconPath,unsavedPostIconPath, sendMsgIconPath, commentIconPath} from './svgIcons'
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 
 const PostItem = ({_id,userId,src,caption,likes,comments}) => {
   const [postOwnerUserName,setPostOwnerUserName] = useState("")
@@ -106,10 +108,13 @@ const PostItem = ({_id,userId,src,caption,likes,comments}) => {
   // is this post save in user savedPosts array
 
   const isPostSavedFunc = () => {
-     const isPresent = user.savedPosts.filter(savedPostId => savedPostId === _id);
-     if(isPresent.length !== 0){
+    axios.get(`http://localhost:2511/users/${user._id}`).then(res => {
+     const isPresent = res.data.data.savedPosts.includes(_id);
+     if(isPresent){
         setIsPostSaved(true);
      }
+    })
+      
   }
   
   // saving the post
@@ -177,7 +182,7 @@ const PostItem = ({_id,userId,src,caption,likes,comments}) => {
             <Likes likes={allLikes} />
             
             <Caption>
-              <div><span>{postOwnerUserName}</span>{caption}</div>
+              <div><Link to={postOwnerUserName}>{postOwnerUserName}</Link>{caption}</div>
             </Caption>
 
             {allComments.length > 2 ? <ViewMoreComments >
@@ -250,11 +255,13 @@ const Caption = styled.div`
    div{
     font-size:15px;
     font-weight:500;
-    span{
+    a{
       font-size:16px;
       font-weight:bold;
       display:inline-block;
       margin-right:4px;
+      text-decoration:none;
+      color:black;
     }
   }
   margin-bottom:10px;
@@ -277,11 +284,12 @@ const AllComments = styled.div`
     margin:6px 0px;
     display:flex;
     justify-content:space-between;
-    & > span > span{
+    & > span > a{
       font-weight:bold;
       display:inline-block;
       margin-right:4px;
+      text-decoration:none;
+      color:black;
     }
-
   }
 `
