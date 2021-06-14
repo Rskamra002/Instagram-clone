@@ -1,0 +1,26 @@
+.slide img {
+    /* width: 20rem; */
+    margin: 0 auto;
+    border-radius: 10px;
+}
+.slide {
+    transform: scale(0.5);
+    transition: transform 600ms;
+    opacity: 0.5;
+    width: 20%;
+    height: 500px;
+}
+
+.activeSlide {
+    transform: scale(1.1);
+    opacity: 1;
+    transition: transform 600ms;
+    width: 20%;
+    margin: 10px 0px;
+    height: 500px;
+    
+}
+.activeSlide > img {
+    border-radius: 20px;
+
+}
