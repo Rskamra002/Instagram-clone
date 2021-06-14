@@ -25,7 +25,6 @@ function LoginInp() {
         setShowPassword(!showPassword);
     };
     const handleLogin=()=>{
-        console.log("sasd")
         dispatch(loginUser(values))
     }
     if(isAuth){
