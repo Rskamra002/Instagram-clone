@@ -15,25 +15,18 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const SearchPopUp = ({setState}) => {
+const SearchPopUp = ({open, close}) => {
   const classes = useStyles();
   const [query, setQuery] = useState("")
-  const handleOpen = () => {
-    setState(true);
-  };
-
-  const handleClose = () => {
-    setState(false);
-  };
 
     return (
         <>
          <Container>
-            <Modal open={handleOpen}
-                onClose={handleClose}>
+            <Modal open={true}
+                >
                 <Paper className={classes.paper}>
                     <Head>
-                        <CloseIcon/>
+                        <CloseIcon onClick={close}/>
                         <h4>New Message</h4>
                         <p>Next</p>
                     </Head>
