@@ -2,6 +2,7 @@ import axios from 'axios'
 import React from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import {timeConverter} from '../../../Utils/timeConverter'
 
 export default function Comments({comment}) {
@@ -18,7 +19,7 @@ export default function Comments({comment}) {
          <>
           <div id={comment._id}>
             <span>
-              <span>{commentBy}</span>
+              <Link to={`/${commentBy}`}>{commentBy}</Link>
               {comment.comment}
             </span>
             <span>

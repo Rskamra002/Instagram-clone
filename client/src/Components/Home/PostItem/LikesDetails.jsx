@@ -1,18 +1,16 @@
 import {useEffect,useState} from 'react'
 import axios from 'axios';
-// import UserInfo from './UserInfo'
 import {
   Container,
   makeStyles,
-  Divider,
   Paper,
   Modal,
   Avatar,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
-// styling material ui elements
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -27,77 +25,58 @@ const useStyles = makeStyles(() => ({
   },
 
   close: {
-    right: 30,
-    top: 20,
-    color: "white",
-    position: "absolute",
+    fontSize:"30px",
+    padding:"4px",
     "& :hover": {
       cursor: "pointer",
     },
   },
 }));
 
-// function getModalStyle() {
-//   return {
-//     top: `${50}%`,
-//     left: `${50}%`,
-//     transform: `translate(-${50}%, -${50}%)`,
-//   };
-// }
 
 export default function LikesDetails({likes,showLikes,handleHideLikes}) {
   const classes = useStyles();
   const [likedUsers,setLikedUsers] = useState([]);
-  const [open, setOpen] = useState(true);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
   const handleClose = () => {
-    // setOpen(false);
     handleHideLikes(false);
   };
 
   useEffect(() => {
     likes.forEach((userId) => {
-      axios.get(`https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers/${userId}`).then((res) => {
+      axios.get(`http://localhost:2511/users/${userId}`).then((res) => {
       console.log(res.data)
-        setLikedUsers(prev => [...prev,{"username":res.data.username, "profilePic":res.data.profile_pic}])
+        setLikedUsers(prev => [...prev,{"username":res.data.data.username, "profilePic":res.data.data.profilePic, "fullname": res.data.data.fullname}])
       })
     })
   },[])
-  console.log(likedUsers)
-  // return (
-  //   <div style={modalStyle} className={classes.paper}>
-  //     <h3 id="simple-modal-title">{likes.length} likes</h3>
-  //     {likedUsers?.map(({username,profilePic}) => {
-  //       return <UserInfo username={username} imgUrl={profilePic} />
-  //     })}
-  //   </div>
-  // );
+  
   return (
     <Container className={classes.container}>
       <Modal open={showLikes}>
         <Paper className={classes.paper}>
-          <Wrapper>
+          <Wrapper1>
             <Title>Likes</Title>
-            <CloseIcon onClick={handleClose} />
-          </Wrapper>
-          <Divider />
+            <CloseIcon className={classes.close} onClick={handleClose} />
+          </Wrapper1>
           <Liked>
             {likedUsers?.map((user) => {
               return (
-                <Wrapper>
-                  <Avatar
-                    src={user.profilePic}
-                    alt={`${user.fullname}'s Profile Picture`}
-                  ></Avatar>
+                <Wrapper2>
+                  <Link to={`/${user.username}`}>
+                    <Avatar
+                      src={user.profilePic}
+                      alt={`${user.fullname}'s Profile Picture`}
+                    ></Avatar>
+                  </Link>
                   <MainDiv>
-                    <div>{user.username}</div>
+                    <Link to={`/${user.username}`}>
+                      <div>{user.username}</div>
+                    </Link>
                     <div>{user.fullname}</div>
                   </MainDiv>
                   <Button>Following</Button>
-                </Wrapper>
+                </Wrapper2>
               );
             })}
           </Liked>
@@ -107,21 +86,33 @@ export default function LikesDetails({likes,showLikes,handleHideLikes}) {
   );
 };
 
-export const Title = styled.p`
+const Title = styled.h4`
   text-align: center;
+  width:100%;
+  font-weight:bold;
   padding: 10px;
-  font-weight: 500;
 `;
 
-export const Wrapper = styled.div`
+const Wrapper1 = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom:1px solid lightgrey;
+  padding: 4px 10px;
+  margin: 14px;
+`;
+
+
+const Wrapper2 = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0px 10px;
   margin: 14px;
+  border-top:3px solid white;
 `;
 
-export const Button = styled.button`
+const Button = styled.button`
   background: white;
   font-weight: bold;
   border: 1px solid rgb(231, 231, 231);
@@ -132,18 +123,30 @@ export const Button = styled.button`
   }
 `;
 
-export const MainDiv = styled.div`
+const MainDiv = styled.div`
   flex-grow: 1;
   margin-left: 14px;
-  div:nth-child(1) {
+  a{
+    text-decoration:none;
+    color:black;
     font-weight: 500;
+
+    &:hover{
+      text-decoration:underline;
+    }
+  }
+  
+  div:nth-child(1) {
+    margin-left:2px;
+    margin-bottom:1px;
   }
   div:nth-child(2) {
     color: grey;
+    font-size:15px;
   }
 `;
 
-export const Liked = styled.div`
+const Liked = styled.div`
   overflow-y: scroll;
   height: 400px;
 `;
