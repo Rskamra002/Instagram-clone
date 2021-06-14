@@ -17,10 +17,10 @@ function Posts() {
   useEffect(() => {
     setLoading(true)
     axios
-      .get(`https://json-server-mocker-neeraj-data.herokuapp.com/instaPosts?_page=${page}&&_limit=5`)
+      .get(`http://localhost:2511/posts?_page=${page}&&_limit=5`)
       .then((res) => {
-        console.log((res.data));
-        setAllPosts([...allPosts, ...res.data])
+        console.log((res.data.data));
+        setAllPosts([...allPosts, ...res.data.data])
         setLoading(false)
       });
   }, [page]);

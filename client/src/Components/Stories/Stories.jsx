@@ -39,9 +39,9 @@ const Stories = () => {
     return (
         <Wrapper>
             <Slider {...settings}>
-            <StoryItem image={self.profile_pic} name={self.username} index ={0}/>
+            <StoryItem image={self.profilePic} name={self.username} index ={0}/>
             {
-                storyUsers?.filter((item) => item.id != self.id).map((el, i) => <StoryItem key={el.id} image={el.profile_pic} name={el.username} index={i+1}/>) 
+                storyUsers?.filter((item) => item._id !== self._id).map((el, i) => <StoryItem key={el._id} image={el.profilePic} name={el.username} index={i+1}/>) 
             }
             </Slider>
         </Wrapper>

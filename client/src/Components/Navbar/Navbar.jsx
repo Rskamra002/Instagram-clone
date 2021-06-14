@@ -36,7 +36,7 @@ function Navbar() {
         setSuggestedUsers(output)
 
         let b = JSON.parse(localStorage.getItem("users"))
-        setProfilePic(b.profile_pic)
+        setProfilePic(b.profilePic)
         setUsername(b.username)
     },[suggestions, query])
 
@@ -122,7 +122,7 @@ function Navbar() {
                             suggestions?.map((item) => (
                                 <Link to={`/${item.username}`}>
                                 <UsersProfile onClick={openProfile} key={item.id}>
-                                    <img src={item.profile_pic} alt="profile"/>
+                                    <img src={item.profilePic} alt="profile"/>
                                     <div>
                                         <p>{item.username}</p>
                                         <p>{item.fullname}</p>
