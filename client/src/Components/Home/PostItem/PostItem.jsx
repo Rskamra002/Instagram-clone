@@ -7,10 +7,10 @@ import Likes from './Likes'
 import AddComment from './AddComment'
 import axios from 'axios';
 import { useEffect } from 'react';
-import {unlikeIconPath,likeIconPath ,savedPostIconPath, sendMsgIconPath, commentIconPath} from './svgIcons'
+import {unlikeIconPath,likeIconPath ,savedPostIconPath,unsavedPostIconPath, sendMsgIconPath, commentIconPath} from './svgIcons'
 import { useSelector } from 'react-redux';
 
-const PostItem = ({_id,userId,src,caption,likes,comments,dateCreation}) => {
+const PostItem = ({_id,userId,src,caption,likes,comments}) => {
   const [postOwnerUserName,setPostOwnerUserName] = useState("")
   const [postOwnerPic,setPostOwnerPic] = useState("")
 
@@ -33,6 +33,9 @@ const PostItem = ({_id,userId,src,caption,likes,comments,dateCreation}) => {
   // on clicking on comment icon comment input will be focused
   const inputRef = useRef();
 
+
+  // is post saved
+  const [isPostSaved,setIsPostSaved] = useState(false);
 
   const fetchPostOwner = () => {
     axios.get(`http://localhost:2511/users/${userId}`).then((res) => {
@@ -100,11 +103,38 @@ const PostItem = ({_id,userId,src,caption,likes,comments,dateCreation}) => {
     })
   }
   
+  // is this post save in user savedPosts array
+
+  const isPostSavedFunc = () => {
+     const isPresent = user.savedPosts.filter(savedPostId => savedPostId === _id);
+     if(isPresent.length !== 0){
+        setIsPostSaved(true);
+     }
+  }
   
+  // saving the post
+  const handleSavePost = () => {
+    if(isPostSaved){
+      // removepost
+      axios.patch(`http://localhost:2511/users/removesavepost/${user._id}`,{
+        "postId": _id
+      }).then(res => {
+        setIsPostSaved(false)
+    })
+    } else{
+      // save post
+      axios.patch(`http://localhost:2511/users/savepost/${user._id}`,{
+        "postId": _id
+      }).then(res => {
+        setIsPostSaved(true);
+    })
+    }
+  }
 
   useEffect(() => {
     fetchPostOwner();
     isPhotoLikedByUser();
+    isPostSavedFunc();
   },[])
 
     return (
@@ -136,11 +166,10 @@ const PostItem = ({_id,userId,src,caption,likes,comments,dateCreation}) => {
                 </SendMsgIcon>
               </div>
               <div>
-                <SavedPostIcon>
-                  <svg aria-label="Save" class="_8-yf5 " fill="#262626" height="24" viewBox="0 0 48 48" width="24">
-                    <path d={savedPostIconPath} />
-                  </svg>
-
+                <SavedPostIcon onClick={handleSavePost}>
+                  {isPostSaved ? <svg aria-label="Remove" class="_8-yf5 " fill="#262626" height="24" viewBox="0 0 48 48" width="24"><path d={savedPostIconPath}></path></svg> : <svg aria-label="Save" class="_8-yf5 " fill="#262626" height="24" viewBox="0 0 48 48" width="24">
+                    <path d={unsavedPostIconPath} />
+                  </svg>} 
                 </SavedPostIcon>
               </div>
             </Icons>
