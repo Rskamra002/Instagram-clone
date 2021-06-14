@@ -12,10 +12,20 @@ function Message({ownMessage,data}) {
     return (
         <WrapperMain ownMessage={ownMessage}>
             <IndMsgWrapper ownMessage={ownMessage}>
-                <MessageImage ownMessage={ownMessage} src={messenger?.profilePic} alt=""/>
-                <MessageText ownMessage={ownMessage}>
-                    {data.text}
-                </MessageText>
+                {
+                    ownMessage?
+                    <>
+                        <MessageText ownMessage={ownMessage}>
+                            {data.text}
+                        </MessageText>
+                        <MessageImage ownMessage={ownMessage} src={messenger?.profilePic} alt=""/>
+                    </>:<>
+                        <MessageImage ownMessage={ownMessage} src={messenger?.profilePic} alt=""/>
+                        <MessageText ownMessage={ownMessage}>
+                            {data.text}
+                        </MessageText>
+                    </>
+                }
             </IndMsgWrapper>
         </WrapperMain>
     )
@@ -35,7 +45,6 @@ const IndMsgWrapper = styled.div`
     padding: .2rem .8rem;
 `
 const MessageImage = styled.img`
-    display:${props=>props.ownMessage?"none":"inline"} ;
     width: 32px;
     height: 32px;
     border-radius: 50%;

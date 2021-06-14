@@ -30,6 +30,7 @@ const InputBox = styled.input`
     padding:.5rem;
     outline: none;
     border-radius: .5rem;
+    border:1px solid #DBDBDB;
 `
 const SendButton = styled.button`
    display: none;
