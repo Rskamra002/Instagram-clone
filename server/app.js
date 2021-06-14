@@ -15,15 +15,21 @@ const PORT = process.env.PORT;
 const UsersData = require('./model/userSchema');
 const PostsData = require('./model/postSchema');
 
+
+//ChatData modules
+const ConversationData = require("./model/conversationSchema");
+const MessageData = require("./model/messageSchema");
+
 const app = express();
 
 // Middlewares
 app.use(cors());
 app.use(express.json());
-
 app.use(require('./router/auth'));
 app.use(require('./router/users'));
 app.use(require('./router/posts'));
+app.use(require("./router/conversation"));
+app.use(require("./router/message"))
 
 async function start() {
   // Mongoose connection
