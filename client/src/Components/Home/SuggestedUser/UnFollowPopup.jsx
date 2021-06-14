@@ -8,7 +8,6 @@ import {
 import React from "react";
 import styled from "styled-components";
 import { loadData } from "../../../Utils/localStorage";
-import { UpdateFollows } from "../../Profile/UserProfile/UpdateFollows";
 
 const useStyles = makeStyles((theme) => ({
     avatar: {
@@ -23,7 +22,7 @@ const UnFollowPopup = (data) => {
     const loggedInUser = loadData('users')
     const { profile_pic, username, id, popup, closePopup, updateFollowStatus } = data;
     const handleUnfollow = (id) => {
-        UpdateFollows(loggedInUser.id, id)
+        // UpdateFollows(loggedInUser.id, id)
         closePopup();
         updateFollowStatus();
     }
