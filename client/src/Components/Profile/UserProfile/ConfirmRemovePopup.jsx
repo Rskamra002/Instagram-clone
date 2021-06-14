@@ -7,9 +7,11 @@ import {
     CircularProgress,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import axios from "axios";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { loadData } from "../../../Utils/localStorage";
+import { unFollowUser } from "./UpdateFollows";
+
 const useStyles = makeStyles((theme) => ({
     avatar: {
         margin: "15px auto",
@@ -23,71 +25,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ConfirmRemovePopup = (data) => {
-    const profileData = useSelector((state) => state.profile.data);
-    const loggedInUser = profileData.id;
-    const { username, profilePic, closePopup, userId, reRender } = data;
-    const [isLoading, setIsLoading] = useState(false);
-    const [isError, setIsError] = useState(false);
-    const confirmRemove = (removeFrom, toRemove) => {
+    const [isLoading, setIsLoading] = useState(false)
+    const dispatch = useDispatch();
+    const loggedInUser = loadData("users");
+    const { username, profilePic, closePopup } = data;
+
+    const confirmRemove = async (removeFrom, toRemove) => {
         setIsLoading(true);
-        let updateFollowers = new Promise((resolve, reject) => {
-            let followers = axios
-                .get(
-                    `https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers/${removeFrom}`
-                )
-                .then((res) => res.data.followers);
-            if (followers) {
-                resolve(followers);
-            } else {
-                reject("rejected");
-            }
-        });
-
-        let updateFollowings = new Promise((resolve, reject) => {
-            let followings = axios
-                .get(
-                    `https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers/${toRemove}`
-                )
-                .then((res) => res.data.following);
-            if (followings) {
-                resolve(followings);
-            } else {
-                reject("rejected");
-            }
-        });
-
-        updateFollowers
-            .then((followers) => {
-                let updatedFollowers = followers.filter((item) => item != toRemove);
-                axios
-                    .patch(
-                        `https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers/${removeFrom}`,
-                        {
-                            followers: updatedFollowers,
-                        }
-                    )
-                    .then((res) => res);
-            })
-            .catch((msg) => msg);
-
-        updateFollowings
-            .then((followings) => {
-                let updatedFollowings = followings.filter((item) => item != removeFrom);
-                axios
-                    .patch(
-                        `https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers/${toRemove}`,
-                        {
-                            following: updatedFollowings,
-                        }
-                    )
-                    .then((res) => {
-                        setIsLoading(false)
-                        closePopup();
-                        reRender();
-                    });
-            })
-            .catch((msg) => setIsError(setIsError))
-    }
+        setTimeout(() => {
+            unFollowUser(removeFrom, toRemove, dispatch);
+            setIsLoading(false);
+            closePopup();
+        }, 1000)
+    };
 
     const classes = useStyles();
     return (
@@ -100,7 +50,9 @@ const ConfirmRemovePopup = (data) => {
                     <Divider />
                     <Button
                         style={{ color: "#ed4956", fontWeight: "bold" }}
-                        onClick={() => confirmRemove(loggedInUser, userId)}
+                        onClick={() =>
+                            confirmRemove(data.userId, loggedInUser.id, dispatch)
+                        }
                     >
                         {isLoading ? <CircularProgress size={25} /> : "Remove"}
                     </Button>

@@ -38,18 +38,16 @@ const useStyles = makeStyles(() => ({
   },
   avatar: {
     "&:hover": {
-      cursor: 'pointer',
-    }
-  }
+      cursor: "pointer",
+    },
+  },
 }));
 
-const FollowersPopup = ({ reRender, handlePopUp }) => {
+const FollowersPopup = ({ reRender, handlePopUp, followers }) => {
   const history = useHistory();
   const [profileFollowers, setProfileFollowers] = useState([]);
   const [removeFollower, setRemoveFollower] = useState();
   const classes = useStyles();
-  const profileData = useSelector((state) => state.profile.data);
-  const { followers } = profileData;
 
   const closePopup = () => {
     setRemoveFollower("");
@@ -62,27 +60,23 @@ const FollowersPopup = ({ reRender, handlePopUp }) => {
 
   const redirectUser = (follower) => {
     handlePopUp();
-    history.push(`/${follower.username}`)
-  }
+    history.push(`/${follower.username}`);
+  };
 
   useEffect(() => {
     if (followers) {
       followers.forEach((userId) => {
-        axios
-          .get(
-            `https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers/${userId}`
-          )
-          .then((res) => {
-            setProfileFollowers((prev) => [
-              ...prev,
-              {
-                username: res.data.username,
-                fullname: res.data.fullname,
-                profilePic: res.data.profile_pic,
-                userId: res.data.id,
-              },
-            ]);
-          });
+        axios.get(`http://localhost:2511/users/${userId}`).then((res) => {
+          setProfileFollowers((prev) => [
+            ...prev,
+            {
+              username: res.data.data.username,
+              fullname: res.data.data.fullname,
+              profilePic: res.data.data.profilePic,
+              userId: res.data.data._id,
+            },
+          ]);
+        });
       });
     }
   }, []);
@@ -156,17 +150,17 @@ export const Button = styled.button`
 `;
 
 export const MainDiv = styled.div`
-      flex-grow: 1;
-      margin-left: 14px;
-      :hover {
-        cursor:pointer;
-      }
-      div:nth-child(1) {
-        font-weight: 500;
-        color:black;
+  flex-grow: 1;
+  margin-left: 14px;
+  :hover {
+    cursor: pointer;
   }
-      div:nth-child(2) {
-        color: grey;
+  div:nth-child(1) {
+    font-weight: 500;
+    color: black;
+  }
+  div:nth-child(2) {
+    color: grey;
   }
 `;
 
