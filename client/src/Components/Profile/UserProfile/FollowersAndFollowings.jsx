@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from "react";
-import {
-    makeStyles,
-    Typography,
-    Box,
-    CircularProgress,
-} from "@material-ui/core";
+import { makeStyles, Typography, Box } from "@material-ui/core";
 import { settings } from "../UserPosts/SvgIcons";
 import styled from "styled-components";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import FollowersPopup from "./FollowersPopup";
 import FollowingsPopup from "./FollowingsPopup";
+import PersonIcon from "@material-ui/icons/Person";
 import { loadData } from "../../../Utils/localStorage";
 import axios from "axios";
 import { getUserData } from "../../../Redux/UserProfile/action";
-import { UpdateFollows } from "./UpdateFollows.js";
+import { followUser, unFollowUser } from "./UpdateFollows";
 
 // styling material ui elements
 const useStyles = makeStyles((theme) => ({
@@ -24,44 +20,43 @@ const useStyles = makeStyles((theme) => ({
         gap: 50,
         margin: theme.spacing(2, 0),
     },
+    personIcon: {
+        border: "1px solid rgb(231, 231, 231)",
+        width: "60px",
+        height: "inherit",
+        borderRadius: "5px",
+    },
 }));
 
-const FollowersAndFollowings = () => {
-    const dispatch = useDispatch();
+const FollowersAndFollowings = (data) => {
+    const { _id, username, bio } = data;
     const user = useParams();
     const classes = useStyles();
-    // const [isLoading, setIsLoading] = useState(false);
-    const [followUpdate, setFollowUpdate] = useState(false);
-    const [loggedIn, setLoggedIn] = useState();
-    const [isLoading, setIsLoading] = useState();
-
+    const [loggedIn, setLoggedIn] = useState("");
     const [followPopUp, setFollowPopUp] = useState("");
-    const profileData = useSelector((state) => state.profile.data);
-    const { username, profile_pic, fullname, followers, following, id, bio } =
-        profileData;
     const userPosts = useSelector((state) => state.profile.posts);
     const loggedInUser = loadData("users");
-    // const isLoading = useSelector((state) => state.UpdateFollows.isLoading)
+    const dispatch = useDispatch();
+    const profileData = useSelector((state) => state.profile.data); //params
+    const { followers, following } = profileData;
 
     useEffect(() => {
         axios
-            .get(
-                `https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers/${loggedInUser.id}`
-            )
-            .then((res) => setLoggedIn(res.data));
-        dispatch(getUserData(user));
-    }, [followUpdate]);
+            .get(`http://localhost:2511/users/${loggedInUser.username}`)
+            .then((res) => setLoggedIn(res.data.data));
+        dispatch(getUserData(username)); // PARAMS
+    }, [dispatch, followers]);
 
     const handlePopUp = () => {
         setFollowPopUp(null);
     };
 
     const handleFollow = () => {
-        UpdateFollows(loggedInUser.id, id, reRender)
+        followUser(loggedIn._id, profileData._id, dispatch);
     };
 
-    const reRender = () => {
-        setFollowUpdate(!followUpdate);
+    const handleUnFolow = () => {
+        unFollowUser(loggedIn._id, profileData._id, dispatch);
     };
 
     return (
@@ -84,15 +79,18 @@ const FollowersAndFollowings = () => {
                         </Box>
                     ) : (
                         <>
-                            <FollowBtn onClick={handleFollow}>
-                                {loggedIn && loggedIn.following.includes(id) ? (
-                                    "Unfollow"
-                                ) : isLoading ? (
-                                    <CircularProgress className={classes.circle} size={25} />
-                                ) : (
-                                    "Follow"
-                                )}
-                            </FollowBtn>
+                            {loggedIn && loggedIn.following.includes(_id) ? (
+                                <UnFollowBtn>
+                                    <MessageBtn>Message</MessageBtn>
+                                    <PersonIcon
+                                        fontSize="small"
+                                        onClick={handleUnFolow}
+                                        className={classes.personIcon}
+                                    />
+                                </UnFollowBtn>
+                            ) : (
+                                <FollowBtn onClick={handleFollow}>follow</FollowBtn>
+                            )}
                         </>
                     )}
                 </Box>
@@ -102,18 +100,18 @@ const FollowersAndFollowings = () => {
                         <span style={{ fontWeight: "bold" }}>{userPosts.length}</span> posts
                     </Typography>
                     <Typography onClick={() => setFollowPopUp("followers")}>
-                        <span style={{ fontWeight: "bold" }}>{followers.length}</span>{" "}
+                        <span style={{ fontWeight: "bold" }}>{followers?.length}</span>{" "}
                         followers
                     </Typography>
                     <Typography onClick={() => setFollowPopUp("followings")}>
-                        <span style={{ fontWeight: "bold" }}>{following.length}</span>{" "}
+                        <span style={{ fontWeight: "bold" }}>{following?.length}</span>{" "}
                         following
                     </Typography>
 
                     {followPopUp == "followers" ? (
-                        <FollowersPopup handlePopUp={handlePopUp} reRender={reRender} />
+                        <FollowersPopup handlePopUp={handlePopUp} followers={followers} />
                     ) : followPopUp == "followings" ? (
-                        <FollowingsPopup handlePopUp={handlePopUp} reRender={reRender} />
+                        <FollowingsPopup handlePopUp={handlePopUp} />
                     ) : null}
                 </Wrapper>
 
@@ -155,18 +153,39 @@ const Wrapper = styled.div`
     cursor: pointer;
   }
 `;
-
+const UnFollowBtn = styled.div`
+  height: 30px;
+  display: flex;
+  width: 50px;
+`;
 const FollowBtn = styled.div`
   background: #0095f6;
   font-weight: 500;
   border: 1px solid rgb(231, 231, 231);
   border-radius: 5px;
   color: white;
+  height: 30px;
+
   outline: none;
   position: relative;
-  height: 30px;
   font-size: 0.9rem;
   padding: 2px 25px;
+  :hover {
+    cursor: pointer;
+  }
+`;
+const MessageBtn = styled.div`
+  font-weight: 500;
+  border: 1px solid rgb(231, 231, 231);
+  border-radius: 5px;
+  outline: none;
+  text-align: center;
+  position: relative;
+  top: -10px;
+  margin-right: 5px;
+  height: 30px;
+  font-size: 0.9rem;
+  padding: 2px 15px;
   :hover {
     cursor: pointer;
   }

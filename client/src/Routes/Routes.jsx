@@ -41,7 +41,7 @@ function Routes() {
                     <Navbar/>
                     <Inbox/>
                 </PrivateRoute>
-                <PrivateRoute exact path="/direct/inbox/:username">
+                <PrivateRoute exact path="/direct/inbox/:conversationId/:friendId">
                     <Navbar/>
                     <Inbox/>
                 </PrivateRoute>

@@ -6,13 +6,11 @@ import styles from "./Posts.module.css";
 import DetailedPostInfo from "./DetailedPostInfo";
 
 const DisplayPost = (post) => {
+  console.log('post', post)
   const [popUp, setPopUp] = useState(false);
   const handlePostDisplay = () => {
     setPopUp(!popUp);
   };
-
-
-  
 
   return (
     <>
@@ -26,11 +24,11 @@ const DisplayPost = (post) => {
         className={styles.postContainer}
         onClick={handlePostDisplay}
       >{
-        post && 
-        post.imgSrc.substring(post.imgSrc.length - 4) !== '.mp4' ? (
-        <img src={post.imgSrc} className={styles.postImg} />) :
-        (<video src={post.imgSrc} width='100%' height='100%'></video>)
-      }
+          post &&
+            post.src.substring(post.src.length - 4) !== '.mp4' ? (
+            <img src={post.src} className={styles.postImg} />) :
+            (<video src={post.src} width='100%' height='100%'></video>)
+        }
         <Box className={styles.postInfoContainer}>
           <Box>
             <FavoriteIcon />
@@ -40,7 +38,7 @@ const DisplayPost = (post) => {
           </Box>
         </Box>
       </Grid>
-      
+
       {popUp && (
         <DetailedPostInfo {...post} handlePostDisplay={handlePostDisplay} />
       )}

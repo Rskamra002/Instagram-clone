@@ -9,7 +9,7 @@ import {
 import Axios from "axios";
 
 const axios = Axios.create({
-  baseURL: "https://json-server-mocker-neeraj-data.herokuapp.com",
+  baseURL: "http://localhost:2511",
 });
 
 const userDataRequest = () => {
@@ -55,12 +55,12 @@ const userPostsFailure = (err) => {
 export const getUserData = (user) => (dispatch) => {
   dispatch(userDataRequest());
   const config = {
-    url: `/instaUsers?username=${user.username}`,
+    url: `/users/${user.username}`,
     method: "get",
   };
   axios(config)
     .then((res) => {
-      dispatch(userDataSuccess(res.data[0]));
+      dispatch(userDataSuccess(res.data.data));
     })
     .catch((err) => {
       dispatch(userDataFailure(err));
@@ -70,15 +70,14 @@ export const getUserData = (user) => (dispatch) => {
 export const getUserPosts = (id) => (dispatch) => {
   dispatch(userPostsRequest());
   const config = {
-    url: `/instaPosts?userId=${id}`,
+    url: `posts/user/${id}`,
     method: "get",
   };
   axios(config)
     .then((res) => {
-      dispatch(userPostsSuccess(res.data));
+      dispatch(userPostsSuccess(res.data.data));
     })
     .catch((err) => {
-      console.log(err);
       dispatch(userPostsFailure(err));
     });
 };
