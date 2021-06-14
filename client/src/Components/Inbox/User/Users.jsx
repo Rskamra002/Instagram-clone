@@ -8,7 +8,7 @@ function Users() {
     const [conversations,setConversation] = useState([])
     const loggedInUser = loadData("users");
     useEffect(async ()=>{
-        await axios.get(`http://localhost:8000/conversation/${loggedInUser._id}`).then((res)=>setConversation(res.data.data))
+        await axios.get(`http://localhost:2511/conversation/${loggedInUser._id}`).then((res)=>setConversation(res.data.data))
     },[loggedInUser._id])
 
     return (
