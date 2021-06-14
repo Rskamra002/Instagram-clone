@@ -23,8 +23,6 @@ const Stories = () => {
     const story = useSelector((state) => state.story.story)
     const self = loadData('users')
     const dispatch = useDispatch()
-    console.log(story)
-    console.log(user)
     
     useEffect(() => {
         dispatch(getStory())

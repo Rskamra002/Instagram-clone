@@ -1,0 +1,25 @@
+.main{
+    border:1px solid #DBDBDB;
+    width: 65%;
+    border-left: none;
+}
+.frienddata{
+    display: flex;
+    justify-content:flex-start;
+    align-items:center;
+    gap:10px;
+    border-bottom: 1px solid #DBDBDB;
+    padding: .88rem 1.5rem;
+}
+.friendProfileImg{
+    margin: 2px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+.messageBox{
+    height:75vh;
+    overflow:auto;
+    overflow-x: hidden;
+    margin-top:.2rem;
+}

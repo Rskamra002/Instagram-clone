@@ -4,12 +4,13 @@ import { getUserPosts } from "../../../Redux/UserProfile/action";
 import { Grid, Container } from "@material-ui/core";
 import DisplayPost from "./DisplayPost";
 
-function ProfilePosts({ id }) {
+function ProfilePosts({ _id }) {
+  console.log('id', _id)
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.profile.posts);
   useEffect(() => {
-    dispatch(getUserPosts(id));
-  }, [id, dispatch]);
+    dispatch(getUserPosts(_id));
+  }, [_id, dispatch]);
 
 
   return (

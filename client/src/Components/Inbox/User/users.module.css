@@ -17,7 +17,7 @@
 
 .userMain{
     height:75vh;
-    overflow:scroll;
+    overflow:auto;
     overflow-x: hidden;
     margin-top:.2rem;
 } 
