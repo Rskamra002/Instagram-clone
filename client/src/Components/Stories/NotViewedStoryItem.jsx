@@ -2,7 +2,7 @@ import React from 'react'
 import styled from "styled-components"
 import { Link } from 'react-router-dom'
 
-const StoryItem = ({image, name, index}) => {
+const NotViewedStoryItem = ({image, name, index}) => {
 
     return (
         <Link to={`/stories/${index}`}>
@@ -14,21 +14,24 @@ const StoryItem = ({image, name, index}) => {
     )
 }
 
-export {StoryItem}
+export {NotViewedStoryItem}
 
 const Circle = styled.div`
-    height: 72px;
-    width:72px;
+    height: 70px;
+    width:70px;
+    background: linear-gradient( #da3394, #e03c67, #f3753b, #f99b4a);
     border-radius: 50%;
     display: inline-block;
     cursor: pointer;
     padding: 2px;
     text-align: center;
-    border: 1px solid gray;
     text-decoration: none;
+    span {
+        background: #fff;
+    }
     img {
         border-radius: 50%;
-        padding: 1px
+        border: 2px solid white;
     }   
     p{
         color: black;

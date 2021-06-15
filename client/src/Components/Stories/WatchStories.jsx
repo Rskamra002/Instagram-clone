@@ -73,7 +73,6 @@ const WatchStories = () => {
 
 
   useEffect(() => {
-    console.log(storyId)
     const self = loadData('users')._id
     console.log(self)
     axios.patch(`http://localhost:2511/story/${storyId}`, {userId: self})

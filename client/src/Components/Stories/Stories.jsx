@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from "styled-components"
 import { loadData } from '../../Utils/localStorage'
 import { StoryItem } from './StoryItem'
+import { NotViewedStoryItem } from './NotViewedStoryItem'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
@@ -18,15 +19,18 @@ const Stories = () => {
         slidesToScroll: 3
       };
 
-    const user = useSelector((state) => state.user.user)
+    const [viewd, setViewed] = useState([])
+    const [notViewed, setNotViewed] = useState([])
+    const [selfId, setSelfId] = useState("")
     const story = useSelector((state) => state.story.story)
     const self = loadData('users')
     const dispatch = useDispatch()
     
     useEffect(() => {
-        dispatch(getStory())
+    const self = loadData('users')._id
+    setSelfId(self)
+    dispatch(getStory())
     },[dispatch])
-
     
 
     return (
@@ -34,7 +38,10 @@ const Stories = () => {
             <Slider {...settings}>
             <StoryItem image={self.profilePic} name={self.username} index ={0}/>
             {
-                story?.filter((item) => item.userName !== self.username).map((el, i) => <StoryItem key={el._id} image={el.userProfile} name={el.userName} index={i+1}/>) 
+                story?.filter((item) => item.userName !== self.username && !item.view.includes(selfId)).map((el, i) => <NotViewedStoryItem key={el._id} image={el.userProfile} name={el.userName} index={i+1}/>) 
+            }
+            {
+                story?.filter((item) => item.userName !== self.username && item.view.includes(selfId)).map((el, i) => <StoryItem key={el._id} image={el.userProfile} name={el.userName} index={i+1}/>) 
             }
             </Slider>
         </Wrapper>
