@@ -28,12 +28,18 @@ const WatchStories = () => {
   const [num, setNum] = useState(Number(index))
   const [progress, setProgress] = React.useState(0);
   const sliderRef = useRef()
+  // const [count, setCount] = useState([])
 
+  const viewIds = () => {
+    // setCount
+    console.log("test")
+ }
   useEffect(() => {
     const timer = setInterval(() => {
       setProgress((oldProgress) => {
         if (oldProgress === 100) {
           sliderRef.current.slickNext()
+          viewIds()
           return 0
         }
         return oldProgress + 5;
