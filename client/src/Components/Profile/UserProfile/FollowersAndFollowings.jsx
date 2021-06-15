@@ -33,6 +33,7 @@ const FollowersAndFollowings = (data) => {
     const user = useParams();
     const classes = useStyles();
     const [loggedIn, setLoggedIn] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const [followPopUp, setFollowPopUp] = useState("");
     const userPosts = useSelector((state) => state.profile.posts);
     const loggedInUser = loadData("users");
@@ -51,8 +52,11 @@ const FollowersAndFollowings = (data) => {
         setFollowPopUp(null);
     };
 
-    const handleFollow = () => {
-        followUser(loggedIn._id, profileData._id, dispatch);
+    const handleFollow = async () => {
+        setIsLoading(true)
+        await followUser(loggedIn._id, profileData._id, dispatch);
+        setIsLoading(false)
+
     };
 
     const handleUnFolow = () => {
@@ -111,7 +115,7 @@ const FollowersAndFollowings = (data) => {
                     {followPopUp == "followers" ? (
                         <FollowersPopup handlePopUp={handlePopUp} followers={followers} />
                     ) : followPopUp == "followings" ? (
-                        <FollowingsPopup handlePopUp={handlePopUp} />
+                        <FollowingsPopup handlePopUp={handlePopUp} following={following} />
                     ) : null}
                 </Wrapper>
 

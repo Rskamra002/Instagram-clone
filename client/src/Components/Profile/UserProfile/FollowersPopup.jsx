@@ -43,7 +43,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const FollowersPopup = ({ reRender, handlePopUp, followers }) => {
+const FollowersPopup = ({ handlePopUp, followers }) => {
   const history = useHistory();
   const [profileFollowers, setProfileFollowers] = useState([]);
   const [removeFollower, setRemoveFollower] = useState();
@@ -117,7 +117,6 @@ const FollowersPopup = ({ reRender, handlePopUp, followers }) => {
         <ConfirmRemovePopup
           {...removeFollower}
           closePopup={closePopup}
-          reRender={reRender}
         />
       )}
     </Container>
