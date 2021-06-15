@@ -14,6 +14,7 @@ const PORT = process.env.PORT;
 // UserData Module
 const UsersData = require('./model/userSchema');
 const PostsData = require('./model/postSchema');
+const StoryData = require('./model/storySchema');
 
 
 //ChatData modules
@@ -30,6 +31,7 @@ app.use(require('./router/users'));
 app.use(require('./router/posts'));
 app.use(require("./router/conversation"));
 app.use(require("./router/message"))
+app.use(require("./router/story"))
 
 async function start() {
   // Mongoose connection
