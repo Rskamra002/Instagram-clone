@@ -24,35 +24,33 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ConfirmRemovePopup = (data) => {
+const ConfirmUnFollow = (data) => {
     const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch();
     const loggedInUser = loadData("users");
-    const { username, profilePic, closePopup } = data;
+    const { username, profilePic, closePopup, unfollowedSuccess } = data;
 
-    const confirmRemove = async (removeFrom, toRemove) => {
-        setIsLoading(true);
-        await unFollowUser(removeFrom, toRemove, dispatch);
-        await setIsLoading(false);
-        await closePopup();
+
+    const confirmRemove = (removeFrom, toRemove) => {
+        unFollowUser(removeFrom, toRemove, dispatch);
+        unfollowedSuccess();
+        closePopup();
     };
-
     const classes = useStyles();
     return (
         <>
             <Modal open={true}>
                 <Container>
                     <Avatar src={profilePic} className={classes.avatar}></Avatar>
-                    <Typography variant="h6">Remove Follower?</Typography>
-                    <Typography>{`Instagram wont tell ${username} they were removed from your followers`}</Typography>
+                    <Typography>{`Unfolow @${username}`}</Typography>
                     <Divider />
                     <Button
                         style={{ color: "#ed4956", fontWeight: "bold" }}
                         onClick={() =>
-                            confirmRemove(data.userId, loggedInUser._id, dispatch)
+                            confirmRemove(loggedInUser._id, data.userId, dispatch)
                         }
                     >
-                        {isLoading ? <CircularProgress size={25} /> : "Remove"}
+                        {isLoading ? <CircularProgress size={25} /> : "Unfollow"}
                     </Button>
                     <Divider />
                     <Button onClick={closePopup}>Cancel</Button>
@@ -67,7 +65,7 @@ const Container = styled.div`
   margin-top: 25vh;
   width: 30vw;
   padding: 30px 0px 0px 0px;
-  height: 350px;
+  height: 280px;
   text-align: center;
   border-radius: 10px;
   background: white;
@@ -92,4 +90,4 @@ const Button = styled.button`
   }
 `;
 
-export default ConfirmRemovePopup;
+export default ConfirmUnFollow;

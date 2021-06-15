@@ -52,11 +52,10 @@ const useStyles = makeStyles((theme) => ({
 
 const DetailedPostInfo = (data) => {
   const profileData = useSelector((state) => state.profile.data);
-  const { username, profile_pic, fullname } = profileData;
-
-  const { src, handlePostDisplay, likes, _id } = data;
+  const { username, profilePic, fullname } = profileData;
+  console.log('profilePic', profileData)
+  const { src, handlePostDisplay, likes, _id, caption } = data;
   const classes = useStyles();
-
   return (
     <Container>
       <Modal open={true} className={classes.container}>
@@ -92,12 +91,12 @@ const DetailedPostInfo = (data) => {
               <Box>
                 <Avatar
                   alt={`${fullname}'s Profile Picture`}
-                  src={profile_pic}
+                  src={profilePic}
                 ></Avatar>
                 <Typography variant="h6">{username}</Typography>
               </Box>
               <Divider />
-              <Comments {...profileData} likes={likes} id={_id} />
+              <Comments {...profileData} likes={likes} id={_id} caption={caption} />
             </Grid>
           </Grid>
         </Paper>

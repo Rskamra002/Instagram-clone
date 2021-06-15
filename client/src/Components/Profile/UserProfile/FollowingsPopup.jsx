@@ -10,8 +10,9 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import { useSelector } from "react-redux";
 import axios from "axios";
-
+import ConfirmUnFollow from "./ConfirmUnFollow";
 import { Title, Wrapper, Button, MainDiv, Follow } from "./FollowersPopup";
+import Following from "./Following";
 // styling material ui elements
 
 const useStyles = makeStyles(() => ({
@@ -37,28 +38,24 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const FollowersPopups = ({ handlePopUp }) => {
+const FollowersPopups = ({ handlePopUp, following }) => {
   const [profileFollowing, setProfileFollowing] = useState([]);
   const classes = useStyles();
-  const profileData = useSelector((state) => state.profile.data);
-  const { following } = profileData;
+
   useEffect(() => {
     if (following) {
       following.forEach((userId) => {
-        axios
-          .get(
-            `https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers/${userId}`
-          )
-          .then((res) => {
-            setProfileFollowing((prev) => [
-              ...prev,
-              {
-                username: res.data.username,
-                fullname: res.data.fullname,
-                profilePic: res.data.profile_pic,
-              },
-            ]);
-          });
+        axios.get(`http://localhost:2511/users/${userId}`).then((res) => {
+          setProfileFollowing((prev) => [
+            ...prev,
+            {
+              username: res.data.data.username,
+              fullname: res.data.data.fullname,
+              profilePic: res.data.data.profilePic,
+              userId: res.data.data._id,
+            },
+          ]);
+        });
       });
     }
   }, []);
@@ -73,20 +70,8 @@ const FollowersPopups = ({ handlePopUp }) => {
           </Wrapper>
           <Divider />
           <Follow>
-            {profileFollowing?.map((follower) => {
-              return (
-                <Wrapper>
-                  <Avatar
-                    src={follower.profilePic}
-                    alt={`${follower.fullname}'s Profile Picture`}
-                  ></Avatar>
-                  <MainDiv>
-                    <div>{follower.username}</div>
-                    <div>{follower.fullname}</div>
-                  </MainDiv>
-                  <Button>Remove</Button>
-                </Wrapper>
-              );
+            {profileFollowing?.map((following) => {
+              return <Following {...following} />;
             })}
           </Follow>
         </Paper>
