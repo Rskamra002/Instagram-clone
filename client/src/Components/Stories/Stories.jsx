@@ -11,13 +11,12 @@ import { getStory } from '../../Redux/Stories/action'
 
 const Stories = () => {
     var settings = {
-        dots: true,
+        dots: false,
         infinite: false,
         speed: 500,
         slidesToShow: 6.5,
         slidesToScroll: 3
       };
-    const [storyUsers, setStoryUsers] = useState([])
 
     const user = useSelector((state) => state.user.user)
     const story = useSelector((state) => state.story.story)
@@ -27,21 +26,15 @@ const Stories = () => {
     useEffect(() => {
         dispatch(getStory())
     },[dispatch])
-    useEffect(() => {    
-        story?.forEach((item) => {
-            let data = user?.filter((it) => it.username === item.username) || []
-            if(story?.length !== storyUsers.length){
-                setStoryUsers((prev) => [...prev, ...data])
-            }
-        })
-    },[user ,story])
+
+    
 
     return (
         <Wrapper>
             <Slider {...settings}>
             <StoryItem image={self.profilePic} name={self.username} index ={0}/>
             {
-                storyUsers?.filter((item) => item._id !== self._id).map((el, i) => <StoryItem key={el._id} image={el.profilePic} name={el.username} index={i+1}/>) 
+                story?.filter((item) => item.userName !== self.username).map((el, i) => <StoryItem key={el._id} image={el.userProfile} name={el.userName} index={i+1}/>) 
             }
             </Slider>
         </Wrapper>
