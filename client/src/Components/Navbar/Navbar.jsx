@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styled from "styled-components";
+import {Wrapper, Container, SearchBar, SuggestionBox, Tabs, UsersProfile} from "./NavbarUI"
 import { useDispatch, useSelector } from 'react-redux';
 import { getUsers } from '../../Redux/Suggestions/Action';
-import styles from "./Navbar.module.css"
+import styles from "./Navbar.module.css";
 import { Notifications } from './Notifications';
 import { ProfileDetails } from './ProfileDetails';
 import { NavbarIcons } from './NavbarIcons';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 function Navbar() {
     const scrollRef = useRef()
@@ -18,27 +19,37 @@ function Navbar() {
     const [profiler, setProfiler] = useState(false) 
     const [profilePic, setProfilePic] = useState("")
     const [username, setUsername] = useState("")
+    const [tag, setTag] = useState([])
+    const [suggestedTag, setSuggestedTag] = useState([])
 
     const suggestions = useSelector(state => state.user.user)
     const dispatch = useDispatch()
     
     useEffect(() => {
         dispatch(getUsers())
+        axios.get("https://k-books.herokuapp.com/Tags")
+        .then((res) => setTag(res.data))
+        .catch((err) => console.log("error"))
     },[dispatch])
-
     const handleClear = () => {
         setQuery("")
         setSearchUserPopup(false)
     }
-
+    
     useEffect(() => {
-        let output = suggestions?.filter((item) => item.username.toLowerCase().indexOf(query) !== -1 ? true:false).map((item) => [item.id, item.profile_pic, item.username, item.fullname])
+        let output = suggestions?.filter((item) => item.username.toLowerCase().indexOf(query) !== -1 ? true:false).map((item) => [item._id, item.profilePic, item.username, item.fullname])
         setSuggestedUsers(output)
-
+        
+        const tagOutput = tag?.filter((item) => item.tag.toLowerCase().indexOf(query) !== -1 ? true: false).map((item) => [item.id, item.tag])
+        // tagOutput?.forEach((i) => {
+        //     suggestedUsers.push(i)
+        // })
+        setSuggestedTag(tagOutput)
         let b = JSON.parse(localStorage.getItem("users"))
         setProfilePic(b.profilePic)
         setUsername(b.username)
-    },[suggestions, query])
+    },[suggestions, query, tag])
+    // console.log(suggestedTag)
 
 
     const handleActiveSuggestions = (e)=> {
@@ -121,7 +132,7 @@ function Navbar() {
                         {
                             suggestions?.map((item) => (
                                 <Link to={`/${item.username}`}>
-                                <UsersProfile onClick={openProfile} key={item.id}>
+                                <UsersProfile onClick={openProfile} key={item._id}>
                                     <img src={item.profilePic} alt="profile"/>
                                     <div>
                                         <p>{item.username}</p>
@@ -135,6 +146,21 @@ function Navbar() {
                 }
                 {
                     <SuggestionBox ref={scrollRef} len={suggestedUsers?.length}>
+                        <div>
+                        {
+                            query && suggestedTag.map((item) => (
+                                <Link to={`/explore/${item[1]}`}>
+                                <UsersProfile key={item[0]}>
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFJmZhuriNDDE-GBRtIMzFUtpg1hq6ypihFw&usqp=CAU" alt=""/>
+                                    <div>
+                                        <p>{`#${item[1]}`}</p>
+                                    </div>
+                                </UsersProfile>
+                                </Link>
+                            ))
+                        }
+                        </div>
+                        <div>
                         { query &&
                             suggestedUsers?.map((item) => (
                                 <Link to={`/${item[2]}`}>
@@ -148,6 +174,7 @@ function Navbar() {
                                 </Link>
                             ))
                         }
+                        </div>
                     </SuggestionBox>
                 }
             </div>
@@ -164,82 +191,4 @@ function Navbar() {
 
 export {Navbar}
 
-const Wrapper = styled.div`
-    height:54px;
-    position: fixed;
-    width: 100%;
-    top:0;
-    z-index: 100;
-    background: white;
-    border-bottom: 1px solid rgb(219,219,219);
-`
-const Container = styled.div`
-    width: 68%;
-    height:100%;
-    margin: auto;
-    display: flex;
-    position: relative;
-    justify-content: space-between;
-    align-items: center;
 
-`
-const SearchBar = styled.div`
-    background: #FAFAFA;
-    border: 0.5px solid #DBDBDB;
-    align-items: center;
-    padding: 2px;
-    height: 30px;
-    display: flex;
-    margin-left: 10%;
-    width: 24%;
-    border-radius: 3px;
-    cursor: pointer;
-    input {
-        text-align: center;
-        border: none;
-        width: 90%;
-        margin:auto;
-        outline: none;
-        background: transparent;
-        :focus {
-            text-align: left;
-            padding-left: 5px;
-        }
-    }
-    
-`
-const SuggestionBox = styled.div`
-    display: ${({len}) => (len !== 0 ? "flex" : "none")};
-    flex-direction: column;
-    a{
-        text-decoration: none;
-        color: black;
-    }
-`
-const UsersProfile = styled.div`
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    margin:5px;
-    :hover{
-        background: rgb(250,250,250);
-    }
-    img {
-        border-radius: 25px;
-        margin: 2px;
-        width: 40px;
-        height: 40px;
-    }
-
-`
-const Tabs = styled.div`
-    display: flex;
-    margin:10px 20px 0px 20px;
-    justify-content: space-between;
-    & * {
-        font-weight: 600;
-    }
-    h4 {
-        color: #0296F6;
-    }
-`
