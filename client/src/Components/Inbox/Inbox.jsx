@@ -17,7 +17,6 @@ const Inbox = () => {
 export {Inbox}
 const Wrapper = styled.div`
     padding-top:70px;
-    padding-bottom:70px;
     background: #FAFAFA;
 `
 const Container = styled.div`
