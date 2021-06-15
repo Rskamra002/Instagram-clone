@@ -1,8 +1,11 @@
-import React from "react"
+import React, { useEffect } from "react"
 import {Container,Paper,Modal, makeStyles } from "@material-ui/core";
 import styled from "styled-components"
 import CloseIcon from '@material-ui/icons/Close';
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getUsers } from "../../../Redux/Suggestions/Action";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -12,17 +15,59 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(14),
       outline: "none",
       borderRadius: '12px'
-    }
+    } 
 }));
 
 const SearchPopUp = ({open, close}) => {
   const classes = useStyles();
   const [query, setQuery] = useState("")
+  const suggestions = useSelector(state => state.user.user)
+  const [suggestedUsers, setSuggestedUsers] = useState([])
+  const [active, setActive] = useState(0)
+  const dispatch = useDispatch()
+  
+  useEffect(() => {
+    dispatch(getUsers())
+    },[dispatch])
+
+    useEffect(() => {
+        let output = suggestions?.filter((item) => item.username.toLowerCase().indexOf(query) !== -1 ? true:false).map((item) => [item._id, item.profilePic, item.username, item.fullname])
+        setSuggestedUsers(output)
+    },[suggestions, query])
+
+    const handleActiveSuggestions = (e)=> {
+        // scrollRef.current.scrollTop += 20
+        switch(e.keyCode) {
+            case 40: {
+                if(active >= suggestions.length){
+                    setActive(0)
+                }
+                else {
+                    setActive((prev) => prev+1)
+                }
+                break;
+            }
+            case 38: {
+                if(active === 1){
+                    setActive(0)
+                }else if (active <=0){
+                    setActive(suggestions.length)
+                }
+                else {
+                    setActive((prev) => prev-1)
+                }
+                break;
+            }
+            default:{
+                return;
+            }
+        }
+    }
 
     return (
         <>
          <Container>
-            <Modal open={true}
+            <Modal open={open}
                 >
                 <Paper className={classes.paper}>
                     <Head>
@@ -30,10 +75,11 @@ const SearchPopUp = ({open, close}) => {
                         <h4>New Message</h4>
                         <p>Next</p>
                     </Head>
-                    <Search>
+                    <Search onKeyUp={handleActiveSuggestions}>
                         <h5>To: </h5>
                         <input placeholder="Search..." value={query} 
                         onChange={(e) => setQuery(e.target.value)}
+                        
                         />
                     </Search>
                     <Suggest>
@@ -42,8 +88,20 @@ const SearchPopUp = ({open, close}) => {
                             !query && 
                             <p>No account found.</p>
                         }
+                        { query &&
+                            suggestedUsers?.map((item) => (
+                                <Link to={`/${item[2]}`}>
+                                    <UsersProfile key={item[0]}>
+                                        <img src={item[1]} alt="profile"/>
+                                        <div>
+                                            <p>{item[2]}</p>
+                                            <p>{item[3]}</p>
+                                        </div>
+                                    </UsersProfile>
+                                </Link>
+                            ))
+                        }
                     </Suggest>
-                    
                 </Paper>
             </Modal>
         </Container>   
@@ -99,4 +157,21 @@ const Suggest = styled.div`
         padding-top: 6%;
         font-size: 14px;
     }
+`
+
+export const UsersProfile = styled.div`
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin:5px;
+    :hover{
+        background: rgb(250,250,250);
+    }
+    img {
+        border-radius: 25px;
+        margin: 2px;
+        width: 40px;
+        height: 40px;
+    }
+
 `

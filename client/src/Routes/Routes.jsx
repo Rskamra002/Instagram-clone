@@ -10,6 +10,7 @@ import Profile from '../Components/Profile/Profile'
 import { UploadPosts } from '../Components/Uploads/UploadPosts'
 import { Inbox } from '../Components/Inbox/Inbox'
 import { WatchStories } from '../Components/Stories/WatchStories'
+import Tags from '../Components/Tags/Tags'
 
 function Routes() {
     return (
@@ -48,6 +49,10 @@ function Routes() {
                 <PrivateRoute exact path="/:username">
                     <Navbar />
                     <Profile />
+                </PrivateRoute>
+                <PrivateRoute exact path="/explore/:tags">
+                    <Navbar/>
+                    <Tags/>
                 </PrivateRoute>
                 <PrivateRoute exact path='/stories/:index'>
                     <WatchStories/>
