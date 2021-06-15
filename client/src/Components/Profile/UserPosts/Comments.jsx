@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles, Divider, Avatar } from "@material-ui/core";
 import styled from "styled-components";
-import { comment, like, saved, message, unsaved } from "./SvgIcons";
+import { comment, like, saved, message, unsaved, unlike } from "./SvgIcons";
 import axios from "axios";
 
 const useStyles = makeStyles(() => ({
@@ -14,8 +14,9 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const Comments = ({ fullname, profile_pic, username, likes, id }) => {
+const Comments = ({ fullname, profilePic, username, likes, id, caption }) => {
   const [recentLike, setRecentLike] = useState("");
+  const [likedPost, setLikedPost] = useState(false);
   const [savedPost, setSavedPost] = useState(false);
   const [comment, setComment] = useState('');
   // to get the user's data
@@ -23,32 +24,35 @@ const Comments = ({ fullname, profile_pic, username, likes, id }) => {
     const user = likes[likes.length - 1];
     axios
       .get(
-        `https://json-server-mocker-neeraj-data.herokuapp.com/instaUsers/${user}`
+        `http://localhost:2511/users/${user}`
       )
-      .then((res) => setRecentLike(res.data));
+      .then((res) => setRecentLike(res.data.data));
   }, []);
 
   const classes = useStyles();
+  const handleLikeDislike = (e) => {
+    e.target.width = "48"
+  }
   return (
     <div>
       <Box>
         <Avatar
           className={classes.avatar}
           alt={`${fullname}'s Profile Picture`}
-          src={profile_pic}
+          src={profilePic}
         ></Avatar>
         <div>
-          <span>{username}</span> This is the Post Caption.....
+          <span>{username}</span> {caption}
         </div>
       </Box>
       <Container>
         <Divider />
         <Icons>
-          <svg height="24" width="24" viewBox="0 0 48 48" fill="#262626">
-            <path d={like}></path>
+          <svg height="24" width="24" viewBox="0 0 48 48" fill={likedPost ? "#ed4956" : "#262626"} onClick={(e) => handleLikeDislike(e)}>
+            <path d={likedPost ? unlike : like}></path>
           </svg>
-          <svg height="24" width="24" viewBox="0 0 48 48" fill="#262626">
-            <path d={comment}></path>
+          <svg height="24" width="24" viewBox="0 0 48 48" fill="#262626"  >
+            <path clip-rule="evenodd" d={comment}></path>
           </svg>
           <svg height="24" width="24" viewBox="0 0 48 48" fill="#262626">
             <path d={message}></path>
@@ -60,7 +64,7 @@ const Comments = ({ fullname, profile_pic, username, likes, id }) => {
         {recentLike && (
           <div className={classes.likesInfo}>
             <span>
-              <ImgIcon src={recentLike.profile_pic}></ImgIcon>
+              <ImgIcon src={recentLike.profilePic}></ImgIcon>
             </span>
             Liked by <span>{recentLike.username}</span> and{" "}
             <span>{likes.length - 1} others</span>
@@ -72,7 +76,7 @@ const Comments = ({ fullname, profile_pic, username, likes, id }) => {
           <PostBtn disabled={comment.length === 0} onClick={() => console.log('working')}>Post</PostBtn>
         </Box>
       </Container>
-    </div>
+    </div >
   );
 };
 

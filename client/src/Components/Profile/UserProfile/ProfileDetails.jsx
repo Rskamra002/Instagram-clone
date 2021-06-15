@@ -41,12 +41,6 @@ const ProfileDetails = () => {
   const { profilePic, fullname } = profileData;
   const [totalFollower, setTotalFollower] = useState(useSelector((state) => state.profile.data.followers?.length))
 
-
-  const increaseMe = () => {
-    setTotalFollower((prev) => prev + 1)
-    console.log('calling', totalFollower)
-  }
-
   useEffect(() => {
     dispatch(getUserData(user));
   }, [user, dispatch])
@@ -65,7 +59,7 @@ const ProfileDetails = () => {
             <Box>
               <img src={profilePic} alt={`${fullname}'s Profile Picture`} />
             </Box>
-            <FollowersAndFollowings {...profileData} increaseMe={increaseMe} totalFollower={totalFollower} />
+            <FollowersAndFollowings {...profileData} />
           </Box>
         </Profile>
         <Divider className={classes.divider} />
