@@ -19,8 +19,6 @@ const Stories = () => {
         slidesToScroll: 3
       };
 
-    const [viewd, setViewed] = useState([])
-    const [notViewed, setNotViewed] = useState([])
     const [selfId, setSelfId] = useState("")
     const story = useSelector((state) => state.story.story)
     const self = loadData('users')

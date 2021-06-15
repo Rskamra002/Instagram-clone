@@ -104,7 +104,8 @@ function Navbar() {
         <>
         <Wrapper>
             <Container>
-                <img src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png" alt="logo"/>
+                <Link to="/">
+                <img src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png" alt="logo"/></Link>
                 <SearchBar onKeyUp={handleActiveSuggestions}>
                     <img src="https://icon-library.com/images/white-search-icon-png/white-search-icon-png-18.jpg" width="18px" height="18px" alt=""/>
                     <input

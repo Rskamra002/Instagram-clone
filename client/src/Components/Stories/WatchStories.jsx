@@ -33,6 +33,8 @@ const WatchStories = () => {
   const sliderRef = useRef()
   const [id, setId] = useState(null)
   const [storyId, setStoryId] = useState(null)
+  const [sortedStory, setSortedStory] = useState([])
+  const sortArr = []
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -71,10 +73,28 @@ const WatchStories = () => {
     dispatch(getStory())
   },[dispatch])
 
+  useEffect(() => {
+    const selfusername = loadData('users').username
+    const self = loadData('users')._id
+    story?.forEach((item) => 
+    {
+      let selfData = story?.filter((item) => item.userName == selfusername)
+      sortArr.push(...selfData)
+      let data1 = story?.filter((item) =>item.userName !== selfusername && !item.view.includes(self))
+      sortArr.push(...data1)
+      let data2 = story?.filter((item) => item.userName !== selfusername && item.view.includes(self))
+      sortArr.push(...data2)
+      setSortedStory(sortArr)
+    }
+  )
+  console.log(sortArr.slice(0, story?.length))
+  console.log(story)
+  },[])
+  
+
 
   useEffect(() => {
     const self = loadData('users')._id
-    console.log(self)
     axios.patch(`http://localhost:2511/story/${storyId}`, {userId: self})
   },[id])
 
@@ -94,8 +114,8 @@ const WatchStories = () => {
         <Container>
           <Slider {...settings} ref={sliderRef}>
             {
-              story?.map((item, i) =>
-              <div className={i === num ? `${styles.activeSlide}`: `${styles.slide}`} style={{backgroundImage:`url(${item.img})`}}>
+              sortedStory?.map((item, i) =>
+              <div key={item._id} className={i === num ? `${styles.activeSlide}`: `${styles.slide}`} style={{backgroundImage:`url(${item.img})`}}>
                 {i === num && num !== id ? setId(i): null}
                 {i === num && num !== id ? setStoryId(item._id): null}
 
