@@ -114,7 +114,9 @@ function Navbar() {
                     onChange={(e) => setQuery(e.target.value)}
                     />
                     { searchUserPopUp &&
-                    <div onClick={handleClear}>X</div>}
+                    <div onClick={handleClear}>
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZR8YEGei6RTXhP4zHE-hDP4GtVtA5jLqnF4FJbK9ixayJ0aObad1qqnIfmZjXxfrXVE4&usqp=CAU" alt="" width="18px" height="18px" style={{padding: "2px", opacity:"0.5"}} />
+                    </div>}
                 </SearchBar>
                 <NavbarIcons getNotification={getNotification} getUserSettings={getUserSettings}
                 profilePic={profilePic}
@@ -146,21 +148,7 @@ function Navbar() {
                 }
                 {
                     <SuggestionBox ref={scrollRef} len={suggestedUsers?.length}>
-                        <div>
-                        {
-                            query && suggestedTag.map((item) => (
-                                <Link to={`/explore/${item[1]}`}>
-                                <UsersProfile key={item[0]}>
-                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFJmZhuriNDDE-GBRtIMzFUtpg1hq6ypihFw&usqp=CAU" alt=""/>
-                                    <div>
-                                        <p>{`#${item[1]}`}</p>
-                                    </div>
-                                </UsersProfile>
-                                </Link>
-                            ))
-                        }
-                        </div>
-                        <div>
+                        
                         { query &&
                             suggestedUsers?.map((item) => (
                                 <Link to={`/${item[2]}`}>
@@ -174,7 +162,18 @@ function Navbar() {
                                 </Link>
                             ))
                         }
-                        </div>
+                        {
+                            query && suggestedTag.map((item) => (
+                                <Link to={`/explore/${item[1]}`}>
+                                <UsersProfile key={item[0]}>
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFJmZhuriNDDE-GBRtIMzFUtpg1hq6ypihFw&usqp=CAU" alt=""/>
+                                    <div>
+                                        <p>{`#${item[1]}`}</p>
+                                    </div>
+                                </UsersProfile>
+                                </Link>
+                            ))
+                        }
                     </SuggestionBox>
                 }
             </div>

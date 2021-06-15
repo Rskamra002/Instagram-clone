@@ -62,18 +62,14 @@ const UploadPosts = () => {
     
     
     const postPictureToApi = (data) => {
-        const userid = loadData("users").id
+        const userid = loadData("users")._id
 
         const payload = {
-            id: uuid(),
             userId: userid,
-            imgSrc: data,
+            src: data,
             caption: caption,
-            likes: [],
-            comments: [],
-            dateCreation: Date.now()
         }
-        axios.post("https://json-server-mocker-neeraj-data.herokuapp.com/instaPosts", payload)
+        axios.post("http://localhost:2511/posts/addpost", payload)
         .then((res) => setState(true))
         .catch((err) => console.log(err))
         setLoad(false)
