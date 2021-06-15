@@ -6,6 +6,9 @@ import chatBoxStyles from "./chatBox.module.css";
 import Message from './Message';
 import MessageInput from './MessageInput';
 import {io} from "socket.io-client"
+import styled from 'styled-components';
+import { SearchPopUp } from '../User/SearchPopUp';
+
 
 function ChatBox() {
     const {conversationId,friendId} = useParams()
@@ -15,6 +18,15 @@ function ChatBox() {
     const scrollRef = useRef()
     const [arrivalMessage, setArrivalMessage] = useState(null);
     const socket = useRef()
+    const [open, setOpen] = useState(false)
+
+    const handleOpen = (e) => {
+        setOpen(true);
+      };
+    
+      const handleClose = () => {
+        setOpen(false);
+      };
 
     useEffect(() => {
         socket.current=io("ws://localhost:2512")
@@ -38,14 +50,15 @@ function ChatBox() {
         socket.current.on("getUsers",users=>{
     })
     }, [loggedInUser])
-    useEffect(async ()=>{
-        await axios.get(`http://localhost:2511/users/${friendId}`).then((res)=> setFriendDetails(res.data.data))
 
+    useEffect(async ()=>{
+        if(friendId !== undefined){
+            await axios.get(`http://localhost:2511/users/${friendId}`).then((res)=> setFriendDetails(res.data.data))
+        }
     },[friendId])
     useEffect(async () => {     
         await axios.get(`http://localhost:2511/message/${conversationId}`).then((res)=>setCurrentChat([...res.data]))
     }, [conversationId])
-    console.log(currentChat)
     const handleSendMessage=async (text)=>{
         const payload = {
             conversationId: conversationId,
@@ -67,9 +80,15 @@ function ChatBox() {
 
     if(friendDetails === null){
         return(
-            <div style={{border:"1px solid black",width:"65%"}}>
-                hyyy this is not having friendid
-            </div>
+            <Wrapper>
+                <MessageImg src="https://static.thenounproject.com/png/172101-200.png" alt="" />
+               <MsgPara>Your Messages</MsgPara>
+               <PrivateMsgPara>Send private messages to a friend.</PrivateMsgPara>
+               <NewMsgBtn onClick={handleOpen}>Send Message</NewMsgBtn>
+               { open&&
+                    <SearchPopUp open={open} close={handleClose}/>
+                }
+            </Wrapper>
         )
     }else{
         return (
@@ -100,3 +119,43 @@ function ChatBox() {
 }
 
 export default ChatBox
+
+const Wrapper= styled.div`
+    border:1px solid #DBDBDB;
+    border-left: none;
+    width:65%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+`
+
+const MessageImg = styled.img`
+    width: 15% ;
+    border: 2px solid black;
+    border-radius: 50%;
+    padding: .7rem;
+    padding-left: .5rem;
+    transform: rotate(12deg);
+`
+const NewMsgBtn = styled.button`
+    margin: 20px;
+    padding: .4rem;
+    border: none;
+    outline: none;
+    border-radius: .3rem;
+    background-color: #0095F6 ;
+    color: white;
+    cursor: pointer;
+`
+const MsgPara = styled.p`
+    font-weight: 300;
+    color: #262634;
+    font-size: 22px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+`
+const PrivateMsgPara = styled.p`
+    color: #9D8E8E;
+    font-size: 14px;
+`
