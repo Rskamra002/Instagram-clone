@@ -22,7 +22,7 @@ export default function Image({imgSrc,like,handleLike}) {
 
 const Img = styled.div`
   width:100%;
-  height:620px;
+  height:640px;
   cursor: pointer;
   img{
     width:100%;

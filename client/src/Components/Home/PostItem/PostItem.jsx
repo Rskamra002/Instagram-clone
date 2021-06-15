@@ -121,7 +121,7 @@ const PostItem = ({_id,userId,src,caption,likes,comments}) => {
   const handleSavePost = () => {
     if(isPostSaved){
       // removepost
-      axios.patch(`http://localhost:2511/users/removesavepost/${user._id}`,{
+      axios.patch(`http://localhost:2511/users/removesavedpost/${user._id}`,{
         "postId": _id
       }).then(res => {
         setIsPostSaved(false)
@@ -202,6 +202,7 @@ const PostItem = ({_id,userId,src,caption,likes,comments}) => {
 export {PostItem}
 const Container = styled.div`
   width:100%;
+  background-color:white;
   /* min-height:800px; */
   margin:30px 0;
   border:1px solid #DBDBDB;
