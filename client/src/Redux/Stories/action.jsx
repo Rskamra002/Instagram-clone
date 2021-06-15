@@ -22,7 +22,7 @@ export const getStoryFail = (error) => {
 
 export const getStory = () => (dispatch) => {
     dispatch(getStoryReq())
-    return axios.get("https://k-books.herokuapp.com/instastory")
-    .then(res => dispatch(getStorySuc(res.data)))
+    return axios.get("http://localhost:2511/story")
+    .then(res => dispatch(getStorySuc(res.data.data)))
     .catch(err => dispatch(getStoryFail(err)))
 }
