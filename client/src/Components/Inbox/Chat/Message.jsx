@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import {format} from "timeago.js"
 
 function Message({ownMessage,data}) {
     const [messenger,setMessenger] = useState(null)
@@ -27,6 +28,9 @@ function Message({ownMessage,data}) {
                     </>
                 }
             </IndMsgWrapper>
+            <TimeAgo>
+                {format(data.createdAt)}
+            </TimeAgo>
         </WrapperMain>
     )
 }
@@ -36,7 +40,7 @@ export default Message
 const WrapperMain = styled.div`
     display:  flex;
     flex-direction: column;
-    align-items:${props=>props.ownMessage?"flex-end":"flex-Start"}
+    align-items:${props=>props.ownMessage?"flex-end":"flex-Start"};
 `
 const IndMsgWrapper = styled.div`
     display: flex;
@@ -52,8 +56,14 @@ const MessageImage = styled.img`
 `
 const MessageText = styled.p`
     padding:.5rem;
+    border:1px solid #DBDBDB;
     border-radius: 20px;
     background-color:${props=>props.ownMessage?"#EFEFEF":"#FFFFFF"};
     max-width: 250px;
-    word-wrap: break-word
+    word-wrap: break-word;
+`
+const TimeAgo = styled.p`
+    font-size: 11px;
+    margin: 0px 60px;
+    color: #b6b6b6;
 `

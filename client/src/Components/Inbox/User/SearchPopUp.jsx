@@ -5,7 +5,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsers } from "../../../Redux/Suggestions/Action";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import axios from "axios";
+import { loadData } from "../../../Utils/localStorage";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -25,7 +27,9 @@ const SearchPopUp = ({open, close}) => {
   const [suggestedUsers, setSuggestedUsers] = useState([])
   const [active, setActive] = useState(0)
   const dispatch = useDispatch()
-  
+  const [conversationId,SetConversationId] = useState("")
+  const [reecievedId,setRecievedId] = useState("")
+
   useEffect(() => {
     dispatch(getUsers())
     },[dispatch])
@@ -63,17 +67,29 @@ const SearchPopUp = ({open, close}) => {
             }
         }
     }
-
+    const handleConversations = async (recieverId)=>{
+        await setRecievedId(recieverId)
+        const loggedInUser = loadData("users");
+        const payload = {
+            senderId:loggedInUser._id,
+            receiverId:recieverId
+        }
+        await axios.post("http://localhost:2511/newConversation",payload).then((res)=>SetConversationId(res.data._id))
+    }
+    if(conversationId !== ""){
+        close()
+       return <Redirect to={`/direct/inbox/${conversationId}/${reecievedId}`} push/>
+    }
     return (
         <>
          <Container>
-            <Modal open={open}
+            <Modal open={open} onClose={close}
                 >
                 <Paper className={classes.paper}>
                     <Head>
-                        <CloseIcon onClick={close}/>
+                        <div></div>
                         <h4>New Message</h4>
-                        <p>Next</p>
+                        <CloseIcon onClick={close}/>
                     </Head>
                     <Search onKeyUp={handleActiveSuggestions}>
                         <h5>To: </h5>
@@ -86,19 +102,30 @@ const SearchPopUp = ({open, close}) => {
                         <h5>Suggested</h5>
                         {
                             !query && 
-                            <p>No account found.</p>
+                            suggestions?.map((item) => (
+                                <div key={item._id} onClick={()=>handleConversations(item._id)}>
+                                    <UsersProfile>
+                                        <img src={item.profilePic} alt="profile"/>
+                                        <div>
+                                            <p>{item.username}</p>
+                                            <NamePara>{item.fullname}</NamePara>
+                                        </div>
+                                    </UsersProfile>
+                                
+                                </div>
+                            ))
                         }
                         { query &&
                             suggestedUsers?.map((item) => (
-                                <Link to={`/${item[2]}`}>
+                                <div key={item._id} onClick={()=>handleConversations(item._id)}>
                                     <UsersProfile key={item[0]}>
                                         <img src={item[1]} alt="profile"/>
                                         <div>
                                             <p>{item[2]}</p>
-                                            <p>{item[3]}</p>
+                                            <NamePara>{item[3]}</NamePara>
                                         </div>
                                     </UsersProfile>
-                                </Link>
+                                </div>
                             ))
                         }
                     </Suggest>
@@ -116,14 +143,6 @@ const Head = styled.div`
     justify-content: space-between;
     border-bottom: 1px solid lightgrey;
     padding: 2% 3%;
-    h4{
-        color: #454545;
-        font-weight: 600
-    }
-    p{
-        color: #D3EDFE;
-        font-weight: 600
-    }
     
 `
 const Search = styled.div`
@@ -132,7 +151,8 @@ const Search = styled.div`
     padding: 4% 3%;
     h5{
         color: #454545;
-        font-weight: 600
+        font-weight: 600;
+        font-size: 15px;
     }
     input {
         width: 100%;
@@ -147,25 +167,28 @@ const Search = styled.div`
 const Suggest = styled.div`
     padding: 3%;
     overflow-y: scroll;
-    height: 290px;
+    height: 295px;
     h5{
         color: #454545;
-        font-weight: 600
+        font-weight: 600;
+        font-size: 15px;
+        padding: .6rem;
+        padding-top: 0%;
     }
     p{
-        color: lightgrey;
-        padding-top: 6%;
+        color: black;
         font-size: 14px;
     }
 `
 
-export const UsersProfile = styled.div`
+const UsersProfile = styled.div`
     display: flex;
     gap: 10px;
     align-items: center;
-    margin:5px;
+    padding: .5rem;
     :hover{
         background: rgb(250,250,250);
+        cursor: pointer;
     }
     img {
         border-radius: 25px;
@@ -173,5 +196,9 @@ export const UsersProfile = styled.div`
         width: 40px;
         height: 40px;
     }
+`
 
+const NamePara = styled.div`
+    color: gray;
+    font-size: 14px;
 `

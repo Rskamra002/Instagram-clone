@@ -8,7 +8,7 @@ export default function UserInfo({username,imgUrl}) {
         <div>
           <Link to={`/${username}`}>
             <div>
-              <img src={imgUrl} alt="profile"/>
+              <img src={imgUrl} alt=""/>
             </div>
             <h4>{username}</h4>
           </Link>
@@ -43,6 +43,12 @@ const User = styled.div`
   }
   h4{
       cursor: pointer;
+      color: #2D2D2D;
+      font-weight: 600;
+      font-size: 14px;
+      :hover{
+        text-decoration: underline;
+      }
     }
 }
 
