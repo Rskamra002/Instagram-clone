@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import {Wrapper, Container, Header, MappedPosts} from "./TagsStyle"
+import {Wrapper, Container, Header, MappedPosts} from "./TagStyle"
 
 const Tags = () => {
     const {tags} = useParams()
