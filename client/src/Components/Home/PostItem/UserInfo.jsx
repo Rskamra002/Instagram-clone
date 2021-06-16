@@ -43,6 +43,12 @@ const User = styled.div`
   }
   h4{
       cursor: pointer;
+      color: #2D2D2D;
+      font-weight: 600;
+      font-size: 14px;
+      :hover{
+        text-decoration: underline;
+      }
     }
 }
 

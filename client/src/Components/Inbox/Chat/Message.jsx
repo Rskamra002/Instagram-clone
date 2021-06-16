@@ -40,7 +40,7 @@ export default Message
 const WrapperMain = styled.div`
     display:  flex;
     flex-direction: column;
-    align-items:${props=>props.ownMessage?"flex-end":"flex-Start"}
+    align-items:${props=>props.ownMessage?"flex-end":"flex-Start"};
 `
 const IndMsgWrapper = styled.div`
     display: flex;
@@ -60,7 +60,7 @@ const MessageText = styled.p`
     border-radius: 20px;
     background-color:${props=>props.ownMessage?"#EFEFEF":"#FFFFFF"};
     max-width: 250px;
-    word-wrap: break-word
+    word-wrap: break-word;
 `
 const TimeAgo = styled.p`
     font-size: 11px;

@@ -23,12 +23,13 @@ export default function Likes({likes}) {
 }
 
 const LikesBox = styled.div`
-  margin:4px 0px 12px;
   button{
     background-color:transparent;
     font-size:15px;
     border:none;
-    font-weight:560;
+    font-weight:600;
+    font-size: 13px;
+    color: #262626;
     cursor: pointer;
   }
 `
