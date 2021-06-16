@@ -78,7 +78,7 @@ const WatchStories = () => {
     const self = loadData('users')._id
     story?.forEach((item) => 
     {
-      let selfData = story?.filter((item) => item.userName == selfusername)
+      let selfData = story?.filter((item) => item.userName === selfusername)
       sortArr.push(...selfData)
       let data1 = story?.filter((item) =>item.userName !== selfusername && !item.view.includes(self))
       sortArr.push(...data1)
@@ -120,13 +120,13 @@ const WatchStories = () => {
                 {i === num && num !== id ? setStoryId(item._id): null}
 
                 
-                <img src={item.img} width="100%" height="100%"/>
+                <img src={item.img} width="100%" height="100%" alt=""/>
                 { i === num &&
                 <>
                 <TopDetails>
                   <LinearProgress className={classes.root} variant="determinate" value={progress}/>
                   <UserDescription>
-                    <img src={item.userProfile}/>
+                    <img src={item.userProfile} alt=""/>
                     <h6>{item.userName}</h6>
                     <p>13m</p>
                   </UserDescription>

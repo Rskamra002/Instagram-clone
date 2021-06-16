@@ -7,7 +7,7 @@ const NotViewedStoryItem = ({image, name, index}) => {
     return (
         <Link to={`/stories/${index}`}>
         <Circle >
-            <img src={image} width="66px" height="66px"/>
+            <img src={image} width="66px" height="66px" alt=""/>
             <p>{name}</p>
         </Circle>
         </Link>

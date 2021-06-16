@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from "styled-components"
-import DisplayPost from "../Profile/UserPosts/DisplayPost"
 
 const Tags = () => {
     const {tags} = useParams()
@@ -23,8 +22,6 @@ const Tags = () => {
         const data = tagPosts?.filter((item) => item.caption.includes(tags))
         setDisplayPosts(data)
     },[tagPosts])
-    console.log(tagPosts)
-    console.log(displayPosts)
 
     return (
         <Wrapper>
@@ -33,7 +30,7 @@ const Tags = () => {
                     <img src={displayPosts[0]?.imgSrc} alt=""/>
                     <div>
                         <h1>#{tags}</h1>
-                        <p>{displayPosts.length} {displayPosts.length == 1 ? 'post' : 'posts'}</p>
+                        <p>{displayPosts.length} {displayPosts.length === 1 ? 'post' : 'posts'}</p>
                         <button>Follow</button>
                     </div>
                 </Header>
