@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import styled from "styled-components"
 import { loadData } from '../../../Utils/localStorage'
 import { Details } from './Details'
+import {Link} from "react-router-dom"
 import { IndividualUserSuggestion } from './IndividualUserSuggestion'
 
 const SuggestUser = () => {
@@ -23,8 +24,10 @@ const SuggestUser = () => {
             <UserProfile>
                 <img src={profile.profilePic} alt="profile" />
                 <div>
+                    <Link to={`/${profile.username}`}>
                     <h4>{profile.username}</h4>
                     <p>{profile.fullname}</p>
+                    </Link>
                 </div>
             </UserProfile>
             <br />
@@ -70,6 +73,11 @@ const UserProfile = styled.div`
     div {
         padding-top: 12px;
         font-size: 13px;
+        cursor: pointer;
+        a{
+            color:black;
+        text-decoration: none;
+        }
     }
     p{
         color: #9C9C9C;
@@ -92,7 +100,3 @@ const SuggestionHead = styled.div`
         font-weight: 400
     }
 `
-
-
-
-
