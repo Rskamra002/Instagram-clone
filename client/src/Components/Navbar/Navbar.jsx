@@ -108,8 +108,6 @@ function Navbar() {
                     placeholder="Search"
                     value={query}
                     onFocus={userSuggest}
-                    // onFocus={() => setSearchUserPopup(true)}
-                    // onBlur={() => setSearchUserPopup(false)}
                     onChange={(e) => setQuery(e.target.value)}
                     />
                     { searchUserPopUp &&
@@ -178,7 +176,7 @@ function Navbar() {
             </div>
         </div>
         }
-        <Notifications showNotifications={showNotifications}/>
+        {/* <Notifications showNotifications={showNotifications}/> */}
         <ProfileDetails profiler={profiler} username={username} 
                 openProfile={openProfile}/>
             </Container>

@@ -10,9 +10,10 @@ import { useEffect } from 'react';
 import {unlikeIconPath,likeIconPath ,savedPostIconPath,unsavedPostIconPath, sendMsgIconPath, commentIconPath} from './svgIcons'
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import {format} from "timeago.js"
 
 
-const PostItem = ({_id,userId,src,caption,likes,comments}) => {
+const PostItem = ({_id,userId,src,caption,likes,comments, createdAt}) => {
   const [postOwnerUserName,setPostOwnerUserName] = useState("")
   const [postOwnerPic,setPostOwnerPic] = useState("")
 
@@ -191,6 +192,9 @@ const PostItem = ({_id,userId,src,caption,likes,comments}) => {
             <AllComments viewMore={viewMore}> 
               {allComments?.map((commentItem) => <Comments key={commentItem._id} comment={commentItem}/>)}
             </AllComments>
+            <TimeAgo>
+              {format(createdAt)}
+            </TimeAgo>
           </Engagement>
           
           <AddComment handleAddComment = {handleAddComment} inputRef={inputRef} query={query} setQuery={setQuery} />
@@ -254,15 +258,20 @@ const SavedPostIcon = styled.button`
 
 const Caption = styled.div`
    div{
-    font-size:15px;
-    font-weight:500;
+    font-size:14px;
+    font-weight:400;
+    color: #404040;
+    padding: 0px 2px;
     a{
-      font-size:16px;
+      font-size:14px;
       font-weight:bold;
       display:inline-block;
       margin-right:4px;
       text-decoration:none;
-      color:black;
+      color:#3f3e3e;
+      :hover{
+        text-decoration: underline;
+      }
     }
   }
   margin-bottom:10px;
@@ -275,22 +284,38 @@ const ViewMoreComments = styled.div`
     cursor: pointer;
     border:none;
     background-color:transparent;
+    color: #9E9E9E;
+    font-size: 13px;
   }
 `
 const AllComments = styled.div`
-  max-height:58px;
+  padding-top: 5px;
+  max-height:45px;
   overflow-y: ${props => props.viewMore ? "scroll" :"hidden"} ;
   div{
-    font-size:15px;
-    margin:6px 0px;
     display:flex;
     justify-content:space-between;
+    color:#9E9E9E;
+    font-size:13px;
+    font-weight:400;
+    color: #404040;
+    padding: 0px 2px;
     & > span > a{
-      font-weight:bold;
+      font-weight:700;
+      font-size: 13px;
       display:inline-block;
       margin-right:4px;
       text-decoration:none;
-      color:black;
+      color: #3f3e3e;
+      :hover{
+        text-decoration: underline;
+      }
     }
   }
+`
+
+const TimeAgo = styled.div`
+  font-size: 12px;
+  padding: 8px 0px;
+  color: #9E9EB7;
 `
