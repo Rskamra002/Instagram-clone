@@ -8,7 +8,7 @@ export default function UserInfo({username,imgUrl}) {
         <div>
           <Link to={`/${username}`}>
             <div>
-              <img src={imgUrl} alt="profile"/>
+              <img src={imgUrl} alt=""/>
             </div>
             <h4>{username}</h4>
           </Link>
