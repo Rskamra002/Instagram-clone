@@ -37,13 +37,39 @@ router.get('/posts/user/:id', async (req, res) => {
   // id => userId
   try {
     const userId = req.params.id;
-    const posts = await PostsData.find({ userId: userId }).lean().exec();
+    const posts = await PostsData.find({ userId: userId })
+      .sort({ createdAt: 'desc' })
+      .lean()
+      .exec();
     res.status(200).json({ data: posts });
   } catch (err) {
     res.status(400).json({ error: 'Sorry! something went wrong' });
     console.log(err);
   }
 });
+
+// get posts of those users whom you are following
+// router.get('/posts/followers/:id', async (req, res) => {
+//   const id = req.params.id;
+//   const page = +req.query._page;
+//   const limit = +req.query._limit;
+
+//   const users = await UsersData.findById(id).lean().exec();
+//   const { following } = users;
+//   const allPosts = [];
+
+//   following.forEach(async (user) => {
+//     const posts = PostsData.find({ userId: user })
+//       .sort({ createdAt: 'desc' })
+//       .lean()
+//       .exec();
+//     allPosts.push(posts);
+//   });
+//   // slice.((page-1)*limit,page*limit)
+//   Promise.all(allPosts).then((data) => {
+//     res.status(200).json({ data: data });
+//   });
+// });
 
 // adding new post
 router.post('/posts/addpost', async (req, res) => {
@@ -190,8 +216,7 @@ router.patch('/posts/addcomment/:id', async (req, res) => {
   }
 });
 
-// have to work on it (not completed)
-// patch request to like comment ()
+// patch request to like comment
 router.patch('/posts/likecomment/:id', async (req, res) => {
   try {
     // id => postid
@@ -213,17 +238,80 @@ router.patch('/posts/likecomment/:id', async (req, res) => {
       return res.status(400).json({ error: 'Sorry! This post does not exist' });
     }
 
-    // have to work on it
+    // implementing brute force
 
     // adding userId in likes array (user who is going to like that comment)
-    // const post = await PostsData.findOneAndUpdate(
-    //   { _id: id },
-    //   { $addToSet: { comments: { _id: commentId, likes: userId } } },
-    //   {
-    //     new: true,
-    //   }
-    // );
+    const post = await PostsData.findOne({
+      comments: { $elemMatch: { _id: commentId } },
+    })
+      .lean()
+      .exec();
+    const comments = post.comments;
+    for (let i = 0; i < comments.length; i++) {
+      if (comments[i]._id.toString() === commentId) {
+        // if userId is already present inside likes array we will not push it
+        if (!comments[i].likes.includes(userId)) {
+          comments[i].likes.push(userId);
+        }
+      }
+    }
+
+    await PostsData.updateOne({ _id: id }, { $set: { comments: comments } });
+
     res.status(200).json({ message: 'Comment like successfully' });
+  } catch (err) {
+    res.status(400).json({ error: 'Sorry! something went wrong' });
+    console.log(err);
+  }
+});
+
+// patch request to unlike comment
+router.patch('/posts/unlikecomment/:id', async (req, res) => {
+  try {
+    // id => postid
+    const id = req.params.id;
+
+    const { userId, commentId } = req.body;
+
+    // finding user in our DB
+    const isUserExist = await UsersData.findById(userId).lean().exec();
+    // finding post in our DB
+    const isPostExist = await PostsData.findById(id).lean().exec();
+
+    // if user and post id's does not exist in our DB or syntax is not correct then it will send error
+    if (!userId || !commentId) {
+      return res.status(400).json({ error: 'Sorry! Invalid syntax' });
+    } else if (!isUserExist) {
+      return res.status(400).json({ error: 'Sorry! This user does not exist' });
+    } else if (!isPostExist) {
+      return res.status(400).json({ error: 'Sorry! This post does not exist' });
+    }
+    // implementing brute force
+
+    // removing userId in likes array (user who is going to unlike that comment)
+    const post = await PostsData.findOne({
+      comments: { $elemMatch: { _id: commentId } },
+    })
+      .lean()
+      .exec();
+    const comments = post.comments;
+    for (let i = 0; i < comments.length; i++) {
+      if (comments[i]._id.toString() === commentId) {
+        // if userId is already present inside likes array we will remove it
+        for (let j = 0; j < comments[i].likes.length; j++) {
+          if (comments[i].likes[j].toString() == userId) {
+            comments[i].likes.splice(j, 1);
+            console.log('hello');
+          }
+        }
+      }
+    }
+
+    await PostsData.updateOne({ _id: id }, { $set: { comments: comments } });
+
+    res
+      .status(200)
+      .json({ message: 'Comment unlike successfully', data: comments });
   } catch (err) {
     res.status(400).json({ error: 'Sorry! something went wrong' });
     console.log(err);
