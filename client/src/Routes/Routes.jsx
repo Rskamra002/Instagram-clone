@@ -11,6 +11,7 @@ import { UploadPosts } from '../Components/Uploads/UploadPosts'
 import { Inbox } from '../Components/Inbox/Inbox'
 import { WatchStories } from '../Components/Stories/WatchStories'
 import Tags from '../Components/Tags/Tags'
+import { IGTVupload } from '../Components/Uploads/IGTVuploadPost'
 
 function Routes() {
     return (
@@ -37,6 +38,10 @@ function Routes() {
                 <PrivateRoute path="/post/upload">
                     <Navbar />
                     <UploadPosts/>
+                </PrivateRoute>
+                <PrivateRoute path="/tv/upload">
+                    <Navbar/>
+                    <IGTVupload/>
                 </PrivateRoute>
                 <PrivateRoute exact path="/direct/inbox">
                     <Navbar/>

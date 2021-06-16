@@ -4,7 +4,8 @@ import { useEffect } from "react"
 import { useRef, useState } from "react"
 import { Redirect } from "react-router"
 import { loadData } from "../../Utils/localStorage"
-import { Bios, ChooseFile, Container, OptionsSide, PostButtons, Preview, Wrapper } from "./uploadCss"
+import { Bios, Container, OptionsSide, PostButtons, Wrapper } from "./uploadCss"
+import {ChooseIGTVFile, Preview} from "./IGTVcss"
 
 const useStyles = makeStyles((theme) => ({
     loader: {
@@ -12,8 +13,7 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-const UploadPosts = () => {
-
+const IGTVupload = () => {
     const classes = useStyles();
     const [imgUrl, setImgUrl] = useState("")
     const [preview, setPreview] = useState(null)
@@ -82,13 +82,14 @@ const UploadPosts = () => {
         <Wrapper>
             {load && <LinearProgress className={classes.loader} />}
             <Container>
-                <ChooseFile
+                <ChooseIGTVFile
+                id="test"
                 ref={imgRef}
                 type="file"
                 onChange={showPreview}
                 />
                 <OptionsSide>
-                    <h1>Add New Post</h1>
+                    <h1>Add New IGTV Video</h1>
                     <h4>Cover</h4>
                     <p>Must be a JPG or PNG file. The minimum recommended size is 492 x 762 pixels.</p>
                     <Preview>
@@ -101,6 +102,7 @@ const UploadPosts = () => {
                     </Preview>
                     {err && <p>Oops!. Failed in Loading the Image. Please try again.</p>}
                     <button>Edit</button>
+                    <br/><br/>
                     <h4>Details</h4>
                     <Bios placeholder="Add a Caption" type="text"
                     onChange={(e) => setCaption(e.target.value)}
@@ -117,6 +119,4 @@ const UploadPosts = () => {
     )
 }
 
-export {UploadPosts}
-
-
+export {IGTVupload}
