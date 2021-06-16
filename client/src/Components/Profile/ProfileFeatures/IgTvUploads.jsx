@@ -1,13 +1,16 @@
 import React from "react";
 import styles from "./Features.module.css";
 import styled from "styled-components";
+import {Link} from "react-router-dom";
 function IgTvUploads() {
   return (
     <Wrapper>
       <img src="./assets/svgs/igtv.svg" alt="Igtv Icon" class={styles.icon} />
       <Title>Upload a Video</Title>
       <div>Videos must be between 1 and 60 minutes long.</div>
+      <Link to={"/tv/upload"}>
       <Button>Upload</Button>
+      </Link>
     </Wrapper>
   );
 }
