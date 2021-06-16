@@ -10,7 +10,6 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import styled from "styled-components";
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(() => ({
   container: {
