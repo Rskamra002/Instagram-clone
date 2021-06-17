@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   makeStyles,
@@ -12,8 +12,8 @@ import {
 } from "@material-ui/core";
 import styles from "./Posts.module.css";
 import CloseIcon from "@material-ui/icons/Close";
-import { useSelector } from "react-redux";
-import Comments from './Comments'
+import PostEngagement from './PostEngagement'
+import axios from 'axios'
 // styling material ui elements
 
 const useStyles = makeStyles((theme) => ({
@@ -50,17 +50,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DetailedPostInfo = (data) => {
-  const profileData = useSelector((state) => state.profile.data);
-  const { username, profilePic, fullname } = profileData;
-  console.log('profilePic', profileData)
-  const { src, handlePostDisplay, likes, _id, caption } = data;
+const DetailedPostInfo = (postData) => {
+  const { src, handlePostDisplay, userId } = postData;
+  const [uploadedBy, setUploadedBy] = useState();
+
+  // getting details of post user
+  useEffect(() => {
+    userId &&
+      axios.get(`http://localhost:2511/users/${userId}`)
+        .then(res => setUploadedBy(res.data.data))
+  }, [])
+
   const classes = useStyles();
   return (
     <Container>
       <Modal open={true} className={classes.container}>
         <Paper className={classes.paper}>
-          {/* <CloseIcon /> */}
           <CloseIcon
             fontSize="large"
             className={classes.close}
@@ -71,7 +76,7 @@ const DetailedPostInfo = (data) => {
             <Grid item xs={7} s={7} md={7} lg={7} xl={7}>
               {
                 src && src.substring(src.length - 4) !== '.mp4' ? (
-                  <img src={src} alt={`${fullname}'s Post`} />) : (
+                  <img src={src} alt={`${uploadedBy?.fullname}'s Post`} />) : (
                   <video alt="" controls width='100%' height='100%'>
                     <source src={src} type="video/mp4" />
                   </video>
@@ -90,13 +95,13 @@ const DetailedPostInfo = (data) => {
             >
               <Box>
                 <Avatar
-                  alt={`${fullname}'s Profile Picture`}
-                  src={profilePic}
+                  alt={`${uploadedBy?.username}'s Profile Picture`}
+                  src={uploadedBy?.profilePic}
                 ></Avatar>
-                <Typography variant="h6">{username}</Typography>
+                <Typography variant="h6">{uploadedBy?.username}</Typography>
               </Box>
               <Divider />
-              <Comments {...profileData} likes={likes} id={_id} caption={caption} />
+              <PostEngagement {...postData} username={uploadedBy?.username} profilePic={uploadedBy?.profilePic} />
             </Grid>
           </Grid>
         </Paper>
