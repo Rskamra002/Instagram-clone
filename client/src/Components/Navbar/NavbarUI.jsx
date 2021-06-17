@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
     height:54px;
     position: fixed;
+    padding-top: 2px;
     width: 100%;
     top:0;
     z-index: 100;
@@ -56,7 +57,8 @@ export const UsersProfile = styled.div`
     display: flex;
     gap: 10px;
     align-items: center;
-    margin:5px;
+    padding: 10px;
+    font-size: 15px;
     :hover{
         background: rgb(250,250,250);
     }
