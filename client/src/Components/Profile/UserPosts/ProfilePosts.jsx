@@ -5,21 +5,22 @@ import { Grid, Container } from "@material-ui/core";
 import DisplayPost from "./DisplayPost";
 
 function ProfilePosts({ _id }) {
-  console.log('id', _id)
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.profile.posts);
+
   useEffect(() => {
     dispatch(getUserPosts(_id));
   }, [_id, dispatch]);
-
-
-  return (
+  
+  return !posts?.length == 0 && (
     <>
       <Container>
         <Grid container spacing={3}>
+
           {posts?.map((post, id) => (
             <DisplayPost key={id} {...post} />
           ))}
+
         </Grid>
       </Container>
     </>

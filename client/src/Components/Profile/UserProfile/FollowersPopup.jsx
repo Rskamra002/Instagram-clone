@@ -8,11 +8,10 @@ import {
   Avatar,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
 import axios from "axios";
 import ConfirmRemovePopup from "./ConfirmRemovePopup";
-import { Link, Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 // styling material ui elements
 
 const useStyles = makeStyles(() => ({
@@ -46,11 +45,11 @@ const useStyles = makeStyles(() => ({
 const FollowersPopup = ({ handlePopUp, followers }) => {
   const history = useHistory();
   const [profileFollowers, setProfileFollowers] = useState([]);
-  const [removeFollower, setRemoveFollower] = useState();
+  const [removeFollower, setRemoveFollower] = useState(null);
   const classes = useStyles();
 
   const closePopup = () => {
-    setRemoveFollower("");
+    setRemoveFollower(null);
   };
 
   const handleRemove = (follower, e) => {
