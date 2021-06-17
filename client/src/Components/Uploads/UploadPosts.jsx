@@ -27,7 +27,7 @@ const UploadPosts = () => {
     useEffect(() => {
         const endpoint = imgUrl?.name
         let ext = endpoint?.trim().split("").splice(endpoint.length-4).join("")
-        let type = `${ext == '.mp4' ? 'video': 'image'}`
+        let type = `${ext === '.mp4' ? 'video': 'image'}`
         setTypeofMedia(type)
     },[imgUrl])
 
@@ -93,7 +93,7 @@ const UploadPosts = () => {
                     <p>Must be a JPG or PNG file. The minimum recommended size is 492 x 762 pixels.</p>
                     <Preview>
                         {
-                            preview && typeofMedia == 'image' ?
+                            preview && typeofMedia === 'image' ?
                             
                             (<img src={preview} alt="preview" width="100%" height="100%"/>) : 
                             (<video src={preview} width="100%" height="100%"></video>)
