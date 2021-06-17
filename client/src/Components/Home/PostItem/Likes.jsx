@@ -2,12 +2,21 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import Modal from '@material-ui/core/Modal';
 import LikesDetails from './LikesDetails'
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 export default function Likes({likes}) {
   const [showLikes,setShowLikes] = useState(false);
+  const loggedInUser = useSelector(state => state.login.user);
+
+  const [loggedInUserFollowing,setLoggedInUserFollowing] = useState([])
 
   const handleShowLikes = () => {
-    setShowLikes(true);
+    axios.get(`http://localhost:2511/users/${loggedInUser._id}`).then((res) => {
+      setLoggedInUserFollowing(res.data.data.following);
+    }).finally(() => {
+     setShowLikes(true);
+    })
   }
   const handleHideLikes = () => {
     setShowLikes(false);
@@ -15,7 +24,7 @@ export default function Likes({likes}) {
 
   return (
        <LikesBox>
-       {showLikes ? <LikesDetails likes={likes} showLikes={showLikes} handleHideLikes={handleHideLikes} /> : null} 
+       {showLikes ? <LikesDetails loggedInUserId={loggedInUser._id} likes={likes} showLikes={showLikes} handleHideLikes={handleHideLikes} loggedInUserFollowing={loggedInUserFollowing}/> : null} 
        {likes.length === 0 ? <button>Be the first to <span>like this</span></button> : <button type="button"  onClick={handleShowLikes}> {likes.length} likes
          </button>}
         </LikesBox>

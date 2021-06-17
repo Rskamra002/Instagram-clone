@@ -7,7 +7,7 @@ function Message({ownMessage,data}) {
     const [messenger,setMessenger] = useState(null);
 
 
-    const [singleEmoji,setSingleEmoji] = useState(true);
+    const [singleEmoji,setSingleEmoji] = useState(false);
 
    
 
@@ -16,8 +16,8 @@ function Message({ownMessage,data}) {
             setMessenger(res.data.data)
         })
 
-        if(data.text.match("^[a-zA-Z0-9]")){
-            setSingleEmoji(false);
+        if(!data.text.match("^[a-zA-Z0-9]")){
+            setSingleEmoji(true);
         }
     }, [data])
 

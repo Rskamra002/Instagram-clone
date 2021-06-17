@@ -10,6 +10,7 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import styled from "styled-components";
 import { Link } from 'react-router-dom';
+import UnfollowPopUpModal from './UnfollowPopUp';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -32,24 +33,59 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-
-export default function LikesDetails({likes,showLikes,handleHideLikes}) {
+export default function LikesDetails({likes,showLikes,handleHideLikes,loggedInUserFollowing,loggedInUserId}) {
   const classes = useStyles();
+
   const [likedUsers,setLikedUsers] = useState([]);
+  const [allLoggedInUserFollowing,setAllLoggedInUserFollowing] = useState(loggedInUserFollowing);
+
+
+  // unfollow pop up model
+  const [openModel2, setOpenModel2] = useState(false);
+  const [goingToUnfollow,setGoingToUnfollow] = useState({});
+  const handleOpenModel2 = (user) => {
+    setGoingToUnfollow(user)
+    setOpenModel2(true);
+  };
+  const handleCloseModel2 = () => {
+    setOpenModel2(false);
+  };
+  
+
 
   const handleClose = () => {
     handleHideLikes(false);
   };
 
+  const handleFollow = (userId) => {
+    const payload ={
+        userId: userId
+    }
+    axios.patch(`http://localhost:2511/users/follow/${loggedInUserId}`,payload).then(() => {
+      setAllLoggedInUserFollowing([...allLoggedInUserFollowing,userId])
+    })
+  }
+
+  const handleUnFollow = (userId) => {
+    const payload ={
+        userId: userId
+    }
+    axios.patch(`http://localhost:2511/users/unfollow/${loggedInUserId}`,payload).then(() => {
+      const updatedAllLoggedInUserFollowing = allLoggedInUserFollowing.filter((item) => userId !== item);
+      setAllLoggedInUserFollowing(updatedAllLoggedInUserFollowing)
+    }).finally(() => {
+      handleCloseModel2()
+    })
+  }
+
+
   useEffect(() => {
     likes.forEach((userId) => {
       axios.get(`http://localhost:2511/users/${userId}`).then((res) => {
-      console.log(res.data)
-        setLikedUsers(prev => [...prev,{"username":res.data.data.username, "profilePic":res.data.data.profilePic, "fullname": res.data.data.fullname}])
+        setLikedUsers(prev => [...prev,{"userId":res.data.data._id, "username":res.data.data.username, "profilePic":res.data.data.profilePic, "fullname": res.data.data.fullname}])
       })
     })
   },[])
-  
   return (
     <Container className={classes.container}>
       <Modal open={showLikes}>
@@ -74,13 +110,17 @@ export default function LikesDetails({likes,showLikes,handleHideLikes}) {
                     </Link>
                     <div>{user.fullname}</div>
                   </MainDiv>
-                  <Button>Following</Button>
+                  {allLoggedInUserFollowing.includes(user.userId) ? <Button onClick={() => handleOpenModel2(user)}>Following</Button> :<Button onClick={() => handleFollow(user.userId)} style={{backgroundColor:"#0095F7", color:"white", marginRight:"10px"}}>Follow</Button>} 
                 </Wrapper2>
               );
             })}
           </Liked>
         </Paper>
       </Modal>
+
+
+      {/* unfollow confirm pop up model */}
+      <UnfollowPopUpModal openModel2={openModel2} goingToUnfollow={goingToUnfollow} handleCloseModel2={handleCloseModel2} handleUnFollow={handleUnFollow}/>
     </Container>
   );
 };
