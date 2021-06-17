@@ -18,6 +18,13 @@ export const Container = styled.div`
     position: relative;
     justify-content: space-between;
     align-items: center;
+    @media (max-width: 1000px) {
+        width: 100%;
+        padding:  0px 10px
+    }
+    @media (max-width: 550px) {
+        display: 0px 20px;
+    }
 
 `
 export const SearchBar = styled.div`
@@ -42,6 +49,9 @@ export const SearchBar = styled.div`
             text-align: left;
             padding-left: 5px;
         }
+    }
+    @media (max-width: 550px) {
+        display: none;
     }
     
 `

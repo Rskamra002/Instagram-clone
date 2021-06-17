@@ -11,6 +11,9 @@ export const Container = styled.div`
     gap: 50px;
     margin: auto;
     padding: 4% 0px;
+    @media (max-width: 900px) {
+        width: 95%;
+    }
     
 `
 export const OptionsSide = styled.div`
@@ -52,6 +55,7 @@ export const ChooseFile = styled.input`
     height: 280px;
     display: flex;
     cursor: pointer;
+    color: transparent;
     flex-direction: column;
     ::before{
         content: "+";
@@ -63,16 +67,24 @@ export const ChooseFile = styled.input`
         background: transparent;
         color: #0095F6;
         font-weight:100;
-        margin:auto
+        margin:auto;
+        @media (max-width: 900px) {
+            padding-left: 0px;
+    }
+        
     }
     ::-webkit-file-upload-button {
     visibility: hidden;
     }
     ::after{
-        content: 'Drag and Drop an Image File';
+        content: 'Drag and Drop an Image';
         width: 65%;
         margin: auto;
         font-weight:700;
+        color: black;
+        @media (max-width: 500px) {
+        width: 90%;
+    }
         /* visibility: hidden; */
     }
 `
