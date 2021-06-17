@@ -11,6 +11,7 @@ router.get('/posts', async (req, res) => {
   const offset = (page - 1) * limit;
 
   const posts = await PostsData.find({})
+    .sort({ createdAt: 'desc' })
     .skip(offset)
     .limit(limit)
     .lean()
