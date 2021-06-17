@@ -126,8 +126,8 @@ function Navbar() {
                     !query && 
                     <SuggestionBox ref={scrollRef} len={suggestedUsers?.length}>
                         <Tabs>
-                            <p>Recent</p>
-                            <h4>Clear All</h4>
+                            <p>Search Users</p>
+                            {/* <h4>Clear All</h4> */}
                         </Tabs>
                         {
                             suggestions?.map((item) => (

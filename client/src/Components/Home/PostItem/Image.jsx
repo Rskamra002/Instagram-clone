@@ -10,6 +10,7 @@ export default function Image({imgSrc,like,handleLike}) {
   const [playVideo,setPlayVideo] = useState(false);
   const [pauseIcon,setPauseIcon] = useState(true);
 
+  const [isVideo , setIsvideo] = useState(imgSrc.includes('.mp4'))
   const handleStart = (e) => {
     setPlayVideo(prev => !prev)
     setPauseIcon(prev => !prev)
@@ -50,8 +51,8 @@ export default function Image({imgSrc,like,handleLike}) {
       <DoubleClickEffect height={`${size}px`} alt="pause" src="https://img.icons8.com/fluent-systems-filled/2x/ffffff/play.png"/>
       }
       
-      <Img onDoubleClick={setLike}>
-          {imgSrc.includes('.jpg') || imgSrc.includes('.png') ? <img src={imgSrc} alt="image"/> : imgSrc.includes('.mp4') || imgSrc.includes('.png') ? 
+      <Img isVideo = {isVideo} onDoubleClick={setLike}>
+          {imgSrc.includes('.jpg') || imgSrc.includes('.png') ? <img src={imgSrc} alt="image"/> : imgSrc.includes('.mp4')? 
           <video onClick={handleStart} alt="video">
             <source src={imgSrc} type="video/mp4" />
         </video > : null}
@@ -67,7 +68,8 @@ export default function Image({imgSrc,like,handleLike}) {
 
 const Img = styled.div`
   width:100%;
-  height:640px;
+  min-width:${prop=>prop.isVideo?"100%":"initial"} ;
+  height:${prop=>prop.isVideo?"450px":"640px"};
   cursor: pointer;
   img{
     width:100%;
@@ -75,6 +77,7 @@ const Img = styled.div`
     object-fit: cover;
   }
   video{
+    object-fit:cover;
     width:100%;
     height:100%;
   }
