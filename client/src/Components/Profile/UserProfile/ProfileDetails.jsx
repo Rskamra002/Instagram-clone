@@ -39,7 +39,7 @@ const ProfileDetails = () => {
   const [activePage, setActivePage] = useState("posts");
   const profileData = useSelector((state) => state.profile.data);
   const { profilePic, fullname } = profileData;
-  
+
   useEffect(() => {
     dispatch(getUserData(user));
   }, [user, dispatch])
@@ -63,7 +63,7 @@ const ProfileDetails = () => {
           </Box>
         </Profile>
         <Divider className={classes.divider} />
-        <Categories handleActivePage={handleActivePage} />
+        <Categories handleActivePage={handleActivePage} activePage={activePage} />
 
         {activePage === "posts" ? (
           <ProfilePosts {...profileData} />

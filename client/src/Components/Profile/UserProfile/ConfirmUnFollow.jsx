@@ -11,7 +11,8 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { loadData } from "../../../Utils/localStorage";
 import { unFollowUser } from "./UpdateFollows";
-
+import { getUserData } from "../../../Redux/UserProfile/action";
+import axios from 'axios'
 const useStyles = makeStyles((theme) => ({
     avatar: {
         margin: "15px auto",
@@ -25,15 +26,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ConfirmUnFollow = (data) => {
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const loggedInUser = loadData("users");
     const { username, profilePic, closePopup, unfollowedSuccess, userId } = data;
 
     const confirmRemove = (removeFrom, toRemove) => {
-        unFollowUser(removeFrom, toRemove, dispatch);
-        unfollowedSuccess();
-        closePopup();
+        setIsLoading(true)
+        axios
+            .patch(`http://localhost:2511/users/unfollow/${removeFrom}`, {
+                userId: `${toRemove}`,
+            })
+            .then((res) => {
+                axios.get(`http://localhost:2511/users/${removeFrom}`).then((res) => {
+                    unfollowedSuccess();
+                    setIsLoading(false)
+                    closePopup();
+                    dispatch(getUserData(res.data.data));
+                });
+            });
     };
 
     const classes = useStyles();
@@ -46,9 +57,7 @@ const ConfirmUnFollow = (data) => {
                     <Divider />
                     <Button
                         style={{ color: "#ed4956", fontWeight: "bold" }}
-                        onClick={() =>
-                            confirmRemove(loggedInUser._id, userId)
-                        }
+                        onClick={() => confirmRemove(loggedInUser._id, userId)}
                     >
                         {isLoading ? <CircularProgress size={25} /> : "Unfollow"}
                     </Button>
