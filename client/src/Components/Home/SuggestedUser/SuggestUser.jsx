@@ -5,18 +5,23 @@ import { loadData } from '../../../Utils/localStorage'
 import { Details } from './Details'
 import {Link} from "react-router-dom"
 import { IndividualUserSuggestion } from './IndividualUserSuggestion'
+import axios from 'axios'
 
 const SuggestUser = () => {
     const [profile, setProfile] = useState({})
+    const [followings, setFollowings] = useState([])
     const [newPerson, setNewPerson] = useState([])
     const suggestions = useSelector(state => state.user.user)
     useEffect(() => {
         let b = loadData("users")
         setProfile(b)
-        const following = profile?.following
-        let updated = suggestions?.filter((item) => item._id !== profile?._id && !following?.includes(item._id))
-        setNewPerson(updated)
-    }, [suggestions])
+        let u_id = loadData('users')._id
+        axios.get(`http://localhost:2511/users/${u_id}`)
+        .then((res) => setFollowings(res.data.data.following))
+
+        let updatednew = suggestions?.filter((item) => !followings.includes(item._id))
+        setNewPerson(updatednew)
+    }, [suggestions, followings])
 
     
     return (
