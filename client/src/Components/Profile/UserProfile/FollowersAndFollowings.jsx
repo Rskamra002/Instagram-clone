@@ -9,7 +9,7 @@ import FollowingsPopup from "./FollowingsPopup";
 import PersonIcon from "@material-ui/icons/Person";
 import axios from "axios";
 import { followUser, unFollowUser } from "./UpdateFollows";
-
+import { Redirect } from "react-router";
 // styling material ui elements
 const useStyles = makeStyles((theme) => ({
   option: {
@@ -37,7 +37,7 @@ const FollowersAndFollowings = (data) => {
   const dispatch = useDispatch();
   const profileData = useSelector((state) => state.profile.data); //params
   const { followers, following } = profileData;
-
+  const [conversationId,setConversationId] = useState("")
   useEffect(() => {
     axios
       .get(`http://localhost:2511/users/${activeUser.username}`)
@@ -56,6 +56,16 @@ const FollowersAndFollowings = (data) => {
     unFollowUser(loggedIn._id, profileData._id, dispatch);
   };
 
+  const handleMessage = async ()=>{
+    const payload = {
+        senderId:activeUser._id,
+        receiverId:_id
+    }
+    await axios.post("http://localhost:2511/newConversation",payload).then((res)=>setConversationId(res.data._id))
+  }
+  if(conversationId !== ""){
+    return <Redirect to={`/direct/inbox/${conversationId}/${_id}`} push/>
+  }
   return (
     <>
       <Box>
@@ -78,7 +88,7 @@ const FollowersAndFollowings = (data) => {
             <>
               {loggedIn && loggedIn.following.includes(_id) ? (
                 <UnFollowBtn>
-                  <MessageBtn>Message</MessageBtn>
+                  <MessageBtn onClick={handleMessage}>Message</MessageBtn>
                   <PersonIcon
                     fontSize="small"
                     onClick={handleUnFolow}
