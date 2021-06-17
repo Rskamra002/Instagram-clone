@@ -5,12 +5,15 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {unlikeIconPath,likeIconPath} from './svgIcons'
 import styled from "styled-components"
+import { useSelector } from 'react-redux'
   
 
-  export default function Comments({comment}) {
+  export default function Comments({comment,postId}) {
+
+  const loggedInUser = useSelector(state => state.login.user)
 
   const [commentBy,setCommentBy] = useState("")
-  const [like,setLike] = useState(false);
+  const [like,setLike] = useState(comment.likes.includes(loggedInUser._id));
 
   useEffect(() => {
     axios.get(`http://localhost:2511/users/${comment.userId}`).then((res) => {
@@ -19,12 +22,25 @@ import styled from "styled-components"
   },[])
 
   const handleCommentLike = () => {
-    setLike(!like)
+    const payload = {
+      "userId": loggedInUser._id, 
+      "commentId": comment._id
+    }
+    if(!like){
+        axios.patch(`http://localhost:2511/posts/likecomment/${postId}`,payload).then((res) => {
+        setLike(true)
+      })
+    } else{
+      axios.patch(`http://localhost:2511/posts/unlikecomment/${postId}`,payload).then((res) => {
+        setLike(false)
+      })
+    }
+    
   }
 
   return (
          <>
-          <div id={comment._id}>
+          <div key={comment._id}>
             <span>
               <Link to={`/${commentBy}`}>{commentBy}</Link>
               {comment.comment}

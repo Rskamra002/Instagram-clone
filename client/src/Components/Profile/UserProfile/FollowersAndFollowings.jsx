@@ -7,124 +7,127 @@ import { useDispatch, useSelector } from "react-redux";
 import FollowersPopup from "./FollowersPopup";
 import FollowingsPopup from "./FollowingsPopup";
 import PersonIcon from "@material-ui/icons/Person";
-import { loadData } from "../../../Utils/localStorage";
 import axios from "axios";
-import { getUserData } from "../../../Redux/UserProfile/action";
 import { followUser, unFollowUser } from "./UpdateFollows";
-
+import { Redirect } from "react-router";
 // styling material ui elements
 const useStyles = makeStyles((theme) => ({
-    option: {
-        justifyContent: "center",
-        display: "flex",
-        gap: 50,
-        margin: theme.spacing(2, 0),
-    },
-    personIcon: {
-        border: "1px solid rgb(231, 231, 231)",
-        width: "60px",
-        height: "inherit",
-        borderRadius: "5px",
-    },
+  option: {
+    justifyContent: "center",
+    display: "flex",
+    gap: 50,
+    margin: theme.spacing(2, 0),
+  },
+  personIcon: {
+    border: "1px solid rgb(231, 231, 231)",
+    width: "60px",
+    height: "inherit",
+    borderRadius: "5px",
+  },
 }));
 
 const FollowersAndFollowings = (data) => {
-    const { _id, username, bio } = data;
-    const user = useParams();
-    const classes = useStyles();
-    const [loggedIn, setLoggedIn] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [followPopUp, setFollowPopUp] = useState("");
-    const userPosts = useSelector((state) => state.profile.posts);
-    const loggedInUser = loadData("users");
-    const dispatch = useDispatch();
-    const profileData = useSelector((state) => state.profile.data); //params
-    const { followers, following } = profileData;
+  const activeUser = useSelector((state) => state.login.user);
+  const { _id, username, bio } = data;
+  const user = useParams();
+  const classes = useStyles();
+  const [loggedIn, setLoggedIn] = useState(null);
+  const [followPopUp, setFollowPopUp] = useState(null);
+  const userPosts = useSelector((state) => state.profile.posts);
+  const dispatch = useDispatch();
+  const profileData = useSelector((state) => state.profile.data); //params
+  const { followers, following } = profileData;
+  const [conversationId,setConversationId] = useState("")
+  useEffect(() => {
+    axios
+      .get(`http://localhost:2511/users/${activeUser.username}`)
+      .then((res) => setLoggedIn(res.data.data));
+  }, [followers]);
 
-    useEffect(() => {
-        axios
-            .get(`http://localhost:2511/users/${loggedInUser.username}`)
-            .then((res) => setLoggedIn(res.data.data));
-        dispatch(getUserData(username)); // PARAMS
-    }, [dispatch, followers]);
+  const handlePopUp = () => {
+    setFollowPopUp(null);
+  };
 
-    const handlePopUp = () => {
-        setFollowPopUp(null);
-    };
+  const handleFollow = async () => {
+    followUser(loggedIn._id, profileData._id, dispatch);
+  };
 
-    const handleFollow = async () => {
-        setIsLoading(true)
-        await followUser(loggedIn._id, profileData._id, dispatch);
-        setIsLoading(false)
+  const handleUnFolow = () => {
+    unFollowUser(loggedIn._id, profileData._id, dispatch);
+  };
 
-    };
-
-    const handleUnFolow = () => {
-        unFollowUser(loggedIn._id, profileData._id, dispatch);
-    };
-
-    return (
-        <>
+  const handleMessage = async ()=>{
+    const payload = {
+        senderId:activeUser._id,
+        receiverId:_id
+    }
+    await axios.post("http://localhost:2511/newConversation",payload).then((res)=>setConversationId(res.data._id))
+  }
+  if(conversationId !== ""){
+    return <Redirect to={`/direct/inbox/${conversationId}/${_id}`} push/>
+  }
+  return (
+    <>
+      <Box>
+        <Box>
+          <User>{username}</User>
+          {activeUser.username === user.username ? (
             <Box>
-                <Box>
-                    <User>{username}</User>
-                    {loggedInUser.username === user.username ? (
-                        <Box>
-                            <EditBtn>Edit Profile</EditBtn>
-                            <svg
-                                width="24"
-                                height="24"
-                                viewBox="0 0 48 48"
-                                fill="#262626"
-                                style={{ margin: "0px 10px" }}
-                            >
-                                <path d={settings} />
-                            </svg>
-                        </Box>
-                    ) : (
-                        <>
-                            {loggedIn && loggedIn.following.includes(_id) ? (
-                                <UnFollowBtn>
-                                    <MessageBtn>Message</MessageBtn>
-                                    <PersonIcon
-                                        fontSize="small"
-                                        onClick={handleUnFolow}
-                                        className={classes.personIcon}
-                                    />
-                                </UnFollowBtn>
-                            ) : (
-                                <FollowBtn onClick={handleFollow}>follow</FollowBtn>
-                            )}
-                        </>
-                    )}
-                </Box>
-
-                <Wrapper>
-                    <Typography>
-                        <span style={{ fontWeight: "bold" }}>{userPosts.length}</span> posts
-                    </Typography>
-                    <Typography onClick={() => setFollowPopUp("followers")}>
-                        <span style={{ fontWeight: "bold" }}>{followers?.length}</span>{" "}
-                        followers
-                    </Typography>
-                    <Typography onClick={() => setFollowPopUp("followings")}>
-                        <span style={{ fontWeight: "bold" }}>{following?.length}</span>{" "}
-                        following
-                    </Typography>
-
-                    {followPopUp == "followers" ? (
-                        <FollowersPopup handlePopUp={handlePopUp} followers={followers} />
-                    ) : followPopUp == "followings" ? (
-                        <FollowingsPopup handlePopUp={handlePopUp} following={following} />
-                    ) : null}
-                </Wrapper>
-
-                <Box>
-                    <Typography>{bio}</Typography>
-                </Box>
+              <EditBtn>Edit Profile</EditBtn>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 48 48"
+                fill="#262626"
+                style={{ margin: "0px 10px" }}
+              >
+                <path d={settings} />
+              </svg>
             </Box>
-        </>
-    );
+          ) : (
+            <>
+              {loggedIn && loggedIn.following.includes(_id) ? (
+                <UnFollowBtn>
+                  <MessageBtn onClick={handleMessage}>Message</MessageBtn>
+                  <PersonIcon
+                    fontSize="small"
+                    onClick={handleUnFolow}
+                    className={classes.personIcon}
+                  />
+                </UnFollowBtn>
+              ) : (
+                <FollowBtn onClick={handleFollow}>follow</FollowBtn>
+              )}
+            </>
+          )}
+        </Box>
+
+        <Wrapper>
+          <Typography>
+            <span style={{ fontWeight: "bold" }}>{userPosts.length}</span> posts
+          </Typography>
+          <Typography onClick={() => setFollowPopUp("followers")}>
+            <span style={{ fontWeight: "bold" }}>{followers?.length}</span>{" "}
+            followers
+          </Typography>
+          <Typography onClick={() => setFollowPopUp("followings")}>
+            <span style={{ fontWeight: "bold" }}>{following?.length}</span>{" "}
+            following
+          </Typography>
+
+          {followPopUp == "followers" ? (
+            <FollowersPopup handlePopUp={handlePopUp} followers={followers} />
+          ) : followPopUp == "followings" ? (
+            <FollowingsPopup handlePopUp={handlePopUp} following={following} />
+          ) : null}
+        </Wrapper>
+
+        <Box>
+          <Typography>{bio}</Typography>
+        </Box>
+      </Box>
+    </>
+  );
 };
 
 export default FollowersAndFollowings;
@@ -169,7 +172,6 @@ const FollowBtn = styled.div`
   border-radius: 5px;
   color: white;
   height: 30px;
-
   outline: none;
   position: relative;
   font-size: 0.9rem;
