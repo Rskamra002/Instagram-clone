@@ -90,6 +90,7 @@ function Navbar() {
         setSearchUserPopup(false)
         setShowNotifications(false)
         setProfiler(false)
+        setQuery("")
     }
     const userSuggest = () => {
         setSearchUserPopup(!searchUserPopUp)
