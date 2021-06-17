@@ -25,4 +25,7 @@ const Container = styled.div`
     justify-content:space-between;
     width:70%;
     margin:auto;
+    @media (max-width: 1050px) {
+      width: 95%
+    }
 `

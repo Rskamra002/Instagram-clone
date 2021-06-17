@@ -102,8 +102,6 @@ const WatchStories = () => {
       setSortedStory(sortArr)
     }
   )
-  console.log(sortArr.slice(0, story?.length))
-  console.log(story)
   },[])
   
 

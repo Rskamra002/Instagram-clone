@@ -1,28 +1,17 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from "styled-components"
 import { loadData } from '../../../Utils/localStorage'
-import UnFollowPopup from './UnFollowPopup'
+import { followUser } from '../../Profile/UserProfile/UpdateFollows'
 const IndividualUserSuggestion = (data) => {
     const { profilePic, username, id } = data;
-    const [isFollowing, setIsFollowing] = useState(false);
-    const [popup, setPopup] = useState(false)
     const loggedInUser = loadData('users')
 
-    const handleFollow = (id) => {
-        // UpdateFollows(loggedInUser.id, id)
-        setIsFollowing(!isFollowing);
-    }
-    const handleUnfollow = (id) => {
-        setPopup(true);
-    }
+    const dispatch = useDispatch()
 
-    const closePopup = () => {
-        setPopup(false)
-    }
-
-    const updateFollowStatus = () => {
-        setIsFollowing(!isFollowing)
+    const handleFollow = () => {
+        followUser(loggedInUser._id, id, dispatch)
     }
 
     return (
@@ -34,11 +23,7 @@ const IndividualUserSuggestion = (data) => {
                     <p>New to instagram</p>
                 </div>
             </InnerBox>
-            {
-                !isFollowing ? <Follow onClick={() => handleFollow(id)}>{"Follow"}</Follow> :
-                    <Unfollow onClick={() => handleUnfollow(profilePic, username, id)}>{"Following"}</Unfollow>
-            }
-            <UnFollowPopup {...data} popup={popup} closePopup={closePopup} updateFollowStatus={updateFollowStatus} />
+            <Follow onClick={handleFollow}>Follow</Follow>
         </UserSuggested>
     )
 }
@@ -75,14 +60,6 @@ const InnerBox = styled.div`
 `
 const Follow = styled.div`
     color: #55B7F7;
-    font-size: 14px;
-    cursor: pointer;
-    margin-top: 8px;
-    font-size: 12px;
-    font-weight: 600;
-`
-const Unfollow = styled.div`
-    color: #000000;
     font-size: 14px;
     cursor: pointer;
     margin-top: 8px;

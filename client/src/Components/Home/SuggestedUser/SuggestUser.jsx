@@ -42,11 +42,11 @@ const SuggestUser = () => {
             </SuggestionHead>
             {newPerson &&
                 <>
-                    <IndividualUserSuggestion profilePic={newPerson[0]?.profilePic} username={newPerson[0]?.username} id={newPerson[0]?.id} />
-                    <IndividualUserSuggestion profilePic={newPerson[1]?.profilePic} username={newPerson[1]?.username} id={newPerson[1]?.id} />
-                    <IndividualUserSuggestion profilePic={newPerson[2]?.profilePic} username={newPerson[2]?.username} id={newPerson[2]?.id} />
-                    <IndividualUserSuggestion profilePic={newPerson[3]?.profilePic} username={newPerson[3]?.username} id={newPerson[3]?.id} />
-                    <IndividualUserSuggestion profilePic={newPerson[4]?.profilePic} username={newPerson[4]?.username} id={newPerson[4]?.id} />
+                    <IndividualUserSuggestion profilePic={newPerson[0]?.profilePic} username={newPerson[0]?.username} id={newPerson[0]?._id} />
+                    <IndividualUserSuggestion profilePic={newPerson[1]?.profilePic} username={newPerson[1]?.username} id={newPerson[1]?._id} />
+                    <IndividualUserSuggestion profilePic={newPerson[2]?.profilePic} username={newPerson[2]?.username} id={newPerson[2]?._id} />
+                    <IndividualUserSuggestion profilePic={newPerson[3]?.profilePic} username={newPerson[3]?.username} id={newPerson[3]?._id} />
+                    <IndividualUserSuggestion profilePic={newPerson[4]?.profilePic} username={newPerson[4]?.username} id={newPerson[4]?._id} />
                 </>
             }
             <Details />
