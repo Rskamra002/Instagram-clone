@@ -18,10 +18,10 @@ function Conversation({loggedInUser,connverUser}) {
             <div>
                 <img className={UsersStyle.userProfileImg} src={friendDetails?.profilePic} alt="" />
             </div>
-            <div>
+            <UsernameDetails>
                 <p>{friendDetails?.username}</p>
-                <p>{friendDetails?.fullname}</p>
-            </div>
+                <FullNamePara>{friendDetails?.fullname}</FullNamePara>
+            </UsernameDetails>
         </UsersLink>
     )
 }
@@ -32,7 +32,7 @@ const UsersLink = styled(Link)`
     display:flex;
     justify-content:flex-start;
     align-items:center;
-    gap:10px;
+    gap:7px;
     color: black;
     padding:.2rem .5rem;
     &:focus, &:hover, &:visited, &:link {
@@ -40,3 +40,12 @@ const UsersLink = styled(Link)`
     }
     
 `;
+const UsernameDetails= styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+`
+const FullNamePara= styled.p`
+    color:#9E9E9E;
+    font-size: 12px;
+`
