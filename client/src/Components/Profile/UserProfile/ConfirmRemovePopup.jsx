@@ -8,10 +8,9 @@ import {
 } from "@material-ui/core";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
-import { loadData } from "../../../Utils/localStorage";
-import { unFollowUser } from "./UpdateFollows";
-
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { getUserData } from "../../../Redux/UserProfile/action";
 const useStyles = makeStyles((theme) => ({
     avatar: {
         margin: "15px auto",
@@ -25,16 +24,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ConfirmRemovePopup = (data) => {
-    const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch();
-    const loggedInUser = loadData("users");
+    const [isLoading, setIsLoading] = useState(false);
+    const activeUser = useSelector((state) => state.login.user);
     const { username, profilePic, closePopup } = data;
 
-    const confirmRemove = async (removeFrom, toRemove) => {
+    const confirmRemove = (removeFrom, toRemove) => {
         setIsLoading(true);
-        await unFollowUser(removeFrom, toRemove, dispatch);
-        await setIsLoading(false);
-        await closePopup();
+        axios
+            .patch(`http://localhost:2511/users/unfollow/${removeFrom}`, {
+                userId: `${toRemove}`,
+            })
+            .then((res) => {
+                axios.get(`http://localhost:2511/users/${toRemove}`).then((res) => {
+                    setIsLoading(false);
+                    closePopup();
+                    dispatch(getUserData(res.data.data));
+                });
+            });
     };
 
     const classes = useStyles();
@@ -49,7 +56,7 @@ const ConfirmRemovePopup = (data) => {
                     <Button
                         style={{ color: "#ed4956", fontWeight: "bold" }}
                         onClick={() =>
-                            confirmRemove(data.userId, loggedInUser._id, dispatch)
+                            confirmRemove(data.userId, activeUser?._id, dispatch)
                         }
                     >
                         {isLoading ? <CircularProgress size={25} /> : "Remove"}

@@ -28,14 +28,14 @@ const ConfirmUnFollow = (data) => {
     const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch();
     const loggedInUser = loadData("users");
-    const { username, profilePic, closePopup, unfollowedSuccess } = data;
-
+    const { username, profilePic, closePopup, unfollowedSuccess, userId } = data;
 
     const confirmRemove = (removeFrom, toRemove) => {
         unFollowUser(removeFrom, toRemove, dispatch);
         unfollowedSuccess();
         closePopup();
     };
+
     const classes = useStyles();
     return (
         <>
@@ -47,7 +47,7 @@ const ConfirmUnFollow = (data) => {
                     <Button
                         style={{ color: "#ed4956", fontWeight: "bold" }}
                         onClick={() =>
-                            confirmRemove(loggedInUser._id, data.userId, dispatch)
+                            confirmRemove(loggedInUser._id, userId)
                         }
                     >
                         {isLoading ? <CircularProgress size={25} /> : "Unfollow"}

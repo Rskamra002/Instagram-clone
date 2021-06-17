@@ -39,11 +39,11 @@ const ProfileDetails = () => {
   const [activePage, setActivePage] = useState("posts");
   const profileData = useSelector((state) => state.profile.data);
   const { profilePic, fullname } = profileData;
-  const [totalFollower, setTotalFollower] = useState(useSelector((state) => state.profile.data.followers?.length))
-
+  
   useEffect(() => {
     dispatch(getUserData(user));
   }, [user, dispatch])
+
 
   const handleActivePage = (page) => {
     setActivePage(page);

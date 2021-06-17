@@ -14,7 +14,7 @@ import ConfirmUnFollow from './ConfirmUnFollow'
 import { Title, Wrapper, Button, MainDiv, Follow } from "./FollowersPopup";
 
 const Following = (data) => {
-    const [unfollow, setUnfollow] = useState();
+    const [unfollow, setUnfollow] = useState(null);
 
     const { profilePic, fullname, username } = data;
     const [unfollowSuccess, setUnfollowSuccess] = useState(false);
