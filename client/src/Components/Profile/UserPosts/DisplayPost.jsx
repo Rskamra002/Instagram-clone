@@ -4,7 +4,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ModeCommentOutlinedIcon from "@material-ui/icons/ModeCommentOutlined";
 import styles from "./Posts.module.css";
 import DetailedPostInfo from "./DetailedPostInfo";
-
+import styled from 'styled-components'
 const DisplayPost = (post) => {
   const [popUp, setPopUp] = useState(false);
   const handlePostDisplay = () => {
@@ -29,12 +29,12 @@ const DisplayPost = (post) => {
             <img src={post.src} className={styles.postImg} />) :
             (<video src={post.src} width='100%' height='100%'></video>)
         }
-        
+
         <Box className={styles.postInfoContainer}>
           <Box>
             <FavoriteIcon />
             <Box>{post.likes.length}</Box>
-            <ModeCommentOutlinedIcon />
+            <CommentIcon src="https://img.icons8.com/ios-glyphs/30/ffffff/topic.png" />
             <Box>{post.comments.length}</Box>
           </Box>
         </Box>
@@ -49,3 +49,9 @@ const DisplayPost = (post) => {
 };
 
 export default DisplayPost;
+
+const CommentIcon = styled.img`
+  width:25px;
+  height:25px;
+
+`

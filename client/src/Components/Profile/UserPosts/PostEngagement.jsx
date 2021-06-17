@@ -173,7 +173,6 @@ const PostEngagement = (data) => {
             <DisplayLikesCount allLikes={allLikes} recentLike={recentLike} />
           </span>
         </LikesCount>
-
         <CommentBox>
           <AddComment
             handleAddComment={handleAddComment}
@@ -191,15 +190,15 @@ export default PostEngagement;
 
 const Container = styled.div`
   position: absolute;
-  bottom: 40px;
+  bottom: 30px;
   width: 100%;
   height: 70px;
 `;
 
 const CommentBox = styled.div`
-  width: 90%;
+margin-top:50px;
+  width: 95%;
   position: absolute;
-  bottom: -60px;
 `;
 
 const Box = styled.div`
@@ -207,7 +206,7 @@ const Box = styled.div`
 `;
 
 const LikesCount = styled.div`
-  margin-top: 10px;
+  margin-top: 20px;
 `;
 
 const Comment = styled.div`

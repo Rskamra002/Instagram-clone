@@ -20,7 +20,7 @@ export const unFollowUser = (loggedInUser, userToUnfollow, dispatch) => {
     })
     .then((res) => {
       axios
-        .get(`http://localhost:2511/users/${loggedInUser}`)
+        .get(`http://localhost:2511/users/${userToUnfollow}`)
         .then((res) => dispatch(getUserData(res.data.data)));
     });
 };
