@@ -2,9 +2,11 @@ import React from 'react'
 import {Posts} from './Posts/Posts'
 import { SuggestUser } from './SuggestedUser/SuggestUser'
 import styled from "styled-components"
+import { Route } from 'react-router-dom'
 
 function Home() {
     return (
+
         <Wrapper>
             <Container>
                 <Posts />

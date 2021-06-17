@@ -8,6 +8,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { getStory } from '../../Redux/Stories/action'
+import { Spinner } from '../Loader/Spinner'
 
 
 const Stories = () => {
@@ -21,6 +22,7 @@ const Stories = () => {
 
     const [selfId, setSelfId] = useState("")
     const story = useSelector((state) => state.story.story)
+    const {isLoading} = useSelector((state) => state.story)
     const self = loadData('users')
     const dispatch = useDispatch()
     
@@ -31,7 +33,11 @@ const Stories = () => {
     },[dispatch])
     
 
-    return (
+    return isLoading ? (
+        <Wrapper>
+            <Spinner/>
+        </Wrapper>
+    ) : (
         <Wrapper>
             <Slider {...settings}>
             <StoryItem image={self.profilePic} name={self.username} index ={0}/>
