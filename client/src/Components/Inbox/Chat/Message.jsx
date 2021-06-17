@@ -66,7 +66,7 @@ const MessageImage = styled.img`
     object-fit: cover;
 `
 const MessageText = styled.p`
-    padding:.5rem;
+    padding:${props=>props.singleEmoji ? "0px" : '.5rem'};
     border:${props=>props.singleEmoji ? "none" : '1px solid #DBDBDB'};
     border-radius: 13px;
     font-size:${props=>props.singleEmoji ? "45px" : 'initial'};
