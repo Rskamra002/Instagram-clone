@@ -190,7 +190,7 @@ const PostItem = ({_id,userId,src,caption,likes,comments, createdAt}) => {
             <button onClick={() => {setViewMore(!viewMore)}}>{viewMore ? "Hide comments": "View more comments"}</button>
             </ViewMoreComments> : null}
             <AllComments viewMore={viewMore}> 
-              {allComments?.map((commentItem) => <Comments key={commentItem._id} comment={commentItem}/>)}
+              {allComments?.map((commentItem) => <Comments key={commentItem._id} comment={commentItem} postId={_id}/>)}
             </AllComments>
             <TimeAgo>
               {format(createdAt)}
