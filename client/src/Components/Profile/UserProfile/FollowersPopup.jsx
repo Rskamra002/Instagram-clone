@@ -11,7 +11,8 @@ import CloseIcon from "@material-ui/icons/Close";
 import styled from "styled-components";
 import axios from "axios";
 import ConfirmRemovePopup from "./ConfirmRemovePopup";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 // styling material ui elements
 
 const useStyles = makeStyles(() => ({
@@ -44,6 +45,9 @@ const useStyles = makeStyles(() => ({
 
 const FollowersPopup = ({ handlePopUp, followers }) => {
   const history = useHistory();
+  const profile = useParams();
+  const [loggedIn, setLoggedIn] = useState(null);
+  const loggedInUserData = useSelector((state) => state.login.user);
   const [profileFollowers, setProfileFollowers] = useState([]);
   const [removeFollower, setRemoveFollower] = useState(null);
   const classes = useStyles();
@@ -52,6 +56,7 @@ const FollowersPopup = ({ handlePopUp, followers }) => {
     setRemoveFollower(null);
   };
 
+  console.log("loggedIn", loggedIn);
   const handleRemove = (follower, e) => {
     setRemoveFollower(follower);
     e.target.disabled = true;
@@ -61,6 +66,12 @@ const FollowersPopup = ({ handlePopUp, followers }) => {
     handlePopUp();
     history.push(`/${follower.username}`);
   };
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:2511/users/${loggedInUserData._id}`)
+      .then((res) => setLoggedIn(res.data.data));
+  }, []);
 
   useEffect(() => {
     if (followers) {
@@ -91,6 +102,7 @@ const FollowersPopup = ({ handlePopUp, followers }) => {
           <Divider />
           <Follow>
             {profileFollowers?.map((follower) => {
+              console.log("follower", follower);
               return (
                 <Wrapper>
                   <Avatar
@@ -103,9 +115,21 @@ const FollowersPopup = ({ handlePopUp, followers }) => {
                     <div>{follower.username}</div>
                     <div>{follower.fullname}</div>
                   </MainDiv>
-                  <Button onClick={(e) => handleRemove(follower, e)}>
-                    Remove
-                  </Button>
+                  {profile.username !== loggedIn?.username ? (
+                    loggedIn?.following?.includes(follower.userId) ? (
+                      <Button onClick={(e) => handleRemove(follower, e)}>
+                        Following
+                      </Button>
+                    ) : (
+                      <FollowBtn onClick={(e) => handleRemove(follower, e)}>
+                        Follow
+                      </FollowBtn>
+                    )
+                  ) : (
+                    <Button onClick={(e) => handleRemove(follower, e)}>
+                      Remove
+                    </Button>
+                  )}
                 </Wrapper>
               );
             })}
@@ -113,10 +137,7 @@ const FollowersPopup = ({ handlePopUp, followers }) => {
         </Paper>
       </Modal>
       {removeFollower && (
-        <ConfirmRemovePopup
-          {...removeFollower}
-          closePopup={closePopup}
-        />
+        <ConfirmRemovePopup {...removeFollower} closePopup={closePopup} />
       )}
     </Container>
   );
@@ -167,4 +188,20 @@ export const Follow = styled.div`
   height: 400px;
 `;
 
+
+export const FollowBtn = styled.div`
+  background: #0095f6;
+  font-weight: 500;
+  border: 1px solid rgb(231, 231, 231);
+  border-radius: 5px;
+  color: white;
+  height: 30px;
+  outline: none;
+  position: relative;
+  font-size: 0.9rem;
+  padding: 2px 10px;
+  :hover {
+    cursor: pointer;
+  }
+`;
 export default FollowersPopup;
