@@ -123,16 +123,23 @@ height:273px;
 overflow:auto;
 position:absolute;
 bottom:100%;
+::-webkit-scrollbar {
+    display: none;
+}
 `;
 
 const Box2 = styled.div`
 width:100%;
 height:420px;
-overflow:scroll;
+overflow-y:scroll;
+overflow-x:hidden;
 position:absolute;
 top:-83px;
 span{
   cursor: pointer !important;
+}
+::-webkit-scrollbar {
+    display: none;
 }
 `;
 
