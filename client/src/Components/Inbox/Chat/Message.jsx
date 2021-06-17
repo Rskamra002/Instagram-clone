@@ -7,8 +7,7 @@ function Message({ownMessage,data}) {
     const [messenger,setMessenger] = useState(null);
 
 
-    // have to fix it
-    const [singleEmoji,setSingleEmoji] = useState(true);
+    const [singleEmoji,setSingleEmoji] = useState(false);
 
    
 
@@ -17,9 +16,8 @@ function Message({ownMessage,data}) {
             setMessenger(res.data.data)
         })
 
-        // have to fix it
-        if(data?.text.length === 2 &&  (/^([a-z0-9])$/.test(data.text[0]))){
-            setSingleEmoji(false);
+        if(!data.text.match("^[a-zA-Z0-9]")){
+            setSingleEmoji(true);
         }
     }, [data])
 
@@ -68,13 +66,12 @@ const MessageImage = styled.img`
     object-fit: cover;
 `
 const MessageText = styled.p`
-    padding:.5rem;
-    border:1px solid #DBDBDB;
+    padding:${props=>props.singleEmoji ? "0px" : '.5rem'};
+    border:${props=>props.singleEmoji ? "none" : '1px solid #DBDBDB'};
     border-radius: 13px;
-
-    // have to fix it
+    font-size:${props=>props.singleEmoji ? "45px" : 'initial'};
+    color:${props=>props.singleEmoji ? "#ED4956" : 'initial'};
     background-color:${props=>props.singleEmoji ? "none" : props.ownMessage?"#EFEFEF":"#FFFFFF"};
-
     max-width: 250px;
     word-wrap: break-word;
 `

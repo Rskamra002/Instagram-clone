@@ -90,6 +90,7 @@ function Navbar() {
         setSearchUserPopup(false)
         setShowNotifications(false)
         setProfiler(false)
+        setQuery("")
     }
     const userSuggest = () => {
         setSearchUserPopup(!searchUserPopUp)
@@ -134,7 +135,7 @@ function Navbar() {
                                 <UsersProfile onClick={openProfile} key={item._id}>
                                     <img src={item.profilePic} alt="profile"/>
                                     <div>
-                                        <p>{item.username}</p>
+                                        <p style={{fontWeight:"600"}}>{item.username}</p>
                                         <p>{item.fullname}</p>
                                     </div>
                                 </UsersProfile>
@@ -152,7 +153,7 @@ function Navbar() {
                                     <UsersProfile onClick={openProfile} key={item[0]}>
                                         <img src={item[1]} alt="profile"/>
                                         <div>
-                                            <p>{item[2]}</p>
+                                            <p style={{fontWeight:"600"}}>{item[2]}</p>
                                             <p>{item[3]}</p>
                                         </div>
                                     </UsersProfile>

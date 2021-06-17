@@ -10,7 +10,13 @@ export const Wrapper = styled.div`
   .slick-arrow{
         margin: 0px 38%;
         z-index: 100;
-    }
+        @media (max-width: 100px) {
+          margin: 0px 30%;
+        }
+        @media (max-width: 500px) {
+          margin: 0px 10%;
+        }
+  }
 
 `
 export const Container = styled.div`

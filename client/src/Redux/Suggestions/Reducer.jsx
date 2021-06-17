@@ -1,7 +1,7 @@
 import { loadData } from "../../Utils/localStorage"
 import { GET_USER_FAIL, GET_USER_REQ, GET_USER_SUC } from "./Actiontype"
-
 const loggedInUser = loadData('users')
+
 const init = {
     isLoading : false,
     isError: false,

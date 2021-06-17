@@ -23,3 +23,8 @@
     overflow-x: hidden;
     margin-top:.2rem;
 }
+@media (max-width: 650px) {
+    .main {
+        width: 80%;
+    }
+  }

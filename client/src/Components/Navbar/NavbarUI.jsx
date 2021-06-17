@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
     height:54px;
     position: fixed;
+    padding-top: 2px;
     width: 100%;
     top:0;
     z-index: 100;
@@ -17,6 +18,13 @@ export const Container = styled.div`
     position: relative;
     justify-content: space-between;
     align-items: center;
+    @media (max-width: 1000px) {
+        width: 100%;
+        padding:  0px 10px
+    }
+    @media (max-width: 550px) {
+        display: 0px 20px;
+    }
 
 `
 export const SearchBar = styled.div`
@@ -42,6 +50,9 @@ export const SearchBar = styled.div`
             padding-left: 5px;
         }
     }
+    @media (max-width: 550px) {
+        display: none;
+    }
     
 `
 export const SuggestionBox = styled.div`
@@ -56,7 +67,8 @@ export const UsersProfile = styled.div`
     display: flex;
     gap: 10px;
     align-items: center;
-    margin:5px;
+    padding: 10px;
+    font-size: 15px;
     :hover{
         background: rgb(250,250,250);
     }
