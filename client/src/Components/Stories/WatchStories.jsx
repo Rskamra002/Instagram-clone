@@ -64,7 +64,22 @@ const WatchStories = () => {
     focusOnSelect: true,
     initialSlide: index,
     beforeChange: (current, next) => {setNum(next); setProgress(0)},
-    
+    responsive: [
+      {
+        breakpoint: 1000,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1
+        }
+      },
+      {
+        breakpoint: 400,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
   };
 
   const story = useSelector((state) => state.story.story)

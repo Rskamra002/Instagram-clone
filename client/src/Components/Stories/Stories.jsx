@@ -17,7 +17,23 @@ const Stories = () => {
         infinite: false,
         speed: 500,
         slidesToShow: 6.5,
-        slidesToScroll: 3
+        slidesToScroll: 3,
+        responsive: [
+            {
+              breakpoint: 1050,
+              settings: {
+                slidesToShow: 5.5,
+                slidesToScroll: 3
+              }
+            },
+            {
+              breakpoint: 400,
+              settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1
+              }
+            }
+          ]
       };
 
     const [selfId, setSelfId] = useState("")

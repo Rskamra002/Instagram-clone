@@ -64,6 +64,9 @@ const SuggestionsWrapper = styled.div`
     height:480px;
     margin-top: 30px;
     padding: 30px 10px 10px 20px;
+    @media (max-width: 1000px) {
+        display: none;
+    }
 `
 const UserProfile = styled.div`
     height: 60px;

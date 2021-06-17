@@ -85,3 +85,39 @@
     border-left: 15px solid transparent;
     border-bottom: 15px solid white;
 }
+
+@media only screen and (max-width: 1000px) {
+    .arrow_box_profiler{
+        margin-left: 88%;
+    }
+    .arrow_box_profiler:after{
+        right: 2%;
+    }
+}
+@media only screen and (max-width: 830px) {
+    .arrow_box_profiler{
+        width: 23%;
+        margin-left: 87%;
+    }
+    .arrow_box_profiler:after{
+        right: 2%;
+    }
+}
+@media only screen and (max-width: 655px) {
+    .arrow_box_profiler{
+        width: 25%;
+        margin-left: 85%;
+    }
+    .arrow_box_profiler:after{
+        right: 2%;
+    }
+}
+@media only screen and (max-width: 500px) {
+    .arrow_box_profiler{
+        width: 33%;
+        margin-left: 80%;
+    }
+    .arrow_box_profiler:after{
+        right: 2%;
+    }
+}

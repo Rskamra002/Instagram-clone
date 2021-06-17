@@ -28,4 +28,10 @@ const Container = styled.div`
     position: relative;
     width:70%;
     margin:auto;
+    @media (max-width: 100px) {
+        width: 80%;
+    }
+    @media (max-width: 800px) {
+        width: 90%;
+    }
 `

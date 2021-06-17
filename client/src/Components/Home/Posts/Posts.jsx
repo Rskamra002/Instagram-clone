@@ -50,4 +50,7 @@ export {Posts};
 
 const Wrapper = styled.div`
   width:65%;
+  @media (max-width: 1000px) {
+      width: 100%
+    }
 `
