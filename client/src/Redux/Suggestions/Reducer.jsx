@@ -1,6 +1,7 @@
 import { loadData } from "../../Utils/localStorage"
 import { GET_USER_FAIL, GET_USER_REQ, GET_USER_SUC } from "./Actiontype"
-const loggedInUserId = loadData("users")._id
+const loggedInUser = loadData('users')
+
 const init = {
     isLoading : false,
     isError: false,
@@ -13,7 +14,7 @@ export const userReducer = (state = init, action) => {
                 ...state,
                 isLoading: false,
                 isError: false,
-                user: [...action.payload.filter((it)=>it._id !== loggedInUserId)]
+                user: [...action.payload.filter((item) => item._id !== loggedInUser._id)]
             }
         }
         case GET_USER_REQ: {

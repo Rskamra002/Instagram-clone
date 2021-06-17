@@ -41,15 +41,11 @@ function Navbar() {
         setSuggestedUsers(output)
         
         const tagOutput = tag?.filter((item) => item.tag.toLowerCase().indexOf(query) !== -1 ? true: false).map((item) => [item.id, item.tag])
-        // tagOutput?.forEach((i) => {
-        //     suggestedUsers.push(i)
-        // })
         setSuggestedTag(tagOutput)
         let b = JSON.parse(localStorage.getItem("users"))
         setProfilePic(b.profilePic)
         setUsername(b.username)
     },[suggestions, query, tag])
-    // console.log(suggestedTag)
 
 
     const handleActiveSuggestions = (e)=> {
@@ -90,13 +86,13 @@ function Navbar() {
         setShowNotifications(false)
         setSearchUserPopup(false)
     }
-    const userSuggest = () => {
-        setSearchUserPopup(true)
+    const openProfile = () => {
+        setSearchUserPopup(false)
         setShowNotifications(false)
         setProfiler(false)
     }
-    const openProfile = () => {
-        setSearchUserPopup(false)
+    const userSuggest = () => {
+        setSearchUserPopup(!searchUserPopUp)
         setShowNotifications(false)
         setProfiler(false)
     }
@@ -123,8 +119,8 @@ function Navbar() {
                 profilePic={profilePic}
                 />
                 {searchUserPopUp &&
-            <div className={styles.arrow_box}>
-            <div className={styles.overs}>
+                <div className={styles.arrow_box}>
+                <div className={styles.overs}>
                 {
                     !query && 
                     <SuggestionBox ref={scrollRef} len={suggestedUsers?.length}>
@@ -180,8 +176,9 @@ function Navbar() {
             </div>
         </div>
         }
-        <Notifications showNotifications={showNotifications}/>
-        <ProfileDetails profiler={profiler} username={username}/>
+        {/* <Notifications showNotifications={showNotifications}/> */}
+        <ProfileDetails profiler={profiler} username={username} 
+                openProfile={openProfile}/>
             </Container>
         </Wrapper>
         
