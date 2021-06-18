@@ -1,6 +1,7 @@
 const express = require('express');
 const PostsData = require('../model/postSchema');
 const UsersData = require('../model/userSchema');
+const HashtagData = require('../model/hashtagSchema');
 const router = express.Router();
 
 // get all posts
@@ -74,7 +75,7 @@ router.get('/posts/user/:id', async (req, res) => {
 
 // adding new post
 router.post('/posts/addpost', async (req, res) => {
-  const { src, userId } = req.body;
+  const { src, userId ,caption} = req.body;
 
   if (!src || !userId) {
     return res
@@ -91,6 +92,43 @@ router.post('/posts/addpost', async (req, res) => {
 
     const newPost = new PostsData(req.body);
     await newPost.save();
+
+    let hashTags = "";
+    if (caption !== undefined) {
+      const captionArr = caption.trim().split(' ');
+      for (let i = 0; i < captionArr.length; i++) {
+        if (captionArr[i][0] === '#') {
+          hashTags=captionArr[i];
+        }
+      }
+    }
+    if(hashTags !== undefined){
+      const hashtagAlreadyPresent = await HashtagData.findOne({
+        hashtagName: hashTags,
+      });
+      if (hashtagAlreadyPresent) {
+        await HashtagData.findOneAndUpdate(
+          { hashtagName: hashTags },
+          { $addToSet: { postIds: newPost._id } },
+          {
+            new: true,
+          }
+        );
+      }
+      if (!hashtagAlreadyPresent){
+
+        const newHashtag = new HashtagData({ hashtagName: hashTags});
+        await newHashtag.save();
+        await HashtagData.findOneAndUpdate(
+          { hashtagName: hashTags },
+          { $addToSet: { postIds: newPost._id } },
+          {
+            new: true,
+          }
+        );
+      }
+    }
+    // console.log(newPost._id)
 
     if (newPost) {
       res.status(201).json({ message: 'Post added successfully' });
