@@ -32,6 +32,7 @@ app.use(require('./router/conversation'));
 app.use(require('./router/message'));
 app.use(require('./router/story'));
 app.use(require('./router/hashtags'));
+app.use(require('./router/notifications'));
 
 async function start() {
   // Mongoose connection
