@@ -9,8 +9,6 @@ import FollowingsPopup from "./FollowingsPopup";
 import axios from "axios";
 import { followUser, unFollowUser } from "./UpdateFollows";
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import styles from './UserProfile.module.css'
 import { Redirect } from "react-router";
 // styling material ui elements
 const useStyles = makeStyles((theme) => ({
@@ -190,6 +188,9 @@ export const FollowBtn = styled.div`
   font-size: 0.9rem;
   padding: 2px 25px;
   margin-bottom:10px !important;
+  display:flex;
+  justify-content:center;
+  align-items:center;
   :hover {
     cursor: pointer;
   }
