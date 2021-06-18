@@ -19,6 +19,7 @@ const usersSchema = new mongoose.Schema(
     profilePic: { type: String },
     followers: [mongoose.Schema.Types.ObjectId],
     following: [mongoose.Schema.Types.ObjectId],
+    notifications: [String],
     savedPosts: [
       { type: mongoose.Schema.Types.ObjectId, ref: 'post', required: true },
     ],
