@@ -12,10 +12,10 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import ConfirmUnFollow from './ConfirmUnFollow'
 import { Title, Wrapper, Button, MainDiv, Follow } from "./FollowersPopup";
+import styled from 'styled-components'
 
 const Following = (data) => {
     const [unfollow, setUnfollow] = useState(null);
-
     const { profilePic, fullname, username } = data;
     const [unfollowSuccess, setUnfollowSuccess] = useState(false);
 
@@ -40,7 +40,11 @@ const Following = (data) => {
                     <div>{username}</div>
                     <div>{fullname}</div>
                 </MainDiv>
-                <Button onClick={(e) => handleUnfollow(data, e)}>{!unfollowSuccess ? "Following" : "Follow"}</Button>
+                {
+                    !unfollowSuccess ?
+                        <FollowingBtn onClick={(e) => handleUnfollow(data, e)} >Following</FollowingBtn> :
+                        <FollowBtn onClick={(e) => handleUnfollow(data, e)} > Follow </FollowBtn>
+                }
                 {
                     unfollow && <ConfirmUnFollow {...unfollow} closePopup={closePopup} unfollowedSuccess={unfollowedSuccess} />
                 }
@@ -50,3 +54,27 @@ const Following = (data) => {
 }
 
 export default Following
+
+export const FollowingBtn = styled.button`
+  background: white;
+  font-weight: bold;
+  border: 1px solid rgb(231, 231, 231);
+  border-radius: 5px;
+  padding: 8px 18px;
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+
+export const FollowBtn = styled.button`
+  background: #0095f6;
+  font-weight: bold;
+  color:white;
+  border: 1px solid rgb(231, 231, 231);
+  border-radius: 5px;
+  padding: 8px 18px;
+  :hover {
+    cursor: pointer;
+  }
+`;

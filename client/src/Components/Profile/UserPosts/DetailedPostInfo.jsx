@@ -11,17 +11,25 @@ import {
   Avatar,
 } from "@material-ui/core";
 import styles from "./Posts.module.css";
+import styled from 'styled-components'
 import CloseIcon from "@material-ui/icons/Close";
 import PostEngagement from './PostEngagement'
 import axios from 'axios'
 // styling material ui elements
 
 const useStyles = makeStyles((theme) => ({
+  container:{
+    width:"100vw",
+    height:"100vh",
+  },
   paper: {
     width: "70%",
+    display:"flex",
+    justifyContent:"center",
+    alignContent:"center",
     margin: "auto",
     height: "600px",
-    marginTop: theme.spacing(5),
+    marginTop: theme.spacing(13),
     outline: "none",
   },
 
@@ -76,7 +84,7 @@ const DetailedPostInfo = (postData) => {
             <Grid item xs={7} s={7} md={7} lg={7} xl={7}>
               {
                 src && src.substring(src.length - 4) !== '.mp4' ? (
-                  <img src={src} alt={`${uploadedBy?.fullname}'s Post`} />) : (
+                  <Image src={src} alt={`${uploadedBy?.fullname}'s Post`} />) : (
                   <video alt="" controls width='100%' height='100%'>
                     <source src={src} type="video/mp4" />
                   </video>
@@ -111,3 +119,7 @@ const DetailedPostInfo = (postData) => {
 };
 
 export default DetailedPostInfo;
+
+const Image = styled.img`
+  object-fit:cover;
+`

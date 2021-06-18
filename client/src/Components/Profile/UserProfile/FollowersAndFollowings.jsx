@@ -6,9 +6,9 @@ import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import FollowersPopup from "./FollowersPopup";
 import FollowingsPopup from "./FollowingsPopup";
-import PersonIcon from "@material-ui/icons/Person";
 import axios from "axios";
 import { followUser, unFollowUser } from "./UpdateFollows";
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import { Redirect } from "react-router";
 // styling material ui elements
 const useStyles = makeStyles((theme) => ({
@@ -18,11 +18,13 @@ const useStyles = makeStyles((theme) => ({
     gap: 50,
     margin: theme.spacing(2, 0),
   },
-  personIcon: {
-    border: "1px solid rgb(231, 231, 231)",
-    width: "60px",
-    height: "inherit",
-    borderRadius: "5px",
+  arrowDown: {
+    background: "#0095f6",
+    color: 'white',
+    height: '30px',
+    padding: '6px',
+    borderRadius: '5px',
+    width: '35px'
   },
 }));
 
@@ -52,9 +54,10 @@ const FollowersAndFollowings = (data) => {
     followUser(loggedIn._id, profileData._id, dispatch);
   };
 
-  const handleUnFolow = () => {
+  const handleUnfollow = () => {
     unFollowUser(loggedIn._id, profileData._id, dispatch);
   };
+
 
   const handleMessage = async ()=>{
     const payload = {
@@ -72,31 +75,31 @@ const FollowersAndFollowings = (data) => {
         <Box>
           <User>{username}</User>
           {activeUser.username === user.username ? (
-            <Box>
+            <Settings>
               <EditBtn>Edit Profile</EditBtn>
               <svg
                 width="24"
                 height="24"
                 viewBox="0 0 48 48"
                 fill="#262626"
-                style={{ margin: "0px 10px" }}
               >
                 <path d={settings} />
               </svg>
-            </Box>
+            </Settings>
           ) : (
             <>
               {loggedIn && loggedIn.following.includes(_id) ? (
                 <UnFollowBtn>
                   <MessageBtn onClick={handleMessage}>Message</MessageBtn>
-                  <PersonIcon
-                    fontSize="small"
-                    onClick={handleUnFolow}
-                    className={classes.personIcon}
-                  />
+                  <PersonIcon onClick={handleUnfollow}>
+                    <img src="https://i.ibb.co/CPfvXYK/Followed-Icon.png" alt="Person icon" />
+                  </PersonIcon>
                 </UnFollowBtn>
               ) : (
-                <FollowBtn onClick={handleFollow}>follow</FollowBtn>
+                <InnerContainer>
+                  <FollowBtn onClick={handleFollow}>Follow</FollowBtn>
+                  <KeyboardArrowDownIcon className={classes.arrowDown} />
+                </InnerContainer>
               )}
             </>
           )}
@@ -142,11 +145,13 @@ const EditBtn = styled.button`
   height: 30px;
   margin-top: 3px;
   padding: 0px 8px;
+  position:relative;
   :hover {
     cursor: pointer;
   }
   svg {
-    border: 1px solid red;
+    border: 1px solid blue;
+
   }
 `;
 
@@ -161,21 +166,31 @@ const Wrapper = styled.div`
   }
 `;
 const UnFollowBtn = styled.div`
-  height: 30px;
   display: flex;
-  width: 50px;
+  width: 200px;
+  position:relative;
+  align-items:center;
+  :hover {
+    cursor:pointer;
+  }
 `;
-const FollowBtn = styled.div`
+export const FollowBtn = styled.div`
   background: #0095f6;
   font-weight: 500;
-  border: 1px solid rgb(231, 231, 231);
-  border-radius: 5px;
+  max-width:100px;
+  border-radius: 3px;
   color: white;
-  height: 30px;
+  height: 29px;
   outline: none;
+  margin-right:8px;
+  margin-top:5px !important;
   position: relative;
   font-size: 0.9rem;
   padding: 2px 25px;
+  margin-bottom:10px !important;
+  display:flex;
+  justify-content:center;
+  align-items:center;
   :hover {
     cursor: pointer;
   }
@@ -185,14 +200,38 @@ const MessageBtn = styled.div`
   border: 1px solid rgb(231, 231, 231);
   border-radius: 5px;
   outline: none;
+  width:100px !important;
   text-align: center;
   position: relative;
   top: -10px;
   margin-right: 5px;
-  height: 30px;
+  height: 28px;
   font-size: 0.9rem;
   padding: 2px 15px;
   :hover {
     cursor: pointer;
   }
 `;
+const PersonIcon = styled.div`
+img {
+  height:28px !important;
+  position:absolute;
+  top:10px;
+  border:1px solid rgb(231, 231, 231);;
+  padding:7px;
+}
+`;
+
+const Settings = styled.div`
+margin-top:8px;
+  position: relative;
+  width:130px;
+  svg {
+    margin-top:10px;
+    right:0px;
+    position:absolute;
+  }
+`
+const InnerContainer = styled.div`
+  display:flex;
+  `;

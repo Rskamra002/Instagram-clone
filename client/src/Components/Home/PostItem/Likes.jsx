@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import Modal from '@material-ui/core/Modal';
 import LikesDetails from './LikesDetails'
 import axios from 'axios';
 import { useSelector } from 'react-redux';

@@ -11,6 +11,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import styled from "styled-components";
 import { Link } from 'react-router-dom';
 import UnfollowPopUpModal from './UnfollowPopUp';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -37,11 +38,15 @@ export default function LikesDetails({likes,showLikes,handleHideLikes,loggedInUs
   const classes = useStyles();
 
   const [likedUsers,setLikedUsers] = useState([]);
+
   const [allLoggedInUserFollowing,setAllLoggedInUserFollowing] = useState(loggedInUserFollowing);
+
+  const loggedInUser = useSelector(state => state.login.user);
 
 
   // unfollow pop up model
   const [openModel2, setOpenModel2] = useState(false);
+
   const [goingToUnfollow,setGoingToUnfollow] = useState({});
   const handleOpenModel2 = (user) => {
     setGoingToUnfollow(user)
@@ -51,8 +56,6 @@ export default function LikesDetails({likes,showLikes,handleHideLikes,loggedInUs
     setOpenModel2(false);
   };
   
-
-
   const handleClose = () => {
     handleHideLikes(false);
   };
@@ -78,12 +81,17 @@ export default function LikesDetails({likes,showLikes,handleHideLikes,loggedInUs
     })
   }
 
+  console.log(likedUsers);
 
   useEffect(() => {
     likes.forEach((userId) => {
-      axios.get(`http://localhost:2511/users/${userId}`).then((res) => {
-        setLikedUsers(prev => [...prev,{"userId":res.data.data._id, "username":res.data.data.username, "profilePic":res.data.data.profilePic, "fullname": res.data.data.fullname}])
-      })
+      if(userId === loggedInUser._id){
+        setLikedUsers(prev => [{"userId":loggedInUser._id, "username":loggedInUser.username, "profilePic":loggedInUser.profilePic, "fullname": loggedInUser.fullname},...prev])
+      } else{
+        axios.get(`http://localhost:2511/users/${userId}`).then((res) => {
+          setLikedUsers(prev => [...prev,{"userId":res.data.data._id, "username":res.data.data.username, "profilePic":res.data.data.profilePic, "fullname": res.data.data.fullname}])
+        })
+      }
     })
   },[])
   return (
@@ -97,7 +105,7 @@ export default function LikesDetails({likes,showLikes,handleHideLikes,loggedInUs
           <Liked>
             {likedUsers?.map((user) => {
               return (
-                <Wrapper2>
+                <Wrapper2 key={user.id}> 
                   <Link to={`/${user.username}`}>
                     <Avatar
                       src={user.profilePic}
@@ -110,7 +118,7 @@ export default function LikesDetails({likes,showLikes,handleHideLikes,loggedInUs
                     </Link>
                     <div>{user.fullname}</div>
                   </MainDiv>
-                  {allLoggedInUserFollowing.includes(user.userId) ? <Button onClick={() => handleOpenModel2(user)}>Following</Button> :<Button onClick={() => handleFollow(user.userId)} style={{backgroundColor:"#0095F7", color:"white", marginRight:"10px"}}>Follow</Button>} 
+                  {user.userId === loggedInUser._id ? null : allLoggedInUserFollowing.includes(user.userId) ? <Button onClick={() => handleOpenModel2(user)}>Following</Button> :<Button onClick={() => handleFollow(user.userId)} style={{backgroundColor:"#0095F7", color:"white", marginRight:"10px"}}>Follow</Button>} 
                 </Wrapper2>
               );
             })}

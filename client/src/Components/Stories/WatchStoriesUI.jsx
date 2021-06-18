@@ -20,12 +20,12 @@ export const Wrapper = styled.div`
 
 `
 export const Container = styled.div`
-  height: 560px;
+  height: 580px;
   max-width: 95%;
   margin-left: 2.5%;
   align-items: center;
   border-radius: 5px;
-  padding-top: 2%;
+  padding-top: 5%;
 `
 export const TopDetails = styled.div`
   margin-top: -480px;

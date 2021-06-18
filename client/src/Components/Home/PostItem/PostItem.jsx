@@ -313,7 +313,6 @@ const AllComments = styled.div`
     }
   }
 `
-
 const TimeAgo = styled.div`
   font-size: 12px;
   padding: 8px 0px;

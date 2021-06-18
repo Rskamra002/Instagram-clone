@@ -8,10 +8,9 @@ import {
   Avatar,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import { useSelector } from "react-redux";
 import axios from "axios";
 import ConfirmUnFollow from "./ConfirmUnFollow";
-import { Title, Wrapper, Button, MainDiv, Follow } from "./FollowersPopup";
+import { Title, Wrapper, Follow } from "./FollowersPopup";
 import Following from "./Following";
 // styling material ui elements
 

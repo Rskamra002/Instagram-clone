@@ -12,6 +12,7 @@ import { loadData } from "../../../Utils/localStorage";
 const useStyles = makeStyles((theme) => ({
     paper: {
       width: "30%",
+      minWidth:"350px",
       margin: "auto",
       height: "400px",
       marginTop: theme.spacing(14),
