@@ -7,7 +7,6 @@ const Notifications = ({showNotifications}) => {
     return (
         <NotificationPannel showNotifications={showNotifications} className={styles.arrow_box_notify}>
             <div className={styles.overs_notify}>
-                
             </div>
         </NotificationPannel>
     )

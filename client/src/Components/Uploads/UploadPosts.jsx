@@ -5,7 +5,7 @@ import { useEffect } from "react"
 import { useRef, useState } from "react"
 import { Redirect } from "react-router"
 import { loadData } from "../../Utils/localStorage"
-import { Bios, ChooseFile, Container, OptionsSide, PostButtons, Preview, Wrapper } from "./uploadCss"
+import { Bios, ChooseFile, Container, OptionsSide, PostButtons, Preview, Wrapper, TagBox } from "./uploadCss"
 
 const useStyles = makeStyles((theme) => ({
     loader: {
@@ -23,10 +23,16 @@ const UploadPosts = () => {
     const [err, setErr] = useState(false)
     const [load, setLoad] = useState(false)
     const [typeofMedia, setTypeofMedia] = useState("")
+    const [instaUsers, setInstaUsers] = useState([])
 
     const [suggestedTag,setSuggestedTag] = useState([])
     const [allTags,setAllTags] = useState([])
     const [isCheckingTags,setIsCheckingTags] = useState(false)
+
+    const [tagUser, setTagUser] = useState([])
+    const [taggedUser,setTaggedUser] = useState(false)
+    const [suggestedTagUser, setSuggestedTagUser] = useState([])
+
 
 
     const imgRef = useRef()
@@ -66,12 +72,18 @@ const UploadPosts = () => {
     }
     useEffect(() => {
         axios.get("http://localhost:2511/hashtags").then((res)=>setAllTags(res.data.data))
+        axios.get("http://localhost:2511/users").then((res) => setInstaUsers(res.data.data))
     }, [])
 
     useEffect(() => {
         let x = caption?.trim().split(" ").filter((item) => item[0] == "#")[0]?.substring(1)
         let output = allTags?.filter((item) => item.hashtagName.toLowerCase().indexOf(x) !== -1 ? true : false).map(item => [item._id, item.hashtagName])
         setSuggestedTag(output)
+
+        let u = caption?.trim().split(" ").filter((item) => item[0] == "@")[0]?.substring(1)
+        let output2 = instaUsers?.filter((item) => item.username.toLowerCase().indexOf(u) !== -1 ? true : false).map(item => [item._id, item.username])
+        setSuggestedTagUser(output2)
+
     },[caption])
 
     const handleCaption = (e)=>{
@@ -81,6 +93,10 @@ const UploadPosts = () => {
         }        
        else if(caption[caption.length-1] === " "){
         setIsCheckingTags(false)
+        }else if(caption[caption.length-1] === "@"){
+            setTaggedUser(true)
+        }else if (caption[caption.length-1] === " "){
+            setTaggedUser(false)
         }
     }
 
@@ -88,6 +104,11 @@ const UploadPosts = () => {
         let tagss = e.target.textContent
         setCaption(prev => prev.trim().split("#").shift() + tagss)
         setIsCheckingTags(false)
+    }
+    const addUserToCaption = (e) => {
+        let userss = e.target.textContent
+        setCaption(prev => prev.trim().split("@").shift() + userss)
+        setTaggedUser(false)
     }
     
     const postPictureToApi = (data) => {
@@ -138,21 +159,23 @@ const UploadPosts = () => {
                     <br/>
                     {
                         isCheckingTags && suggestedTag.length > 0 &&
-                        <div style={{
-                            width:"200px",
-                            height: "180px",
-                            padding: '2%',
-                            overflowY: 'scroll',
-                            border: '1px solid grey',
-                            cursor: "pointer",
-
-                        }}>
+                        <TagBox>
                             {
                                 suggestedTag?.map((item) => 
                                     <div key={item[0]} onClick={addHastagToCaption}>{`#${item[1]}`}</div>
                                 )
                             }
-                        </div>
+                        </TagBox>
+                    }
+                    {
+                        taggedUser &&
+                        <TagBox>
+                            {
+                                suggestedTagUser?.map((item) => 
+                                <div key={item[0]} onClick={addUserToCaption}>{`@${item[1]}`}</div>
+                            )
+                            }
+                        </TagBox>
                     }
                     <br/>
                     <PostButtons>

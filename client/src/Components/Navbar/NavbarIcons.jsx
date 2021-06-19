@@ -7,7 +7,6 @@ import { exploreFill, exploreOutline, homeFill, homeOutline, likeFill, likeOutli
 const NavbarIcons = ({getNotification, getUserSettings, profilePic}) => {
 
     const [activePage, setActivePage] = useState("/")
-    console.log(activePage)
 
     return (
         <IconsWrapper>
@@ -39,7 +38,7 @@ const NavbarIcons = ({getNotification, getUserSettings, profilePic}) => {
                     }
                 </div>
                 </Link>
-                <div onClick={() => {setActivePage("/activity"); getNotification()}}>
+                <div onClick={getNotification}>
                     {
                         activePage === "activity" ? likeFill : likeOutline
                     }
