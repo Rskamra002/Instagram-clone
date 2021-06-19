@@ -3,9 +3,10 @@ import {
   GET_NOTIFICATIONS_FAILURE,
   GET_NOTIFICATIONS_REQUEST,
   GET_NOTIFICATIONS_SUCCESS,
+  NOTIFICATION_SEEN,
 } from './actionTypes';
 
-export const getNotificationsRequest = (payload) => {
+export const getNotificationsRequest = () => {
   return {
     type: GET_NOTIFICATIONS_REQUEST,
   };
@@ -22,6 +23,12 @@ export const getNotificationsFailure = (payload) => {
   return {
     type: GET_NOTIFICATIONS_FAILURE,
     payload,
+  };
+};
+
+export const notificationSeen = () => {
+  return {
+    type: NOTIFICATION_SEEN,
   };
 };
 
