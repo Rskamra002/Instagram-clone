@@ -4,11 +4,18 @@ import {PostItem} from '../PostItem/PostItem'
 import styled from "styled-components"
 import { Spinner } from '../../Loader/Spinner';
 import { Stories } from '../../Stories/Stories';
+import { useDispatch } from 'react-redux';
+import { getNotifications } from '../../../Redux/Notification/action';
+import { useSelector } from 'react-redux';
 
 function Posts() {
   const [allPosts, setAllPosts] = useState([]);
   const [page, setPage] = useState(1)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const loggedInUser = useSelector(state => state.login.user)
 
   const scrollToEnd = () => {
     setPage((prev) => prev +1)
@@ -22,6 +29,7 @@ function Posts() {
         setAllPosts([...allPosts, ...res.data.data])
         setLoading(false)
       });
+      dispatch(getNotifications(loggedInUser.username))
   }, [page]);
 
   window.onscroll= () => {
