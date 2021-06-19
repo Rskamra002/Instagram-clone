@@ -11,7 +11,8 @@ const NavbarIcons = ({getNotification, getUserSettings, profilePic}) => {
 
     const isNewNotificationSeen = useSelector(state => state.notifications.isNewNotificationSeen);
 
-    console.log(isNewNotificationSeen)
+  
+
 
     return (
         <IconsWrapper>
