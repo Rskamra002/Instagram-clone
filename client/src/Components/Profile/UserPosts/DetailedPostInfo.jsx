@@ -18,11 +18,18 @@ import axios from 'axios'
 // styling material ui elements
 
 const useStyles = makeStyles((theme) => ({
+  container:{
+    width:"100vw",
+    height:"100vh",
+  },
   paper: {
     width: "70%",
+    display:"flex",
+    justifyContent:"center",
+    alignContent:"center",
     margin: "auto",
     height: "600px",
-    marginTop: theme.spacing(5),
+    marginTop: theme.spacing(13),
     outline: "none",
   },
 

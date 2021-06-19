@@ -79,6 +79,32 @@ router.patch('/users/follow/:id', async (req, res) => {
       }
     );
 
+    // logic for notification part
+    // const followedUserId = userId;
+
+    // const commentedBy = await UsersData.findOne(
+    //   { _id: userId },
+    //   { password: 0, tokens: 0 }
+    // )
+    //   .lean()
+    //   .exec();
+
+    await UsersData.findOneAndUpdate(
+      { _id: isFollowUserIdExist },
+      {
+        $addToSet: {
+          notifications: {
+            notification: `${isUserIdExist.username} started following you.`,
+            fromUserSrc: isUserIdExist.profilePic,
+            timestamp: Date.now(),
+          },
+        },
+      },
+      {
+        new: true,
+      }
+    );
+
     // adding in follower array (user who is followed by someone)
     await UsersData.findOneAndUpdate(
       { _id: userId },

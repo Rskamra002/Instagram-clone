@@ -1,6 +1,7 @@
 const express = require('express');
 const PostsData = require('../model/postSchema');
 const UsersData = require('../model/userSchema');
+const HashtagData = require('../model/hashtagSchema');
 const router = express.Router();
 
 // get all posts
@@ -74,7 +75,7 @@ router.get('/posts/user/:id', async (req, res) => {
 
 // adding new post
 router.post('/posts/addpost', async (req, res) => {
-  const { src, userId } = req.body;
+  const { src, userId ,caption} = req.body;
 
   if (!src || !userId) {
     return res
@@ -91,6 +92,43 @@ router.post('/posts/addpost', async (req, res) => {
 
     const newPost = new PostsData(req.body);
     await newPost.save();
+
+    let hashTags = "";
+    if (caption !== undefined) {
+      const captionArr = caption.trim().split(' ');
+      for (let i = 0; i < captionArr.length; i++) {
+        if (captionArr[i][0] === '#') {
+          hashTags=captionArr[i];
+        }
+      }
+    }
+    if(hashTags !== undefined){
+      const hashtagAlreadyPresent = await HashtagData.findOne({
+        hashtagName: hashTags,
+      });
+      if (hashtagAlreadyPresent) {
+        await HashtagData.findOneAndUpdate(
+          { hashtagName: hashTags },
+          { $addToSet: { postIds: newPost._id } },
+          {
+            new: true,
+          }
+        );
+      }
+      if (!hashtagAlreadyPresent){
+
+        const newHashtag = new HashtagData({ hashtagName: hashTags});
+        await newHashtag.save();
+        await HashtagData.findOneAndUpdate(
+          { hashtagName: hashTags },
+          { $addToSet: { postIds: newPost._id } },
+          {
+            new: true,
+          }
+        );
+      }
+    }
+    // console.log(newPost._id)
 
     if (newPost) {
       res.status(201).json({ message: 'Post added successfully' });
@@ -133,6 +171,34 @@ router.patch('/posts/likepost/:id', async (req, res) => {
         new: true,
       }
     );
+
+    // logic for notification part
+    const postByUserId = post.userId;
+
+    const likedBy = await UsersData.findOne(
+      { _id: userId },
+      { password: 0, tokens: 0 }
+    )
+      .lean()
+      .exec();
+
+    await UsersData.findOneAndUpdate(
+      { _id: postByUserId },
+      {
+        $addToSet: {
+          notifications: {
+            notification: `${likedBy.username} liked your post`,
+            fromUserSrc: isUserExist.profilePic,
+            postSrc: post.src,
+            timestamp: Date.now(),
+          },
+        },
+      },
+      {
+        new: true,
+      }
+    );
+
     res.status(200).json({ message: 'Liked post successfully', data: post });
   } catch (err) {
     res.status(400).json({ error: 'Sorry! something went wrong' });
@@ -177,8 +243,6 @@ router.patch('/posts/unlikepost/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
-
 // patch request to add comment
 router.patch('/posts/addcomment/:id', async (req, res) => {
   try {
@@ -210,6 +274,34 @@ router.patch('/posts/addcomment/:id', async (req, res) => {
         new: true,
       }
     );
+
+    // logic for notification part
+    const postByUserId = post.userId;
+
+    const commentedBy = await UsersData.findOne(
+      { _id: userId },
+      { password: 0, tokens: 0 }
+    )
+      .lean()
+      .exec();
+
+    await UsersData.findOneAndUpdate(
+      { _id: postByUserId },
+      {
+        $addToSet: {
+          notifications: {
+            notification: `${commentedBy.username} commented on your post`,
+            fromUserSrc: isUserExist.profilePic,
+            postSrc: post.src,
+            timestamp: Date.now(),
+          },
+        },
+      },
+      {
+        new: true,
+      }
+    );
+
     res.status(200).json({ message: 'Comment added successfully', data: post });
   } catch (err) {
     res.status(400).json({ error: 'Sorry! something went wrong' });
@@ -256,6 +348,33 @@ router.patch('/posts/likecomment/:id', async (req, res) => {
         }
       }
     }
+
+    // logic for notification part
+    const postByUserId = post.userId;
+
+    const commentedLikeBy = await UsersData.findOne(
+      { _id: userId },
+      { password: 0, tokens: 0 }
+    )
+      .lean()
+      .exec();
+
+    await UsersData.findOneAndUpdate(
+      { _id: postByUserId },
+      {
+        $addToSet: {
+          notifications: {
+            notification: `${commentedLikeBy.username} liked your comment`,
+            fromUserSrc: isUserExist.profilePic,
+            postSrc: post.src,
+            timestamp: Date.now(),
+          },
+        },
+      },
+      {
+        new: true,
+      }
+    );
 
     await PostsData.updateOne({ _id: id }, { $set: { comments: comments } });
 
@@ -318,3 +437,10 @@ router.patch('/posts/unlikecomment/:id', async (req, res) => {
     console.log(err);
   }
 });
+
+module.exports = router;
+
+// router.get('/xyz', async (req, res) => {
+//   await UsersData.updateMany({}, { $set: { notifications: [] } });
+//   res.status(200).json({ message: 'uccessful' });
+// });
