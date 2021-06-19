@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Container,
   makeStyles,
   Typography,
   Divider,
@@ -8,6 +7,7 @@ import {
   Paper,
   Modal,
   Grid,
+  Container,
   Avatar,
 } from "@material-ui/core";
 import styles from "./Posts.module.css";
@@ -19,10 +19,8 @@ import axios from 'axios'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    width: "70%",
-    margin: "auto",
-    height: "600px",
-    marginTop: theme.spacing(5),
+    width: "65%",
+    marginTop: "20px",
     outline: "none",
   },
 
@@ -49,6 +47,13 @@ const useStyles = makeStyles((theme) => ({
 
     }
   },
+  container: {
+    width: "100vw",
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  }
 }));
 
 const DetailedPostInfo = (postData) => {
@@ -64,7 +69,7 @@ const DetailedPostInfo = (postData) => {
 
   const classes = useStyles();
   return (
-    <Container>
+    <Container >
       <Modal open={true} className={classes.container}>
         <Paper className={classes.paper}>
           <CloseIcon
@@ -115,4 +120,4 @@ export default DetailedPostInfo;
 
 const Image = styled.img`
   object-fit:cover;
-`
+`;

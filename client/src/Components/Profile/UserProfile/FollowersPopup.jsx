@@ -49,6 +49,7 @@ const FollowersPopup = ({ handlePopUp, followers }) => {
   const [loggedIn, setLoggedIn] = useState(null);
   const loggedInUserData = useSelector((state) => state.login.user);
   const [profileFollowers, setProfileFollowers] = useState([]);
+  const [removeSuccess, setRemoveSuccess] = useState(false)
   const [removeFollower, setRemoveFollower] = useState(null);
   const classes = useStyles();
 
@@ -56,11 +57,16 @@ const FollowersPopup = ({ handlePopUp, followers }) => {
     setRemoveFollower(null);
   };
 
-  console.log("loggedIn", loggedIn);
+  const removeSucceed = () => {
+    setRemoveSuccess(true);
+  }
+
   const handleRemove = (follower, e) => {
     setRemoveFollower(follower);
     e.target.disabled = true;
   };
+
+
 
   const redirectUser = (follower) => {
     handlePopUp();
@@ -74,6 +80,7 @@ const FollowersPopup = ({ handlePopUp, followers }) => {
   }, []);
 
   useEffect(() => {
+
     if (followers) {
       followers.forEach((userId) => {
         axios.get(`http://localhost:2511/users/${userId}`).then((res) => {
@@ -137,7 +144,7 @@ const FollowersPopup = ({ handlePopUp, followers }) => {
         </Paper>
       </Modal>
       {removeFollower && (
-        <ConfirmRemovePopup {...removeFollower} closePopup={closePopup} />
+        <ConfirmRemovePopup {...removeFollower} closePopup={closePopup} removeSucceed={removeSucceed} />
       )}
     </Container>
   );

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import styles from "./Features.module.css";
 import styled from "styled-components";
 import axios from 'axios'
-import DisplaySavedPosts from "./DisplaySavedPosts";
+import DisplayPosts from "./DisplayPosts";
 import { Grid} from "@material-ui/core";
 import { useSelector } from "react-redux";
 
@@ -32,7 +32,7 @@ function SavedPosts() {
       <Grid container spacing={3}>
         {
           savedPosts?.map(postId => {
-            return <DisplaySavedPosts postId={postId} />
+            return <DisplayPosts postId={postId} />
           })
         }
       </Grid>
