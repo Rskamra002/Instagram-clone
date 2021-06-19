@@ -4,6 +4,7 @@ export const Wrapper = styled.div`
     background: white;
     padding-top: 50px;
     height:100vh;
+    overflow: hidden;
     `
 export const Container = styled.div`
     width:68%;
@@ -15,6 +16,23 @@ export const Container = styled.div`
         width: 95%;
     }
     
+`
+export const TagBox = styled.div`
+    width:200px;
+    height: 180px;
+    padding: 2%;
+    overflow-y: hidden;
+    border: 1px solid #EFEFEF;
+    cursor: pointer;
+    width: 90%;
+    border-top: none;
+    border-radius: 5px;
+    font-size: 12px;
+    div {
+        padding: 5px;
+        display: flex;
+        justify-content: space-between;
+    }
 `
 export const OptionsSide = styled.div`
     width: 77%;
