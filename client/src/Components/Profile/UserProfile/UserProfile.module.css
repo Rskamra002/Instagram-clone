@@ -8,7 +8,8 @@
   flex-grow: 1;
   margin-top: 15px;
   display: flex;
-  width: 350px;
+  width: 60%;
+  /* border: 1px solid red; */
   gap: 5%;
 }
 
