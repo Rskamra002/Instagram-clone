@@ -17,7 +17,7 @@ const Notifications = ({showNotifications}) => {
         <NotificationPannel showNotifications={showNotifications} className={styles.arrow_box_notify}>
             <div className={styles.overs_notify}>
                 <List>
-                {allNotifications.length > 0 ? allNotifications?.map(item => {
+                {allNotifications?.length > 0 ? allNotifications?.map(item => {
                       return  <ListItem id={uuid()}>
                           <Left>
                             <ProfilePic src={item.fromUserSrc} alt="profilepic" /> 

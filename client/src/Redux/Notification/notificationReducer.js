@@ -28,7 +28,9 @@ export const notificationReducer = (
       return {
         ...state,
         isLoading: false,
-        allNotifications: [...payload],
+        allNotifications: [...payload].sort((a, b) => {
+          return b.timestamp - a.timestamp;
+        }),
         isSeen: false,
       };
     }
