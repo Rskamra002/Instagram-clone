@@ -39,7 +39,7 @@ const NavbarIcons = ({getNotification, getUserSettings, profilePic}) => {
                     }
                 </div>
                 </Link>
-                <div onClick={() => {setActivePage("/activity"); getNotification()}}>
+                <div onClick={getNotification}>
                     {
                         activePage === "activity" ? likeFill : likeOutline
                     }

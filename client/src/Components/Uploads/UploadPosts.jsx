@@ -1,4 +1,5 @@
 import { LinearProgress, makeStyles } from "@material-ui/core"
+import { lightGreen } from "@material-ui/core/colors"
 import axios from "axios"
 import { useEffect } from "react"
 import { useRef, useState } from "react"
@@ -23,7 +24,7 @@ const UploadPosts = () => {
     const [load, setLoad] = useState(false)
     const [typeofMedia, setTypeofMedia] = useState("")
 
-    const [tags,setTags] = useState("")
+    const [suggestedTag,setSuggestedTag] = useState([])
     const [allTags,setAllTags] = useState([])
     const [isCheckingTags,setIsCheckingTags] = useState(false)
 
@@ -66,10 +67,13 @@ const UploadPosts = () => {
     useEffect(() => {
         axios.get("http://localhost:2511/hashtags").then((res)=>setAllTags(res.data.data))
     }, [])
-    
-    const handleHashtags = ()=>{
 
-    }
+    useEffect(() => {
+        let x = caption?.trim().split(" ").filter((item) => item[0] == "#")[0]?.substring(1)
+        let output = allTags?.filter((item) => item.hashtagName.toLowerCase().indexOf(x) !== -1 ? true : false).map(item => [item._id, item.hashtagName])
+        setSuggestedTag(output)
+    },[caption])
+
     const handleCaption = (e)=>{
         setCaption(e.target.value)
         if(caption[caption.length-1] === "#"){
@@ -78,10 +82,12 @@ const UploadPosts = () => {
        else if(caption[caption.length-1] === " "){
         setIsCheckingTags(false)
         }
-        if(isCheckingTags){
-            handleHashtags()
-        }
-        
+    }
+
+    const addHastagToCaption = (e) => {
+        let tagss = e.target.textContent
+        setCaption(prev => prev.trim().split("#").shift() + tagss)
+        setIsCheckingTags(false)
     }
     
     const postPictureToApi = (data) => {
@@ -126,10 +132,29 @@ const UploadPosts = () => {
                     {err && <p>Oops!. Failed in Loading the Image. Please try again.</p>}
                     <button>Edit</button>
                     <h4>Details</h4>
-                    <Bios placeholder="Add a Caption" type="text"
+                    <Bios placeholder="Add a Caption" type="text" value={caption}
                     onChange={handleCaption}
                     />
-                    <br/><br/>
+                    <br/>
+                    {
+                        isCheckingTags && suggestedTag.length > 0 &&
+                        <div style={{
+                            width:"200px",
+                            height: "180px",
+                            padding: '2%',
+                            overflowY: 'scroll',
+                            border: '1px solid grey',
+                            cursor: "pointer",
+
+                        }}>
+                            {
+                                suggestedTag?.map((item) => 
+                                    <div key={item[0]} onClick={addHastagToCaption}>{`#${item[1]}`}</div>
+                                )
+                            }
+                        </div>
+                    }
+                    <br/>
                     <PostButtons>
                         <button onClick={postPicturToImgur}>POST</button>
                         <h5>Save Draft</h5>
