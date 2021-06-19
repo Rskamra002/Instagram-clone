@@ -23,6 +23,11 @@ const UploadPosts = () => {
     const [load, setLoad] = useState(false)
     const [typeofMedia, setTypeofMedia] = useState("")
 
+    const [tags,setTags] = useState("")
+    const [allTags,setAllTags] = useState([])
+    const [isCheckingTags,setIsCheckingTags] = useState(false)
+
+
     const imgRef = useRef()
     useEffect(() => {
         const endpoint = imgUrl?.name
@@ -58,7 +63,26 @@ const UploadPosts = () => {
         .catch((err) => setErr(true))
 
     }
+    useEffect(() => {
+        axios.get("http://localhost:2511/hashtags").then((res)=>setAllTags(res.data.data))
+    }, [])
     
+    const handleHashtags = ()=>{
+
+    }
+    const handleCaption = (e)=>{
+        setCaption(e.target.value)
+        if(caption[caption.length-1] === "#"){
+            setIsCheckingTags(true)
+        }        
+       else if(caption[caption.length-1] === " "){
+        setIsCheckingTags(false)
+        }
+        if(isCheckingTags){
+            handleHashtags()
+        }
+        
+    }
     
     const postPictureToApi = (data) => {
         const userid = loadData("users")._id
@@ -103,7 +127,7 @@ const UploadPosts = () => {
                     <button>Edit</button>
                     <h4>Details</h4>
                     <Bios placeholder="Add a Caption" type="text"
-                    onChange={(e) => setCaption(e.target.value)}
+                    onChange={handleCaption}
                     />
                     <br/><br/>
                     <PostButtons>

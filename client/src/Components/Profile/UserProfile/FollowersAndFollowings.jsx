@@ -15,7 +15,6 @@ import FollowingsPopup from "./FollowingsPopup";
 import axios from "axios";
 import { followUser, unFollowUser } from "./UpdateFollows";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { Redirect } from "react-router";
 
 const FollowersAndFollowings = (data) => {
