@@ -75,7 +75,7 @@ router.get('/posts/user/:id', async (req, res) => {
 
 // adding new post
 router.post('/posts/addpost', async (req, res) => {
-  const { src, userId ,caption} = req.body;
+  const { src, userId, caption } = req.body;
 
   if (!src || !userId) {
     return res
@@ -93,12 +93,14 @@ router.post('/posts/addpost', async (req, res) => {
     const newPost = new PostsData(req.body);
     await newPost.save();
 
+
     let hashTags = "";
     let username = "";
     if (caption !== undefined) {
       const captionArr = caption.trim().split(' ');
       for (let i = 0; i < captionArr.length; i++) {
         if (captionArr[i][0] === '#') {
+          hashTags = captionArr[i];
           hashTags=captionArr[i].substring(1).toLowerCase();
         }
         if (captionArr[i][0] === '@') {
@@ -133,9 +135,8 @@ router.post('/posts/addpost', async (req, res) => {
           }
         );
       }
-      if (!hashtagAlreadyPresent){
-
-        const newHashtag = new HashtagData({ hashtagName: hashTags});
+      if (!hashtagAlreadyPresent) {
+        const newHashtag = new HashtagData({ hashtagName: hashTags });
         await newHashtag.save();
         await HashtagData.findOneAndUpdate(
           { hashtagName: hashTags },
@@ -459,6 +460,6 @@ router.patch('/posts/unlikecomment/:id', async (req, res) => {
 module.exports = router;
 
 // router.get('/xyz', async (req, res) => {
-//   await UsersData.updateMany({}, { $set: { notifications: [] } });
+//   await UsersData.updateMany({}, { $set: { isPrivateAccount: false } });
 //   res.status(200).json({ message: 'uccessful' });
 // });
