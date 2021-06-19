@@ -63,14 +63,25 @@ const UploadPosts = () => {
         .catch((err) => setErr(true))
 
     }
+    useEffect(() => {
+        axios.get("http://localhost:2511/hashtags").then((res)=>setAllTags(res.data.data))
+    }, [])
+    
     const handleHashtags = ()=>{
 
     }
     const handleCaption = (e)=>{
         setCaption(e.target.value)
         if(caption[caption.length-1] === "#"){
+            setIsCheckingTags(true)
+        }        
+       else if(caption[caption.length-1] === " "){
+        setIsCheckingTags(false)
+        }
+        if(isCheckingTags){
             handleHashtags()
         }
+        
     }
     
     const postPictureToApi = (data) => {
