@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from "styled-components"
 import { exploreFill, exploreOutline, homeFill, homeOutline, likeFill, likeOutline, messageFill, messageOutline, postUploadOutline } from './IconSvg'
@@ -7,6 +8,11 @@ import { exploreFill, exploreOutline, homeFill, homeOutline, likeFill, likeOutli
 const NavbarIcons = ({getNotification, getUserSettings, profilePic}) => {
 
     const [activePage, setActivePage] = useState("/")
+
+    const isNewNotificationSeen = useSelector(state => state.notifications.isNewNotificationSeen);
+
+  
+
 
     return (
         <IconsWrapper>
@@ -38,11 +44,12 @@ const NavbarIcons = ({getNotification, getUserSettings, profilePic}) => {
                     }
                 </div>
                 </Link>
-                <div onClick={getNotification}>
+                <Notifiy onClick={getNotification}>
                     {
                         activePage === "activity" ? likeFill : likeOutline
                     }
-                </div>
+                    {!isNewNotificationSeen ? <span>.</span> : null}
+                </Notifiy>
                 <div onClick={() => setActivePage("/profile")}>
                 <ProfilePicture onClick={getUserSettings} src={profilePic} alt="profilePic"/>
                 </div>
@@ -57,6 +64,17 @@ const IconsWrapper = styled.div`
     gap: 18px;
     & * {
         cursor: pointer;
+    }
+`
+const Notifiy = styled.div`
+    position:relative;
+    span{
+        position:absolute;
+        bottom:-11px;
+        left:50%;
+        font-size:34px;
+        color:#ed4956;
+        transform:translate(-50%,0)
     }
 `
 

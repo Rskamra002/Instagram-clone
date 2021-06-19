@@ -12,6 +12,8 @@ import styled from "styled-components";
 import { Link } from 'react-router-dom';
 import UnfollowPopUpModal from './UnfollowPopUp';
 import { useSelector } from 'react-redux';
+import { getNotifications } from '../../../Redux/Notification/action';
+import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -43,6 +45,7 @@ export default function LikesDetails({likes,showLikes,handleHideLikes,loggedInUs
 
   const loggedInUser = useSelector(state => state.login.user);
 
+  const dispatch = useDispatch();
 
   // unfollow pop up model
   const [openModel2, setOpenModel2] = useState(false);
@@ -67,6 +70,9 @@ export default function LikesDetails({likes,showLikes,handleHideLikes,loggedInUs
     axios.patch(`http://localhost:2511/users/follow/${loggedInUserId}`,payload).then(() => {
       setAllLoggedInUserFollowing([...allLoggedInUserFollowing,userId])
     })
+
+    // getting notificatons
+    dispatch(getNotifications(loggedInUser.username))
   }
 
   const handleUnFollow = (userId) => {
@@ -77,7 +83,11 @@ export default function LikesDetails({likes,showLikes,handleHideLikes,loggedInUs
       const updatedAllLoggedInUserFollowing = allLoggedInUserFollowing.filter((item) => userId !== item);
       setAllLoggedInUserFollowing(updatedAllLoggedInUserFollowing)
     }).finally(() => {
+
       handleCloseModel2()
+
+      // getting notificatons
+      dispatch(getNotifications(loggedInUser.username))
     })
   }
 
