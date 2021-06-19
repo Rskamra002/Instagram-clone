@@ -30,6 +30,9 @@ const usersSchema = new mongoose.Schema(
     savedPosts: [
       { type: mongoose.Schema.Types.ObjectId, ref: 'post', required: true },
     ],
+    tagedPosts: [
+      { type: mongoose.Schema.Types.ObjectId, ref: 'post', required: true },
+    ],
     tokens: [
       {
         token: reqString,
