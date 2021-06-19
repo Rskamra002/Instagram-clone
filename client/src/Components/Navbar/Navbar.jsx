@@ -8,6 +8,7 @@ import { ProfileDetails } from './ProfileDetails';
 import { NavbarIcons } from './NavbarIcons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { notificationSeen } from '../../Redux/Notification/action';
 
 function Navbar() {
     const scrollRef = useRef()
@@ -27,8 +28,8 @@ function Navbar() {
     
     useEffect(() => {
         dispatch(getUsers())
-        axios.get("https://k-books.herokuapp.com/Tags")
-        .then((res) => setTag(res.data))
+        axios.get("http://localhost:2511/hashtags")
+        .then((res) => setTag(res.data.data))
         .catch((err) => console.log("error"))
     },[dispatch])
     const handleClear = () => {
@@ -40,7 +41,7 @@ function Navbar() {
         let output = suggestions?.filter((item) => item.username.toLowerCase().indexOf(query) !== -1 ? true:false).map((item) => [item._id, item.profilePic, item.username, item.fullname])
         setSuggestedUsers(output)
         
-        const tagOutput = tag?.filter((item) => item.tag.toLowerCase().indexOf(query) !== -1 ? true: false).map((item) => [item.id, item.tag])
+        const tagOutput = tag?.filter((item) => item.hashtagName.toLowerCase().indexOf(query) !== -1 ? true: false).map((item) => [item.id, item.hashtagName])
         setSuggestedTag(tagOutput)
         let b = JSON.parse(localStorage.getItem("users"))
         setProfilePic(b.profilePic)
@@ -80,6 +81,9 @@ function Navbar() {
         setShowNotifications(!showNotifications)
         setProfiler(false)
         setSearchUserPopup(false)
+
+        // to true isNewNotificationSeen
+        dispatch(notificationSeen())
     }
     const getUserSettings = () => {
         setProfiler(!profiler)
@@ -163,7 +167,7 @@ function Navbar() {
                         {
                             query && suggestedTag.map((item) => (
                                 <Link to={`/explore/${item[1]}`}>
-                                <UsersProfile key={item[0]}>
+                                <UsersProfile onClick={openProfile} key={item[0]}>
                                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFJmZhuriNDDE-GBRtIMzFUtpg1hq6ypihFw&usqp=CAU" alt=""/>
                                     <div>
                                         <p>{`#${item[1]}`}</p>
@@ -177,7 +181,7 @@ function Navbar() {
             </div>
         </div>
         }
-        {/* <Notifications showNotifications={showNotifications}/> */}
+        <Notifications showNotifications={showNotifications}/>
         <ProfileDetails profiler={profiler} username={username} 
                 openProfile={openProfile}/>
             </Container>

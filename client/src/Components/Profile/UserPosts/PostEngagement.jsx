@@ -157,7 +157,6 @@ const PostEngagement = (data) => {
         })}
       </Comment>
       <Container>
-        <Divider />
 
         <Icons
           handleLike={handleLike}
@@ -213,7 +212,7 @@ const Comment = styled.div`
   height: 250px;
   width: 100%;
   gap: 20px;
-  height: 315px;
+  height: 290px;
   border-bottom: 1px solid #eeeeee;
   display: flex;
   flex-direction: column;

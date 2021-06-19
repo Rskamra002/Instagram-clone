@@ -1,10 +1,11 @@
 import { LinearProgress, makeStyles } from "@material-ui/core"
+import { lightGreen } from "@material-ui/core/colors"
 import axios from "axios"
 import { useEffect } from "react"
 import { useRef, useState } from "react"
 import { Redirect } from "react-router"
 import { loadData } from "../../Utils/localStorage"
-import { Bios, ChooseFile, Container, OptionsSide, PostButtons, Preview, Wrapper } from "./uploadCss"
+import { Bios, ChooseFile, Container, OptionsSide, PostButtons, Preview, Wrapper, TagBox } from "./uploadCss"
 
 const useStyles = makeStyles((theme) => ({
     loader: {
@@ -22,10 +23,16 @@ const UploadPosts = () => {
     const [err, setErr] = useState(false)
     const [load, setLoad] = useState(false)
     const [typeofMedia, setTypeofMedia] = useState("")
+    const [instaUsers, setInstaUsers] = useState([])
 
-    const [tags,setTags] = useState("")
+    const [suggestedTag,setSuggestedTag] = useState([])
     const [allTags,setAllTags] = useState([])
     const [isCheckingTags,setIsCheckingTags] = useState(false)
+
+    const [tagUser, setTagUser] = useState([])
+    const [taggedUser,setTaggedUser] = useState(false)
+    const [suggestedTagUser, setSuggestedTagUser] = useState([])
+
 
 
     const imgRef = useRef()
@@ -65,11 +72,20 @@ const UploadPosts = () => {
     }
     useEffect(() => {
         axios.get("http://localhost:2511/hashtags").then((res)=>setAllTags(res.data.data))
+        axios.get("http://localhost:2511/users").then((res) => setInstaUsers(res.data.data))
     }, [])
-    
-    const handleHashtags = ()=>{
 
-    }
+    useEffect(() => {
+        let x = caption?.trim().split(" ").filter((item) => item[0] == "#")[0]?.substring(1)
+        let output = allTags?.filter((item) => item.hashtagName.toLowerCase().indexOf(x) !== -1 ? true : false).map(item => [item._id, item.hashtagName])
+        setSuggestedTag(output)
+
+        let u = caption?.trim().split(" ").filter((item) => item[0] == "@")[0]?.substring(1)
+        let output2 = instaUsers?.filter((item) => item.username.toLowerCase().indexOf(u) !== -1 ? true : false).map(item => [item._id, item.username])
+        setSuggestedTagUser(output2)
+
+    },[caption])
+
     const handleCaption = (e)=>{
         setCaption(e.target.value)
         if(caption[caption.length-1] === "#"){
@@ -77,11 +93,22 @@ const UploadPosts = () => {
         }        
        else if(caption[caption.length-1] === " "){
         setIsCheckingTags(false)
+        }else if(caption[caption.length-1] === "@"){
+            setTaggedUser(true)
+        }else if (caption[caption.length-1] === " "){
+            setTaggedUser(false)
         }
-        if(isCheckingTags){
-            handleHashtags()
-        }
-        
+    }
+
+    const addHastagToCaption = (e) => {
+        let tagss = e.target.textContent
+        setCaption(prev => prev.trim().split("#").shift() + tagss)
+        setIsCheckingTags(false)
+    }
+    const addUserToCaption = (e) => {
+        let userss = e.target.textContent
+        setCaption(prev => prev.trim().split("@").shift() + userss)
+        setTaggedUser(false)
     }
     
     const postPictureToApi = (data) => {
@@ -126,10 +153,31 @@ const UploadPosts = () => {
                     {err && <p>Oops!. Failed in Loading the Image. Please try again.</p>}
                     <button>Edit</button>
                     <h4>Details</h4>
-                    <Bios placeholder="Add a Caption" type="text"
+                    <Bios placeholder="Add a Caption" type="text" value={caption}
                     onChange={handleCaption}
                     />
-                    <br/><br/>
+                    <br/>
+                    {
+                        isCheckingTags && suggestedTag.length > 0 &&
+                        <TagBox>
+                            {
+                                suggestedTag?.map((item) => 
+                                    <div key={item[0]} onClick={addHastagToCaption}>{`#${item[1]}`}</div>
+                                )
+                            }
+                        </TagBox>
+                    }
+                    {
+                        taggedUser &&
+                        <TagBox>
+                            {
+                                suggestedTagUser?.map((item) => 
+                                <div key={item[0]} onClick={addUserToCaption}>{`@${item[1]}`}</div>
+                            )
+                            }
+                        </TagBox>
+                    }
+                    <br/>
                     <PostButtons>
                         <button onClick={postPicturToImgur}>POST</button>
                         <h5>Save Draft</h5>
