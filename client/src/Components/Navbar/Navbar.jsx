@@ -8,6 +8,7 @@ import { ProfileDetails } from './ProfileDetails';
 import { NavbarIcons } from './NavbarIcons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { notificationSeen } from '../../Redux/Notification/action';
 
 function Navbar() {
     const scrollRef = useRef()
@@ -80,6 +81,9 @@ function Navbar() {
         setShowNotifications(!showNotifications)
         setProfiler(false)
         setSearchUserPopup(false)
+
+        // to true isNewNotificationSeen
+        dispatch(notificationSeen())
     }
     const getUserSettings = () => {
         setProfiler(!profiler)

@@ -8,18 +8,22 @@ import AddComment from './AddComment'
 import axios from 'axios';
 import { useEffect } from 'react';
 import {unlikeIconPath,likeIconPath ,savedPostIconPath,unsavedPostIconPath, sendMsgIconPath, commentIconPath} from './svgIcons'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {format} from "timeago.js"
+import { getNotifications } from '../../../Redux/Notification/action';
 
 
 const PostItem = ({_id,userId,src,caption,likes,comments, createdAt}) => {
   const [postOwnerUserName,setPostOwnerUserName] = useState("")
   const [postOwnerPic,setPostOwnerPic] = useState("")
 
+  const dispatch = useDispatch();
+
+
   // logged in user info
   const user = useSelector(state => state.login.user);
-
+  const loggedInUser = user;
   // current post like status
   const [like,setLike] = useState(false);
 
@@ -71,6 +75,10 @@ const PostItem = ({_id,userId,src,caption,likes,comments, createdAt}) => {
         handleLikeCount()
     })
     }
+
+    // getting notificatons
+    dispatch(getNotifications(loggedInUser.username))
+
   }
 
   const handleLikeCount = () =>{
@@ -78,6 +86,7 @@ const PostItem = ({_id,userId,src,caption,likes,comments, createdAt}) => {
     axios.get(`http://localhost:2511/posts/${_id}`).then(res => {
       setAllLikes(res.data.data.likes)
     })
+
   }
 
   const handleAddComment = (e) => {
@@ -97,6 +106,10 @@ const PostItem = ({_id,userId,src,caption,likes,comments, createdAt}) => {
       handleCommentCount()
     })
     setQuery("");
+
+    // getting notificatons
+    dispatch(getNotifications(loggedInUser.username))
+
   }
 
   const handleCommentCount = () =>{
@@ -135,6 +148,9 @@ const PostItem = ({_id,userId,src,caption,likes,comments, createdAt}) => {
         setIsPostSaved(true);
     })
     }
+
+    // getting notificatons
+    dispatch(getNotifications(loggedInUser.username))
   }
 
   useEffect(() => {
