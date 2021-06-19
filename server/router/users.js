@@ -80,14 +80,12 @@ router.patch('/users/follow/:id', async (req, res) => {
     );
 
     // logic for notification part
-    // const followedUserId = userId;
 
-    // const commentedBy = await UsersData.findOne(
-    //   { _id: userId },
-    //   { password: 0, tokens: 0 }
-    // )
-    //   .lean()
-    //   .exec();
+    // adding in follower array (user who is followed by someone)
+    await UsersData.findOneAndUpdate(
+      { _id: userId },
+      { $addToSet: { followers: id } }
+    );
 
     await UsersData.findOneAndUpdate(
       { _id: isFollowUserIdExist },
@@ -105,11 +103,11 @@ router.patch('/users/follow/:id', async (req, res) => {
       }
     );
 
-    // adding in follower array (user who is followed by someone)
-    await UsersData.findOneAndUpdate(
-      { _id: userId },
-      { $addToSet: { followers: id } }
-    );
+    // updating isNewNotification
+    await UsersData.findByIdAndUpdate(isFollowUserIdExist, {
+      isNewNotification: true,
+    });
+
     res.status(200).json({ data: user });
   } catch (err) {
     res.status(400).json({ error: 'Sorry! something went wrong' });

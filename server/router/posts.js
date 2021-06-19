@@ -93,28 +93,27 @@ router.post('/posts/addpost', async (req, res) => {
     const newPost = new PostsData(req.body);
     await newPost.save();
 
-
-    let hashTags = "";
-    let username = "";
+    let hashTags = '';
+    let username = '';
     if (caption !== undefined) {
       const captionArr = caption.trim().split(' ');
       for (let i = 0; i < captionArr.length; i++) {
         if (captionArr[i][0] === '#') {
           hashTags = captionArr[i];
-          hashTags=captionArr[i].substring(1).toLowerCase();
+          hashTags = captionArr[i].substring(1).toLowerCase();
         }
         if (captionArr[i][0] === '@') {
-          username=captionArr[i].substring(1).toLowerCase();
+          username = captionArr[i].substring(1).toLowerCase();
         }
       }
     }
-    
-    if(username !== undefined){
+
+    if (username !== undefined) {
       const isUserExist = await UsersData.findOne({ username: username });
-      if(isUserExist){
+      if (isUserExist) {
         await UsersData.findOneAndUpdate(
           { username: username },
-          { $addToSet: { tagedPosts:  newPost._id } },
+          { $addToSet: { tagedPosts: newPost._id } },
           {
             new: true,
           }
@@ -122,7 +121,7 @@ router.post('/posts/addpost', async (req, res) => {
       }
     }
 
-    if(hashTags !== undefined){
+    if (hashTags !== undefined) {
       const hashtagAlreadyPresent = await HashtagData.findOne({
         hashtagName: hashTags,
       });
@@ -217,6 +216,11 @@ router.patch('/posts/likepost/:id', async (req, res) => {
         new: true,
       }
     );
+
+    // updating isNewNotification
+    await UsersData.findByIdAndUpdate(postByUserId, {
+      isNewNotification: true,
+    });
 
     res.status(200).json({ message: 'Liked post successfully', data: post });
   } catch (err) {
@@ -321,6 +325,11 @@ router.patch('/posts/addcomment/:id', async (req, res) => {
       }
     );
 
+    // updating isNewNotification
+    await UsersData.findByIdAndUpdate(postByUserId, {
+      isNewNotification: true,
+    });
+
     res.status(200).json({ message: 'Comment added successfully', data: post });
   } catch (err) {
     res.status(400).json({ error: 'Sorry! something went wrong' });
@@ -378,6 +387,8 @@ router.patch('/posts/likecomment/:id', async (req, res) => {
       .lean()
       .exec();
 
+    await PostsData.updateOne({ _id: id }, { $set: { comments: comments } });
+
     await UsersData.findOneAndUpdate(
       { _id: postByUserId },
       {
@@ -395,7 +406,10 @@ router.patch('/posts/likecomment/:id', async (req, res) => {
       }
     );
 
-    await PostsData.updateOne({ _id: id }, { $set: { comments: comments } });
+    // updating isNewNotification
+    await UsersData.findByIdAndUpdate(postByUserId, {
+      isNewNotification: true,
+    });
 
     res.status(200).json({ message: 'Comment like successfully' });
   } catch (err) {
