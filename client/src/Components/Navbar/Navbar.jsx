@@ -23,6 +23,7 @@ function Navbar() {
     const [tag, setTag] = useState([])
     const [suggestedTag, setSuggestedTag] = useState([])
 
+    const loggedInUser = useSelector(state => state.login.user);
     const suggestions = useSelector(state => state.user.user)
     const dispatch = useDispatch()
     
@@ -82,8 +83,6 @@ function Navbar() {
         setProfiler(false)
         setSearchUserPopup(false)
 
-        // to true isNewNotificationSeen
-        dispatch(notificationSeen())
     }
     const getUserSettings = () => {
         setProfiler(!profiler)
