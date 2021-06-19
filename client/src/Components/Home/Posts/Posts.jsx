@@ -15,7 +15,7 @@ function Posts() {
 
   const dispatch = useDispatch();
 
-  const loggedInUser = useSelector(state => state.login.user)
+  const loggedInUser = useSelector(state => state.login.user);
 
   const scrollToEnd = () => {
     setPage((prev) => prev +1)

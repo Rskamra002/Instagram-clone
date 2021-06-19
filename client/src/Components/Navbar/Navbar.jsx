@@ -177,7 +177,7 @@ function Navbar() {
             </div>
         </div>
         }
-        {/* <Notifications showNotifications={showNotifications}/> */}
+        <Notifications showNotifications={showNotifications}/>
         <ProfileDetails profiler={profiler} username={username} 
                 openProfile={openProfile}/>
             </Container>
