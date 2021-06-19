@@ -2,6 +2,7 @@ import {
   GET_NOTIFICATIONS_FAILURE,
   GET_NOTIFICATIONS_REQUEST,
   GET_NOTIFICATIONS_SUCCESS,
+  NOTIFICATION_SEEN,
 } from './actionTypes';
 
 const initState = {
@@ -40,11 +41,15 @@ export const notificationReducer = (
       };
     }
 
-    case NOTIFICATIONS_SEEN: {
+    case NOTIFICATION_SEEN: {
       return {
         ...state,
         isSeen: true,
       };
+    }
+
+    default: {
+      return state;
     }
   }
 };
