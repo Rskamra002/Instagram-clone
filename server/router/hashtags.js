@@ -93,7 +93,7 @@ router.get('/hashtag/posts/:hashtag', async (req, res) => {
     }
     res
       .status(200)
-      .json({ message: 'postId added  successfully', data: hashtagInfo });
+      .json({ message: 'postId added  successfully', data: hashtagExist });
   } catch (err) {
     res.status(400).json({ error: 'Sorry! something went wrong' });
     console.log(err);
