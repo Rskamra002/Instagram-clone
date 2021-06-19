@@ -37,7 +37,7 @@ export const getNotifications = (username) => (dispatch) => {
   axios
     .get(`http://localhost:2511/notifications/${username}`)
     .then((res) => {
-      dispatch(getNotificationsSuccess(res.data.data));
+      dispatch(getNotificationsSuccess(res.data.data.notifications));
     })
     .catch((err) => {
       dispatch(getNotificationsFailure(err));
