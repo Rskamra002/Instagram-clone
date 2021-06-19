@@ -6,11 +6,16 @@ import { Link } from 'react-router-dom'
 import {unlikeIconPath,likeIconPath} from './svgIcons'
 import styled from "styled-components"
 import { useSelector } from 'react-redux'
+import { getNotifications } from '../../../Redux/Notification/action'
+import { useDispatch } from 'react-redux'
   
 
   export default function Comments({comment,postId}) {
 
-  const loggedInUser = useSelector(state => state.login.user)
+  const loggedInUser = useSelector(state => state.login.user);
+
+  const dispatch = useDispatch();
+
 
   const [commentBy,setCommentBy] = useState("")
   const [like,setLike] = useState(comment.likes.includes(loggedInUser._id));
@@ -36,6 +41,8 @@ import { useSelector } from 'react-redux'
       })
     }
     
+    // getting notificatons
+    dispatch(getNotifications(loggedInUser.username))
   }
 
   return (
