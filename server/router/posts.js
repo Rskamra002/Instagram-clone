@@ -94,14 +94,32 @@ router.post('/posts/addpost', async (req, res) => {
     await newPost.save();
 
     let hashTags = "";
+    let username = "";
     if (caption !== undefined) {
       const captionArr = caption.trim().split(' ');
       for (let i = 0; i < captionArr.length; i++) {
         if (captionArr[i][0] === '#') {
-          hashTags=captionArr[i];
+          hashTags=captionArr[i].substring(1).toLowerCase();
+        }
+        if (captionArr[i][0] === '@') {
+          username=captionArr[i].substring(1).toLowerCase();
         }
       }
     }
+    
+    if(username !== undefined){
+      const isUserExist = await UsersData.findOne({ username: username });
+      if(isUserExist){
+        await UsersData.findOneAndUpdate(
+          { username: username },
+          { $addToSet: { tagedPosts:  newPost._id } },
+          {
+            new: true,
+          }
+        );
+      }
+    }
+
     if(hashTags !== undefined){
       const hashtagAlreadyPresent = await HashtagData.findOne({
         hashtagName: hashTags,
