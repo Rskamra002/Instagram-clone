@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Grid, Box } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import ModeCommentOutlinedIcon from "@material-ui/icons/ModeCommentOutlined";
 import styles from "./Posts.module.css";
 import DetailedPostInfo from "./DetailedPostInfo";
 import styled from 'styled-components'

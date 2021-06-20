@@ -23,6 +23,7 @@ function Navbar() {
     const [tag, setTag] = useState([])
     const [suggestedTag, setSuggestedTag] = useState([])
 
+    const loggedInUser = useSelector(state => state.login.user);
     const suggestions = useSelector(state => state.user.user)
     const dispatch = useDispatch()
     
@@ -41,12 +42,13 @@ function Navbar() {
         let output = suggestions?.filter((item) => item.username.toLowerCase().indexOf(query) !== -1 ? true:false).map((item) => [item._id, item.profilePic, item.username, item.fullname])
         setSuggestedUsers(output)
         
-        const tagOutput = tag?.filter((item) => item.hashtagName.toLowerCase().indexOf(query) !== -1 ? true: false).map((item) => [item.id, item.hashtagName])
+        const tagOutput = query[0]==="#"?tag?.filter((item) => item.hashtagName.toLowerCase().indexOf(query.slice(1)) !== -1 ? true: false).map((item) => [item.id, item.hashtagName]):tag?.filter((item) => item.hashtagName.toLowerCase().indexOf(query) !== -1 ? true: false).map((item) => [item.id, item.hashtagName])
         setSuggestedTag(tagOutput)
+        console.log(suggestedTag)
         let b = JSON.parse(localStorage.getItem("users"))
         setProfilePic(b.profilePic)
         setUsername(b.username)
-    },[suggestions, query, tag])
+    },[tag,suggestions, query])
 
 
     const handleActiveSuggestions = (e)=> {
@@ -82,8 +84,6 @@ function Navbar() {
         setProfiler(false)
         setSearchUserPopup(false)
 
-        // to true isNewNotificationSeen
-        dispatch(notificationSeen())
     }
     const getUserSettings = () => {
         setProfiler(!profiler)
@@ -149,7 +149,7 @@ function Navbar() {
                     </SuggestionBox>
                 }
                 {
-                    <SuggestionBox ref={scrollRef} len={suggestedUsers?.length}>
+                    <SuggestionBox ref={scrollRef} len={suggestedUsers?.length || suggestedTag?.length}>
                         
                         { query &&
                             suggestedUsers?.map((item) => (

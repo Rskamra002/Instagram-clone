@@ -1,17 +1,23 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from "styled-components"
+import { notificationSeen } from '../../Redux/Notification/action'
 import { exploreFill, exploreOutline, homeFill, homeOutline, likeFill, likeOutline, messageFill, messageOutline, postUploadOutline } from './IconSvg'
 
 
 const NavbarIcons = ({getNotification, getUserSettings, profilePic}) => {
 
-    const [activePage, setActivePage] = useState("/")
+    const [activePage, setActivePage] = useState("/");
+    const loggedInUser = useSelector(state => state.login.user);
+    const dispatch = useDispatch()
 
-    const isNewNotificationSeen = useSelector(state => state.notifications.isNewNotificationSeen);
+    const isNewNotification = useSelector(state => state.notifications.isNewNotification);
 
-  
+    // to true isNewNotification
+    const handleNotificationSeen = () => {
+        dispatch(notificationSeen(loggedInUser.username))
+    }
 
 
     return (
@@ -44,11 +50,13 @@ const NavbarIcons = ({getNotification, getUserSettings, profilePic}) => {
                     }
                 </div>
                 </Link>
-                <Notifiy onClick={getNotification}>
+
+                {/* on clicking on this isNewNotification should become false */}
+                <Notifiy onClick={() => {getNotification();handleNotificationSeen()}}>
                     {
                         activePage === "activity" ? likeFill : likeOutline
                     }
-                    {!isNewNotificationSeen ? <span>.</span> : null}
+                    {isNewNotification ? <span>.</span> : null}
                 </Notifiy>
                 <div onClick={() => setActivePage("/profile")}>
                 <ProfilePicture onClick={getUserSettings} src={profilePic} alt="profilePic"/>

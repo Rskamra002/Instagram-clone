@@ -33,6 +33,8 @@ const usersSchema = new mongoose.Schema(
     tagedPosts: [
       { type: mongoose.Schema.Types.ObjectId, ref: 'post', required: true },
     ],
+    isNewNotification: { type: Boolean, default: false },
+    isPrivateAccount: { type: Boolean, default: false },
     tokens: [
       {
         token: reqString,

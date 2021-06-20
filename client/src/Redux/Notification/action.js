@@ -26,7 +26,7 @@ export const getNotificationsFailure = (payload) => {
   };
 };
 
-export const notificationSeen = () => {
+export const notificationSeenSuccess = () => {
   return {
     type: NOTIFICATION_SEEN,
   };
@@ -37,9 +37,22 @@ export const getNotifications = (username) => (dispatch) => {
   axios
     .get(`http://localhost:2511/notifications/${username}`)
     .then((res) => {
-      dispatch(getNotificationsSuccess(res.data.data.notifications));
+      dispatch(
+        getNotificationsSuccess({
+          notifications: res.data.data.notifications,
+          isNewNotification: res.data.data.isNewNotification,
+        })
+      );
     })
     .catch((err) => {
       dispatch(getNotificationsFailure(err));
+    });
+};
+
+export const notificationSeen = (username) => (dispatch) => {
+  axios
+    .patch(`http://localhost:2511/notifications/seen/${username}`)
+    .then((res) => {
+      dispatch(notificationSeenSuccess(true));
     });
 };

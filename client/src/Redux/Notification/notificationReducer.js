@@ -8,9 +8,8 @@ import {
 const initState = {
   isLoading: false,
   isError: false,
-  notificationLength: 0,
   allNotifications: [],
-  isNewNotificationSeen: true,
+  isNewNotification: false,
 };
 
 export const notificationReducer = (
@@ -26,18 +25,14 @@ export const notificationReducer = (
     }
 
     case GET_NOTIFICATIONS_SUCCESS: {
-      // let status = true;
-      // if (payload.length > state.notificationLength) {
-      //   status = false;
-      // }
+      const { notifications, isNewNotification } = payload;
       return {
         ...state,
         isLoading: false,
-        allNotifications: [...payload].sort((a, b) => {
+        allNotifications: [...notifications].sort((a, b) => {
           return b.timestamp - a.timestamp;
         }),
-        notificationLength: payload.length,
-        isNewNotificationSeen: true,
+        isNewNotification: isNewNotification,
       };
     }
 
@@ -52,7 +47,7 @@ export const notificationReducer = (
     case NOTIFICATION_SEEN: {
       return {
         ...state,
-        isNewNotificationSeen: true,
+        isNewNotification: false,
       };
     }
 
