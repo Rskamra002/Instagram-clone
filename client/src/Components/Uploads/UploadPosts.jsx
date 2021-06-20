@@ -29,7 +29,6 @@ const UploadPosts = () => {
     const [allTags,setAllTags] = useState([])
     const [isCheckingTags,setIsCheckingTags] = useState(false)
 
-    const [tagUser, setTagUser] = useState([])
     const [taggedUser,setTaggedUser] = useState(false)
     const [suggestedTagUser, setSuggestedTagUser] = useState([])
 
@@ -90,13 +89,17 @@ const UploadPosts = () => {
         setCaption(e.target.value)
         if(caption[caption.length-1] === "#"){
             setIsCheckingTags(true)
-        }        
-       else if(caption[caption.length-1] === " "){
-        setIsCheckingTags(false)
+            if(suggestedTag.length === 0){
+                setIsCheckingTags(false)
+            }
         }else if(caption[caption.length-1] === "@"){
             setTaggedUser(true)
+            if(suggestedTagUser.length === 0){
+                setTaggedUser(false)                
+            }
         }else if (caption[caption.length-1] === " "){
             setTaggedUser(false)
+            setIsCheckingTags(false)
         }
     }
 
@@ -168,7 +171,7 @@ const UploadPosts = () => {
                         </TagBox>
                     }
                     {
-                        taggedUser &&
+                        taggedUser && suggestedTagUser.length > 0 &&
                         <TagBox>
                             {
                                 suggestedTagUser?.map((item) => 
