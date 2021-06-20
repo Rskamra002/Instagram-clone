@@ -197,9 +197,11 @@ const PostItem = ({_id,userId,src,caption,likes,comments, createdAt}) => {
             </Icons>
 
             <Likes likes={allLikes} />
-            
             <Caption>
-              <div><Link to={postOwnerUserName}>{postOwnerUserName}</Link>{caption}</div>
+              <div>
+                <Link to={postOwnerUserName}>{postOwnerUserName}</Link>
+                {caption?.split(" ").map((item)=>item[0]==="#"?<Link to={`/explore/${item.slice(1)}`}>{item}</Link>:item[0]==="@"?<Link to={`/${item.slice(1)}`}>{item}</Link>:` ${item} `)}
+              </div>
             </Caption>
 
             {allComments.length > 2 ? <ViewMoreComments >
