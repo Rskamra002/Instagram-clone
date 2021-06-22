@@ -200,6 +200,13 @@ router.patch('/posts/likepost/:id', async (req, res) => {
       .lean()
       .exec();
 
+    if (userId.toString() === postByUserId.toString()) {
+      return res.status(200).json({
+        message: 'Like placed by yourself successfully',
+        data: post,
+      });
+    }
+
     await UsersData.findOneAndUpdate(
       { _id: postByUserId },
       {
@@ -307,6 +314,13 @@ router.patch('/posts/addcomment/:id', async (req, res) => {
     )
       .lean()
       .exec();
+
+    if (userId.toString() === postByUserId.toString()) {
+      return res.status(200).json({
+        message: 'Comment placed by yourself successfully',
+        data: post,
+      });
+    }
 
     await UsersData.findOneAndUpdate(
       { _id: postByUserId },
