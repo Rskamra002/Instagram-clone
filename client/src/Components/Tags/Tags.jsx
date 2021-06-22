@@ -45,7 +45,7 @@ const Tags = () => {
                     </div>
                 </Header>
                 <MappedPosts>
-                    <p>Top posts</p>
+                    <p style={{marginBottom:"15px", fontSize:"16px"}}>Top posts</p>
                     <Grid container spacing={3}>
 
                     {displayPosts?.map((post, id) => (

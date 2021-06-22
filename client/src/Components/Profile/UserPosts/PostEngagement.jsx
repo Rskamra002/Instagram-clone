@@ -7,6 +7,9 @@ import AddComment from "./AddComment";
 import DisplayLikesCount from "./DisplayLikesCount";
 import Icons from "./Icons";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { getNotifications } from "../../../Redux/Notification/action";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles(() => ({
   avatar: {
@@ -18,6 +21,7 @@ const PostEngagement = (data) => {
   const classes = useStyles();
   const loggedInUserData = useSelector(state => state.login.user);
 
+
   const { fullname, username, profilePic, caption, _id, likes, comments } =
     data;
   const [like, setLike] = useState(false);
@@ -25,6 +29,10 @@ const PostEngagement = (data) => {
   const [savedPost, setSavedPost] = useState(false);
   const [allComments, setAllComments] = useState(comments);
   const [recentLike, setRecentLike] = useState();
+
+  const activeUser = useSelector((state) => state.login.user);
+
+  const dispatch = useDispatch();
 
   // comment
   const [query, setQuery] = useState("");
@@ -37,12 +45,17 @@ const PostEngagement = (data) => {
     axios.get(`http://localhost:2511/posts/${_id}`).then((res) => {
       setAllLikes(res.data.data.likes);
     });
+    dispatch(getNotifications(activeUser.username))
+
   };
 
   // is post already saved by logged in user
   const isPostSavedByUser = () => {
     axios.get(`http://localhost:2511/users/${user._id}`)
       .then(res => res.data.data.savedPosts.includes(_id) ? setSavedPost(true) : setSavedPost(false))
+
+      dispatch(getNotifications(activeUser.username))
+
   };
 
   // is post already liked by logged in user
@@ -50,6 +63,8 @@ const PostEngagement = (data) => {
     axios.get(`http://localhost:2511/posts/${_id}`).then((res) => {
       res.data.data.likes.includes(user._id) ? setLike(true) : setLike(false);
     });
+    dispatch(getNotifications(activeUser.username))
+
   };
 
   // handling save-unsave operation
@@ -99,6 +114,8 @@ const PostEngagement = (data) => {
           handleLikeCount();
         });
     }
+    dispatch(getNotifications(activeUser.username))
+
   };
 
   const handleAddComment = (e) => {
@@ -120,6 +137,8 @@ const PostEngagement = (data) => {
         handleCommentCount();
       });
     setQuery("");
+    dispatch(getNotifications(activeUser.username))
+
   };
 
   const handleCommentCount = () => {
@@ -147,9 +166,13 @@ const PostEngagement = (data) => {
           alt={`${fullname}'s Profile Picture`}
           src={profilePic}
         ></Avatar>
-        <div>
-          <span>{username}</span> {caption}
-        </div>
+        <Caption>
+          {/* <span>{username}</span>    */}
+          <span>
+                <Link to={`/${username}`}>{username}</Link>
+                {caption?.split(" ").map((item)=>item[0]==="#"?<Link style={{color:"#01386B",fontWeight:"540", textDecoration:"none"}} to={`/explore/${item.slice(1)}`}>{item}</Link>:item[0]==="@"?<Link style={{color:"#01386B",fontWeight:"540", textDecoration:"none"}} to={`/${item.slice(1)}` }>{item}</Link>:` ${item} `)}
+              </span>
+        </Caption>
       </Box>
       <Comment>
         {allComments.map((comment) => {
@@ -207,6 +230,20 @@ const Box = styled.div`
 const LikesCount = styled.div`
   margin-top: 20px;
 `;
+const Caption = styled.div`
+font-size:15px;
+    a{
+      font-size:16px;
+      font-weight:bold;
+      display:inline-block;
+      margin-right:4px;
+      text-decoration:none;
+      color:#3f3e3e;
+      :hover{
+        text-decoration: underline;
+      }
+    }
+`
 
 const Comment = styled.div`
   height: 250px;
@@ -232,3 +269,5 @@ const Comment = styled.div`
     background: #555;
   }
 `;
+
+
