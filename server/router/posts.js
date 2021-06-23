@@ -391,39 +391,39 @@ router.patch('/posts/likecomment/:id', async (req, res) => {
       }
     }
 
-    // logic for notification part
-    const postByUserId = post.userId;
-
-    const commentedLikeBy = await UsersData.findOne(
-      { _id: userId },
-      { password: 0, tokens: 0 }
-    )
-      .lean()
-      .exec();
-
     await PostsData.updateOne({ _id: id }, { $set: { comments: comments } });
 
-    await UsersData.findOneAndUpdate(
-      { _id: postByUserId },
-      {
-        $addToSet: {
-          notifications: {
-            notification: `${commentedLikeBy.username} liked your comment`,
-            fromUserSrc: isUserExist.profilePic,
-            postSrc: post.src,
-            timestamp: Date.now(),
-          },
-        },
-      },
-      {
-        new: true,
-      }
-    );
+    // logic for notification part
+    // const commentedLikeBy = await UsersData.findOne(
+    //   { _id: userId },
+    //   { password: 0, tokens: 0 }
+    // )
+    //   .lean()
+    //   .exec();
+
+    // const postByUserId = post.userId;
+
+    // await UsersData.findOneAndUpdate(
+    //   { _id: postByUserId },
+    //   {
+    //     $addToSet: {
+    //       notifications: {
+    //         notification: `${commentedLikeBy.username} liked your comment`,
+    //         fromUserSrc: isUserExist.profilePic,
+    //         postSrc: post.src,
+    //         timestamp: Date.now(),
+    //       },
+    //     },
+    //   },
+    //   {
+    //     new: true,
+    //   }
+    // );
 
     // updating isNewNotification
-    await UsersData.findByIdAndUpdate(postByUserId, {
-      isNewNotification: true,
-    });
+    // await UsersData.findByIdAndUpdate(postByUserId, {
+    //   isNewNotification: true,
+    // });
 
     res.status(200).json({ message: 'Comment like successfully' });
   } catch (err) {
