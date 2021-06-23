@@ -120,7 +120,7 @@ function Navbar() {
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZR8YEGei6RTXhP4zHE-hDP4GtVtA5jLqnF4FJbK9ixayJ0aObad1qqnIfmZjXxfrXVE4&usqp=CAU" alt="" width="18px" height="18px" style={{padding: "2px", opacity:"0.5"}} />
                     </div>}
                 </SearchBar>
-                <NavbarIcons getNotification={getNotification} getUserSettings={getUserSettings}
+                <NavbarIcons showNotifications={showNotifications} getNotification={getNotification} getUserSettings={getUserSettings}
                 profilePic={profilePic}
                 />
                 {searchUserPopUp &&

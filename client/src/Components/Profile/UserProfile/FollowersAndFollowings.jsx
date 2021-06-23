@@ -16,6 +16,7 @@ import axios from "axios";
 import { followUser, unFollowUser } from "./UpdateFollows";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import { Redirect } from "react-router";
+import { getNotifications } from "../../../Redux/Notification/action";
 
 const FollowersAndFollowings = (data) => {
   const activeUser = useSelector((state) => state.login.user);
@@ -40,10 +41,16 @@ const FollowersAndFollowings = (data) => {
 
   const handleFollow = async () => {
     followUser(loggedIn._id, profileData._id, dispatch);
+
+    dispatch(getNotifications(activeUser.username))
+
   };
 
   const handleUnfollow = () => {
     unFollowUser(loggedIn._id, profileData._id, dispatch);
+
+    dispatch(getNotifications(activeUser.username))
+
   };
 
   const handleMessage = async () => {

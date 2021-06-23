@@ -200,7 +200,7 @@ const PostItem = ({_id,userId,src,caption,likes,comments, createdAt}) => {
             <Caption>
               <div>
                 <Link to={postOwnerUserName}>{postOwnerUserName}</Link>
-                {caption?.split(" ").map((item)=>item[0]==="#"?<Link to={`/explore/${item.slice(1)}`}>{item}</Link>:item[0]==="@"?<Link to={`/${item.slice(1)}`}>{item}</Link>:` ${item} `)}
+                {caption?.split(" ").map((item)=>item[0]==="#"?<Link style={{color:"#01386B",fontWeight:"540", textDecoration:"none"}} to={`/explore/${item.slice(1)}`}>{item}</Link>:item[0]==="@"?<Link style={{color:"#01386B",fontWeight:"540", textDecoration:"none"}} to={`/${item.slice(1)}` }>{item}</Link>:` ${item} `)}
               </div>
             </Caption>
 

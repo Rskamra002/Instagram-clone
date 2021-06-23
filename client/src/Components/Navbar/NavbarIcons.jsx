@@ -6,7 +6,7 @@ import { notificationSeen } from '../../Redux/Notification/action'
 import { exploreFill, exploreOutline, homeFill, homeOutline, likeFill, likeOutline, messageFill, messageOutline, postUploadOutline } from './IconSvg'
 
 
-const NavbarIcons = ({getNotification, getUserSettings, profilePic}) => {
+const NavbarIcons = ({showNotifications,getNotification, getUserSettings, profilePic}) => {
 
     const [activePage, setActivePage] = useState("/");
     const loggedInUser = useSelector(state => state.login.user);
@@ -43,18 +43,21 @@ const NavbarIcons = ({getNotification, getUserSettings, profilePic}) => {
                     }
                 </div>
                 </Link>
-                <Link to="/explore">
+                {/* <Link to="/explore">
                 <div onClick={() => setActivePage("/explore")}>
                     {
                         activePage === "/explore" ? exploreFill : exploreOutline
                     }
                 </div>
-                </Link>
+                </Link> */}
 
                 {/* on clicking on this isNewNotification should become false */}
                 <Notifiy onClick={() => {getNotification();handleNotificationSeen()}}>
+                
                     {
-                        activePage === "activity" ? likeFill : likeOutline
+                        // activePage === "activity" ? likeFill : likeOutline
+                        showNotifications ? likeFill : likeOutline
+
                     }
                     {isNewNotification ? <span>.</span> : null}
                 </Notifiy>

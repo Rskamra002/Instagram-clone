@@ -13,6 +13,8 @@ import { loadData } from "../../../Utils/localStorage";
 import { unFollowUser } from "./UpdateFollows";
 import { getUserData } from "../../../Redux/UserProfile/action";
 import axios from 'axios'
+import { getNotifications } from "../../../Redux/Notification/action";
+import { useSelector } from "react-redux";
 const useStyles = makeStyles((theme) => ({
     avatar: {
         margin: "15px auto",
@@ -25,10 +27,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+
 const ConfirmUnFollow = (data) => {
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const loggedInUser = loadData("users");
+    const activeUser = useSelector((state) => state.login.user);
+
     const { username, profilePic, closePopup, unfollowedSuccess, userId } = data;
 
     const confirmRemove = (removeFrom, toRemove) => {
@@ -45,6 +50,8 @@ const ConfirmUnFollow = (data) => {
                     dispatch(getUserData(res.data.data));
                 });
             });
+        dispatch(getNotifications(activeUser.username))
+
     };
 
     const classes = useStyles();
