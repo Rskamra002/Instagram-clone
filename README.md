@@ -40,6 +40,44 @@ To create this clone following Tech stack is used by contributors.
 *  **cors** 
 *  **jsonwebtoken** 
 
+<hr/>
+
+## Sneak Peak
+#### Login Page:
+<img src=""/>
+
+#### Landing Page:
+<img src=""/>
+
+#### Upload Page:
+<img src=""/>
+
+#### Profile Page:
+<img src=""/>
+
+#### Inbox Page:
+<img src=""/>
+
+<hr/>
+
+## Installation and Setup Instructions
+Clone down this repository using this <a href="https://github.com/khushbookhator/Instagram_clone">link</a>
+
+You will need node and npm installed globally on your machine. 
+
+Inside Client, Server & Socket install with npm
+
+
+```bash
+  npm install
+```
+
+To Run Test Suite: npm test To Start Server: npm start
+
+To Visit App: localhost:3000/
+
+<hr/>
+
 ## Team Members and Contributors
 
 ### Ayush Singhal
