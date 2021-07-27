@@ -44,19 +44,22 @@ To create this clone following Tech stack is used by contributors.
 
 ## Sneak Peak
 #### Login Page:
-<img src=""/>
+<img src="https://i.imgur.com/8oWSCMM.png"/>
 
 #### Landing Page:
-<img src=""/>
+<img src="https://i.imgur.com/fCzEgw7.png"/>
 
 #### Upload Page:
-<img src=""/>
+<img src="https://i.imgur.com/l111CAG.png"/>
 
 #### Profile Page:
-<img src=""/>
+<img src="https://i.imgur.com/9MlDSsi.png"/>
+
+#### Tag Page:
+<img src="https://i.imgur.com/cqIyXOx.png"/>
 
 #### Inbox Page:
-<img src=""/>
+<img src="https://i.imgur.com/VHkVAtK.png"/>
 
 <hr/>
 
@@ -72,7 +75,9 @@ Inside Client, Server & Socket install with npm
   npm install
 ```
 
-To Run Test Suite: npm test To Start Server: npm start
+To Run Test Suite: npm test 
+
+To Start Server: npm start
 
 To Visit App: localhost:3000/
 
